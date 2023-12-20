@@ -1,0 +1,44 @@
+Header:
+  Type: SKILL_DB
+  Version: 3
+
+Body:
+# SKE_NOON_BLAST
+#  - Id: 5466
+#    Requires:
+#      Status:
+#        Rising_Sun: true
+#        Noon_Sun: true
+#        Sky_Enchant: true
+
+# SKE_SUNSET_BLAST
+#  - Id: 5467
+#    Requires:
+#      Status:
+#        Noon_Sun: true
+#        Sunset_Sun: true
+#        Sky_Enchant: true
+
+# SKE_MIDNIGHT_KICK
+#  - Id: 5469
+#    Requires:
+#      Status:
+#        Rising_Moon: true
+#        Midnight_Moon: true
+#        Sky_Enchant: true
+
+# SKE_DAWN_BREAK
+#  - Id: 5470
+#    Requires:
+#      Status:
+#        Midnight_Moon: true
+#        Dawn_Moon: true
+#        Sky_Enchant: true
+
+# SKE_STAR_BURST
+  - Id: 5472
+    Status: Star_Burst
+
+# SKE_ENCHANTING_SKY
+  - Id: 5475
+    Status: Sky_Enchant

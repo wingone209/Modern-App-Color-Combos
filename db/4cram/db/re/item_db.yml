@@ -1,0 +1,138 @@
+Header:
+  Type: ITEM_DB
+  Version: 2
+
+Body:
+  - Id: 101116
+    AegisName: Nw_Grenade_Box
+    Name: Nw_Grenade_Box
+    Type: Usable
+    Buy: 15000
+    Weight: 250
+    Classes:
+      All_Third: true
+      Normal: true
+      Upper: true
+      Baby: true
+    Script: |
+      getitem 1000564,500;
+  - Id: 101117
+    AegisName: Soa_Charm_Bundle
+    Name: Soa_Charm_Bundle
+    Type: Usable
+    Buy: 15000
+    Weight: 250
+    Classes:
+      All_Third: true
+      Normal: true
+      Upper: true
+      Baby: true
+    Script: |
+      getitem 1000563,500;
+  - Id: 101118
+    AegisName: SS_Charm_Box
+    Name: SS_Charm_Box
+    Type: Usable
+    Buy: 15000
+    Weight: 250
+    Classes:
+      All_Third: true
+      Normal: true
+      Upper: true
+      Baby: true
+    Script: |
+      getitem 1000565,500;
+  - Id: 101119
+    AegisName: SS_Charm_F_Box
+    Name: SS_Charm_F_Box
+    Type: Usable
+    Buy: 15000
+    Weight: 250
+    Classes:
+      All_Third: true
+      Normal: true
+      Upper: true
+      Baby: true
+    Script: |
+      getitem 1000566,500;
+  - Id: 101120
+    AegisName: SS_Charm_W_Box
+    Name: SS_Charm_W_Box
+    Type: Usable
+    Buy: 15000
+    Weight: 250
+    Classes:
+      All_Third: true
+      Normal: true
+      Upper: true
+      Baby: true
+    Script: |
+      getitem 1000567,500;
+  - Id: 101121
+    AegisName: SS_Charm_G_Box
+    Name: SS_Charm_G_Box
+    Type: Usable
+    Buy: 15000
+    Weight: 250
+    Classes:
+      All_Third: true
+      Normal: true
+      Upper: true
+      Baby: true
+    Script: |
+      getitem 1000568,500;
+  - Id: 101122
+    AegisName: SS_Charm_L_Box
+    Name: SS_Charm_L_Box
+    Type: Usable
+    Buy: 15000
+    Weight: 250
+    Classes:
+      All_Third: true
+      Normal: true
+      Upper: true
+      Baby: true
+    Script: |
+      getitem 1000569,500;
+  - Id: 1000563
+    AegisName: Soa_Charm
+    Name: Soa Charm
+    Type: Etc
+    Buy: 30
+    Weight: 1
+  - Id: 1000564
+    AegisName: Nw_Grenade
+    Name: Nw Grenade
+    Type: Etc
+    Buy: 30
+    Weight: 1
+  - Id: 1000565
+    AegisName: SS_Charm
+    Name: SS Charm
+    Type: Etc
+    Buy: 30
+    Weight: 1
+  - Id: 1000566
+    AegisName: SS_Charm_F
+    Name: SS Charm_F
+    Type: Etc
+    Buy: 30
+    Weight: 1
+  - Id: 1000567
+    AegisName: SS_Charm_W
+    Name: SS Charm_W
+    Type: Etc
+    Buy: 30
+    Weight: 1
+  - Id: 1000568
+    AegisName: SS_Charm_G
+    Name: SS Charm_G
+    Type: Etc
+    Buy: 30
+    Weight: 1
+  - Id: 1000569
+    AegisName: SS_Charm_L
+    Name: SS Charm_L
+    Type: Etc
+    Buy: 30
+    Weight: 1

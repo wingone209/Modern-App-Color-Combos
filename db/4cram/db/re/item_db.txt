@@ -1,0 +1,25 @@
+// Items Database
+//
+// Structure of Database:
+// ID,AegisName,Name,Type,Buy,Sell,Weight,ATK[:MATK],DEF,Range,Slots,Job,Class,Gender,Loc,wLV,eLV[:maxLevel],Refineable,View,{ Script },{ OnEquip_Script },{ OnUnequip_Script }
+//
+// 4CrAM Items
+//=============================================================
+// Expanded Job (Trait Era) Item Bundles
+101116,Nw_Grenade_Box,Nw_Grenade_Box,2,15000,,250,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem 1000564,500; },{},{}
+101117,Soa_Charm_Bundle,Soa_Charm_Bundle,2,15000,,250,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem 1000563,500; },{},{}
+101118,SS_Charm_Box,SS_Charm_Box,2,15000,,250,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem 1000565,500; },{},{}
+101119,SS_Charm_F_Box,SS_Charm_F_Box,2,15000,,250,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem 1000566,500; },{},{}
+101120,SS_Charm_W_Box,SS_Charm_W_Box,2,15000,,250,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem 1000567,500; },{},{}
+101121,SS_Charm_G_Box,SS_Charm_G_Box,2,15000,,250,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem 1000568,500; },{},{}
+101122,SS_Charm_L_Box,SS_Charm_L_Box,2,15000,,250,,,,,0xFFFFFFFF,63,2,,,,,,{ getitem 1000569,500; },{},{}
+
+// Expanded Job (Trait Era) Items
+1000563,Soa_Charm,Soa Charm,3,30,,1,,,,,,,,,,,,,{},{},{}
+1000564,Nw_Grenade,Nw Grenade,3,30,,1,,,,,,,,,,,,,{},{},{}
+1000565,SS_Charm,SS Charm,3,30,,1,,,,,,,,,,,,,{},{},{}
+1000566,SS_Charm_F,SS Charm_F,3,30,,1,,,,,,,,,,,,,{},{},{}
+1000567,SS_Charm_W,SS Charm_W,3,30,,1,,,,,,,,,,,,,{},{},{}
+1000568,SS_Charm_G,SS Charm_G,3,30,,1,,,,,,,,,,,,,{},{},{}
+1000569,SS_Charm_L,SS Charm_L,3,30,,1,,,,,,,,,,,,,{},{},{}
+//=============================================================

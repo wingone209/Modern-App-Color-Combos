@@ -1,0 +1,212 @@
+//id,range,hit,inf,element,nk,splash,max,list_num,castcancel,cast_defence_rate,inf2,maxcount,skill_type,blow_count,inf3,giveap,name,description
+// 01 ID
+// 02 range (combo skills do not check for range when used,
+//           if range is < 5, the skill is considered melee-range)
+// 03 hit (8- repeated hitting, 6- single-hit)
+// 04 inf (0- passive, 1- enemy, 2- place, 4- self, 16- friend, 32- trap)
+// 05 element (0 - neutral, 1 - water, 2 - earth, 3 - fire, 4 - wind, 5 - poison,
+//             6 - holy, 7 - dark, 8 - ghost, 9 - undead, -1 - use weapon element
+//             -2 - use endowed element, -3 - use random element.)
+// 06 nk (skill damage properties):
+//    0x01 - No damage skill
+//    0x02 - Has splash area
+//    0x04 - Damage should be split among targets
+//    0x08 - Skill ignores caster's % damage cards (misc type always ignores)
+//    0x10 - Skill ignores elemental adjustments
+//    0x20 - Skill ignores target's defense (misc type always ignores)
+//    0x40 - Skill ignores target's flee (magic type always ignores)
+//    0x80 - Skill ignores target's def cards
+//    0x100 - Skill can critical
+// 07 splash/effect range
+//      -1 - for screen-wide
+//       0 - no splash
+//      all other values follow the formula: value * 2 + 1
+//       1 - 3x3
+//       2 - 5x5
+//       3 - 7x7
+// 08 MaxLv
+// 09 Number of hits (when positive, damage is increased by hits, 
+//    negative values just show number of hits without increasing total damage)
+// 10 Cast interrupted when hit?
+// 11 defense-reduction rate during cast.
+// 12 inf2 (skill information 2):
+//    0x00001 - quest skill
+//    0x00002 - npc skill
+//    0x00004 - wedding skill
+//    0x00008 - spirit skill
+//    0x00010 - guild skill
+//    0x00020 - song/dance
+//    0x00040 - ensemble skill
+//    0x00080 - trap
+//    0x00100 - skill that damages/targets yourself
+//    0x00200 - cannot be casted on self (if inf = 4, auto-select target skill)
+//    0x00400 - usable only on party-members (and enemies if skill is offensive)
+//    0x00800 - usable only on guild-mates (and enemies if skill is offensive)
+//    0x01000 - disable usage on enemies (for non-offensive skills).
+//    0x02000 - available skill for SC_AUTOSHADOWSPELL
+//    0x04000 - chorus skill
+//    0x08000 - skill that ignore bg reduction
+//    0x10000 - skill that ignore gvg reduction
+//    0x20000 - makes 'self'/'place' skill cannot be casted/placed when near NPC (see 'db/skill_nonearnpc_db.txt' for more options)
+//    0x40000 - skill that can hit trap-type skill (inf2 has 0x00080)
+// 13 maxcount: max amount of skill instances to place on the ground when
+//    player_land_skill_limit/monster_land_skill_limit is enabled. For skills
+//    that attack using a path, this is the path length to be used.
+// 14 attack type (none, weapon, magic, misc)
+// 15 Blowcount (amount of tiles skill knockbacks)
+// 16 inf3 (skill information 3):
+//    0x000001 - skill ignores land protector
+//    0x000002 - free
+//    0x000004 - usable skills while hiding
+//    0x000008 - skill that can be use while in dancing state
+//    0x000010 - skill that could hit emperium
+//    0x000020 - skill ignores SC_STASIS
+//    0x000040 - skill blocked by kagehumi
+//    0x000080 - skill range affected by AC_VULTURE
+//    0x000100 - skill range affected by GS_SNAKEEYE
+//    0x000200 - skill range affected by NJ_SHADOWJUMP
+//    0x000400 - skill range affected by WL_RADIUS
+//    0x000800 - skill range affected by RA_RESEARCHTRAP
+//    0x001000 - skill that does not affect user that has NC_HOVERING active
+//    0x002000 - skill that can be using while riding warg
+//    0x004000 - skill that can be used while on Madogear
+//    0x008000 - skill that can be used to target while under SC__MANHOLE effect
+//    0x010000 - skill that affects hidden targets
+//    0x020000 - skill that affects SC_GLOOMYDAY_SK
+//    0x040000 - skill that is affected by SC_DANCEWITHWUG
+//    0x080000 - skill blocked by RA_WUGBITE
+//    0x100000 - skill is not blocked by SC_AUTOGUARD (physical-skill only)
+//    0x200000 - skill is not blocked by SC_UTSUSEMI or SC_BUNSINJYUTSU (physical-skill only)
+// 17 giveap (Amount of AP given on successful skill cast)
+// 18 Name
+// 19 Description
+
+// Night Watch
+5401,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_P_F_I,P.F.I
+5402,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_GRENADE_MASTERY,Grenade Mastery
+5403,0,6,4,0,0,0,1,1,yes,0,0,0,none,0,0,0,	NW_INTENSIVE_AIM,Intensive Aim
+5404,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,0,	NW_GRENADE_FRAGMENT,Grenade Fragment
+5405,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,1,	NW_THE_VIGILANTE_AT_NIGHT,The Vigilante At Night
+5406,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,1,	NW_ONLY_ONE_BULLET,Only One Bullet
+5407,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,1,	NW_SPIRAL_SHOOTING,Spiral Shooting
+5408,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,1,	NW_MAGAZINE_FOR_ONE,Magazine For One
+5409,9,6,2,0,0,0,5,1,yes,0,0,0,none,0,0,1,	NW_WILD_FIRE,Wild Fire
+5410,9,6,2,0,0,0,5,1,yes,0,0,0,none,0,0,1,	NW_BASIC_GRENADE,Basic Grenade
+5411,9,6,2,0,0,0,5,1,yes,0,0,0,none,0,0,1,	NW_HASTY_FIRE_IN_THE_HOLE,Hasty Fire In The Hole
+5412,9,6,2,0,0,0,5,1,yes,0,0,0,none,0,0,1,	NW_GRENADES_DROPPING,Grenades Dropping
+5413,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,0,	NW_AUTO_FIRING_LAUNCHER,Auto Firing Launcher
+5414,0,6,4,0,0,0,10,1,yes,0,0,0,none,0,0,0,	NW_HIDDEN_CARD,Hidden Card
+5415,9,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,0,	NW_MISSION_BOMBARD,Mission Bombard
+
+// Soul Ascetic
+5416,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SOA_TALISMAN_MASTERY,Talisman Mastery
+5417,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SOA_SOUL_MASTERY,Soul Mastery
+5418,9,6,16,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SOA_TALISMAN_OF_PROTECTION,Talisman Of Protection
+5419,9,6,16,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SOA_TALISMAN_OF_WARRIOR,Talisman Of Warrior
+5420,9,6,16,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SOA_TALISMAN_OF_MAGICIAN,Talisman Of Magician
+5421,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_GATHERING,Soul Gathering
+5422,9,6,2,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SOA_TOTEM_OF_TUTELARY,Totem Of Tutelary
+5423,9,6,16,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SOA_TALISMAN_OF_FIVE_ELEMENTS,Talisman Of Five Elements
+5424,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SOA_TALISMAN_OF_SOUL_STEALING,Talisman Of Soul Stealing
+5425,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SOA_EXORCISM_OF_MALICIOUS_SOUL,Exorcism Of Malicious Soul
+5426,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,1,	SOA_TALISMAN_OF_BLUE_DRAGON,Talisman Of Blue Dragon
+5427,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,1,	SOA_TALISMAN_OF_WHITE_TIGER,Talisman Of White Tiger// Self cast but range of 9?
+5428,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,1,	SOA_TALISMAN_OF_RED_PHOENIX,Talisman Of Red Phoenix
+5429,9,6,2,0,0,0,5,1,yes,0,0,0,none,0,0,1,	SOA_TALISMAN_OF_BLACK_TORTOISE,Talisman Of Black Tortoise
+5430,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,1,	SOA_TALISMAN_OF_FOUR_BEARING_GOD,Talisman Of Four Bearing God
+5431,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS,Circle Of Directions And Elementals
+5432,0,6,4,0,0,0,10,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_OF_HEAVEN_AND_EARTH,Soul Of Heaven And Earth
+
+// Spirit Handler
+5433,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SH_MYSTICAL_CREATURE_MASTERY,Mystical Creature Mastery
+5434,0,0,0,0,0,0,1,0,no,0,0,0,none,0,0,0,	SH_COMMUNE_WITH_CHUL_HO,Commune With Chul Ho
+5435,9,6,1,0,0,0,7,1,yes,0,0,0,none,0,0,1,	SH_CHUL_HO_SONIC_CLAW,Chul Ho Sonic Claw
+5436,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,2,	SH_HOWLING_OF_CHUL_HO,Howling Of Chul Ho// Self cast but range of 9?
+5437,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,1,	SH_HOGOGONG_STRIKE,Hogogong Strike// 2 AP for what?
+5438,0,0,0,0,0,0,1,0,no,0,0,0,none,0,0,0,	SH_COMMUNE_WITH_KI_SUL,Commune With Ki Sul
+5439,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,1,	SH_KI_SUL_WATER_SPRAYING,Ki Sul Water Spraying
+5440,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SH_MARINE_FESTIVAL_OF_KI_SUL,Marine Festival Of Ki Sul
+5441,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SH_SANDY_FESTIVAL_OF_KI_SUL,Sandy Festival Of Ki Sul
+5442,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,0,	SH_KI_SUL_RAMPAGE,Ki Sul Rampage
+5443,0,0,0,0,0,0,1,0,no,0,0,0,none,0,0,0,	SH_COMMUNE_WITH_HYUN_ROK,Commune With Hyun Rok
+5444,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,0,	SH_COLORS_OF_HYUN_ROK,Colors Of Hyun Rok
+5445,9,6,2,0,0,0,7,1,yes,0,0,0,none,0,0,3,	SH_HYUN_ROKS_BREEZE,Hyun Roks Breeze
+5446,9,6,1,0,0,0,7,1,yes,0,0,0,none,0,0,1,	SH_HYUN_ROK_CANNON,Hyun Rok Cannon// 2 AP for what?
+5447,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SH_TEMPORARY_COMMUNION,Temporary Communion
+5448,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SH_BLESSING_OF_MYSTICAL_CREATURES,Blessing Of Mystical Creatures
+
+// Hyper Novice
+5449,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	HN_SELFSTUDY_TATICS,Self Study Tatics
+5450,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	HN_SELFSTUDY_SOCERY,Self Study Socery
+5451,2,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,2,	HN_DOUBLEBOWLINGBASH,Double Bowling Bash
+5452,2,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,1,	HN_MEGA_SONIC_BLOW,Mega Sonic Blow
+5453,7:7:7:7:9:9:9:9:11:11,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,1,	HN_SHIELD_CHAIN_RUSH,Shield Chain Rush
+5454,7,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,1,	HN_SPIRAL_PIERCE_MAX,Spiral Pierce Max
+5455,9,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,3,	HN_METEOR_STORM_BUSTER,Meteor Storm Buster
+5456,11,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,2,	HN_JUPITEL_THUNDER_STORM,Jupitel Thunder Storm
+5457,9,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,3,	HN_JACK_FROST_NOVA,Jack Frost Nova
+5458,0,6,4,0,0,0,10,1,yes,0,0,0,none,0,0,1,	HN_HELLS_DRIVE,Hells Drive
+5459,0,6,4,0,0,0,10,1,yes,0,0,0,none,0,0,5,	HN_GROUND_GRAVITATION,Ground Gravitation
+5460,11,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,1,	HN_NAPALM_VULCAN_STRIKE,Napalm Vulcan Strike
+5461,0,6,4,0,0,0,1,1,yes,0,0,0,none,0,0,0,	HN_BREAKINGLIMIT,Breaking Limit
+5462,0,6,4,0,0,0,1,1,yes,0,0,0,none,0,0,0,	HN_RULEBREAK,Rule Break
+
+// Sky Emperor
+5463,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SKE_SKY_MASTERY,Sky Mastery
+5464,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SKE_WAR_BOOK_MASTERY,War Book Mastery
+5465,2,8,1,-1,0,0,5,-2,yes,0,0,0,weapon,0,0,0,	SKE_RISING_SUN,Rising Sun
+5466,2,8,1,-1,0x102,1:1:2:2:3,5,-2,yes,0,0,0,weapon,0,0,2,	SKE_NOON_BLAST,Noon Blast
+5467,2,8,1,-1,0x102,1:1:2:2:3,5,-2,yes,0,0,0,weapon,0,0,2,	SKE_SUNSET_BLAST,Sunset Blast
+5468,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,0,	SKE_RISING_MOON,Rising Moon
+5469,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,2,	SKE_MIDNIGHT_KICK,Midnight Kick
+5470,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,2,	SKE_DAWN_BREAK,Dawn Break
+5471,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,0,	SKE_TWINKLING_GALAXY,Twinkling Galaxy// Status ID 1404 triggers.
+5472,1,8,1,-1,0x3,2,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_STAR_BURST,Star Burst// Unit ID 2409 appears?
+5473,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,3,	SKE_STAR_CANNON,Star Cannon// Status ID 1406 triggers.
+5474,9,6,1,-1,0x100,0,10,1,yes,0,0,0,weapon,0,0,0,	SKE_ALL_IN_THE_SKY,All In The Sky// High jump packet used for jump.
+5475,0,6,4,0,0x1,0,10,1,yes,0,0,0,none,0,0,0,	SKE_ENCHANTING_SKY,Enchanting Sky
+
+// Shinkiro/Shiranui
+5476,5,6,2,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SS_TOKEDASU,Melt Away
+5477,11,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SS_SHIMIRU,Infiltrate
+5478,0,6,4,0,0,0,1,1,yes,0,0,0,none,0,0,0,	SS_AKUMUKESU,Nightmare Erasion
+5479,5,6,2,0,0,0,1,1,yes,0,0,0,none,0,0,0,	SS_SHINKIROU,Mirage
+5480,2,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,1,	SS_KAGEGARI,Shadow Hunting
+5481,0,6,4,0,0,0,10,1,yes,0,0,0,none,0,0,1,	SS_KAGENOMAI,Shadow Dance
+5482,1,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,0,	SS_KAGEGISSEN,Shadow Flash
+5483,9,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,2,	SS_FUUMASHOUAKU,Huuma Shuriken - Grasp
+5484,1,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,0,	SS_FUUMAKOUCHIKU,Huuma Shuriken - Construct
+5485,9,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,1,	SS_KUNAIWAIKYOKU,Kunai - Distortion
+5486,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SS_KUNAIKAITEN,Kunai - Rotation
+5487,0,6,4,0,0,0,10,1,yes,0,0,0,none,0,0,0,	SS_KUNAIKUSSETSU,Kunai - Refraction
+5488,1,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,0,	SS_SEKIENHOU,Red Flame Cannon
+5489,9,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,0,	SS_REIKETSUHOU,Cold Blooded Cannon
+5490,1,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,0,	SS_RAIDENPOU,Thundering Cannon
+5491,13,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,0,	SS_KINRYUUHOU,Golden Dragon Cannon
+5492,0,6,4,0,0,0,10,1,yes,0,0,0,none,0,0,2,	SS_ANTENPOU,Darkening Cannon
+5493,0,6,4,0,0,0,1,1,yes,0,0,0,none,0,0,0,	SS_KAGEAKUMU,Shadow - Nightmare
+5494,0,6,4,0,0,0,1,1,yes,0,0,0,none,0,0,0,	SS_HITOUAKUMU,Kunai - Nightmare
+5495,0,6,4,0,0,0,1,1,yes,0,0,0,none,0,0,0,	SS_ANKOKURYUUAKUMU,Dark Dragon - Nightmare
+
+// Extra 2021 Expanded Job Skills
+5496,0,6,0,0,0,0,5,1,no,0,0,0,none,0,0,0,	NW_THE_VIGILANTE_AT_NIGHT_GUN_GATLING,The Vigilante At Night Gun Gatling
+5497,0,6,0,0,0,0,5,1,no,0,0,0,none,0,0,0,	NW_THE_VIGILANTE_AT_NIGHT_GUN_SHOTGUN,The Vigilante At Night Gun Shotgun
+5498,0,6,0,0,0,0,10,1,no,0,0,0,none,0,0,0,	SS_FUUMAKOUCHIKU_BLASTING,Huuma Shuriken - Construct Blasting
+
+// 2021 Mutated Homunculus Skills
+8044,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_BLAST_FORGE,Blast Forge
+8045,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_TEMPERING,Tempering
+8046,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MH_CLASSY_FLUTTER,Classy Flutter
+8047,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_TWISTER_CUTTER,Twister Cutter
+8048,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_ABSOLUTE_ZEPHYR,Absolute Zephyr
+8049,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MH_BRUSHUP_CLAW,Brushup Claw
+8050,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_BLAZING_AND_FURIOUS,Blazing And Furious
+8051,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_THE_ONE_FIGHTER_RISES,The One Fighter Rises
+8052,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MH_POLISHING_NEEDLE,Polishing Needle
+8053,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_TOXIN_OF_MANDARA,Toxin Of Mandara
+8054,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_NEEDLE_STINGER,Needle Stinger
+8055,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MH_LICHT_GEHORN,Licht Gehorn
+8056,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_GLANZEN_SPIES,Glanzen Spies
+8057,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_HEILIGE_PFERD,Heilige Pferd
+8058,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_GOLDENE_TONE,Goldene Tone
+8059,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MH_BLAZING_LAVA,Blazing Lava

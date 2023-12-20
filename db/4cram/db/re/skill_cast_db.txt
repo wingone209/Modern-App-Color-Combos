@@ -1,0 +1,234 @@
+// Skill Times Database
+//
+// Structure of Database:
+// SkillID,CastingTime,AfterCastActDelay,AfterCastWalkDelay,Duration1,Duration2,Cool Down,Fixed Casting Time
+//
+// CastingTime: time to cast this skill, in milliseconds
+// AfterCastActDelay: "normal" delay, character cannot use skills, in milliseconds
+// AfterCastWalkDelay: amount of time before character can move again, in milliseconds
+// Duration1/Duration2: usually the durations used by the skill, at special cases it is used to hold special data
+// Cool Down: amount of time until character can re-use this skill, in milliseconds
+// Fixed Casting Time: the skills fixed casting time (when 0, uses 20% of cast time and less than 0 means no fixed cast time)
+//
+// On all fields you can use ':' as a delimiter for level-specific values.
+// For example:
+// - Original: 6,0,0,0,30000,0,1000
+// - Modified: 6,0,0,0,30000,0,1000:2500:3000:...
+// Gives Level 1 1000ms cool down, Level 2 2500ms, Level 3 3000ms, and so on.
+
+//===== Night Watch ========================
+//-- NW_P_F_I
+//5401,0,0,0,0,0,0,0
+//-- NW_GRENADE_MASTERY
+//5402,0,0,0,0,0,0,0
+//-- NW_INTENSIVE_AIM
+5403,0,0,0,0,0,0,0
+//-- NW_GRENADE_FRAGMENT
+5404,0,0,0,0,0,0,0
+//-- NW_THE_VIGILANTE_AT_NIGHT
+5405,0,0,0,0,0,0,0
+//-- NW_ONLY_ONE_BULLET
+5406,0,0,0,0,0,0,0
+//-- NW_SPIRAL_SHOOTING
+5407,0,0,0,0,0,0,0
+//-- NW_MAGAZINE_FOR_ONE
+5408,0,0,0,0,0,0,0
+//-- NW_WILD_FIRE
+5409,0,0,0,0,0,0,0
+//-- NW_BASIC_GRENADE
+5410,0,0,0,0,0,0,0
+//-- NW_HASTY_FIRE_IN_THE_HOLE
+5411,0,0,0,0,0,0,0
+//-- NW_GRENADES_DROPPING
+5412,0,0,0,0,0,0,0
+//-- NW_AUTO_FIRING_LAUNCHER
+5413,0,0,0,0,0,0,0
+//-- NW_HIDDEN_CARD
+5414,0,0,0,0,0,0,0
+//-- NW_MISSION_BOMBARD
+5415,0,0,0,0,0,0,0
+//==========================================
+
+//===== Soul Ascetic =======================
+//-- SOA_TALISMAN_MASTERY
+//5416,0,0,0,0,0,0,0
+//-- SOA_SOUL_MASTERY
+//5417,0,0,0,0,0,0,0
+//-- SOA_TALISMAN_OF_PROTECTION
+5418,0,0,0,0,0,0,0
+//-- SOA_TALISMAN_OF_WARRIOR
+5419,0,0,0,0,0,0,0
+//-- SOA_TALISMAN_OF_MAGICIAN
+5420,0,0,0,0,0,0,0
+//-- SOA_SOUL_GATHERING
+5421,0,0,0,0,0,0,0
+//-- SOA_TOTEM_OF_TUTELARY
+5422,0,0,0,0,0,0,0
+//-- SOA_TALISMAN_OF_FIVE_ELEMENTS
+5423,0,0,0,0,0,0,0
+//-- SOA_TALISMAN_OF_SOUL_STEALING
+5424,0,0,0,0,0,0,0
+//-- SOA_EXORCISM_OF_MALICIOUS_SOUL
+5425,0,0,0,0,0,0,0
+//-- SOA_TALISMAN_OF_BLUE_DRAGON
+5426,0,0,0,0,0,0,0
+//-- SOA_TALISMAN_OF_WHITE_TIGER
+5427,0,0,0,0,0,0,0
+//-- SOA_TALISMAN_OF_RED_PHOENIX
+5428,0,0,0,0,0,0,0
+//-- SOA_TALISMAN_OF_BLACK_TORTOISE
+5429,0,0,0,0,0,0,0
+//-- SOA_TALISMAN_OF_FOUR_BEARING_GOD
+5430,0,0,0,0,0,0,0
+//-- SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS
+5431,0,0,0,0,0,0,0
+//-- SOA_SOUL_OF_HEAVEN_AND_EARTH
+5432,0,0,0,0,0,0,0
+//==========================================
+
+//===== Spirit Handler =====================
+//-- SH_MYSTICAL_CREATURE_MASTERY
+//5433,0,0,0,0,0,0,0
+//-- SH_COMMUNE_WITH_CHUL_HO
+//5434,0,0,0,0,0,0,0
+//-- SH_CHUL_HO_SONIC_CLAW
+5435,0,0,0,0,0,0,0
+//-- SH_HOWLING_OF_CHUL_HO
+5436,0,0,0,0,0,0,0
+//-- SH_HOGOGONG_STRIKE
+5437,0,0,0,0,0,0,0
+//-- SH_COMMUNE_WITH_KI_SUL
+//5438,0,0,0,0,0,0,0
+//-- SH_KI_SUL_WATER_SPRAYING
+5439,0,0,0,0,0,0,0
+//-- SH_MARINE_FESTIVAL_OF_KI_SUL
+5440,0,0,0,0,0,0,0
+//-- SH_SANDY_FESTIVAL_OF_KI_SUL
+5441,0,0,0,0,0,0,0
+//-- SH_KI_SUL_RAMPAGE
+5442,0,0,0,0,0,0,0
+//-- SH_COMMUNE_WITH_HYUN_ROK
+//5443,0,0,0,0,0,0,0
+//-- SH_COLORS_OF_HYUN_ROK
+5444,0,0,0,0,0,0,0
+//-- SH_HYUN_ROKS_BREEZE
+5445,0,0,0,0,0,0,0
+//-- SH_HYUN_ROK_CANNON
+5446,0,0,0,0,0,0,0
+//-- SH_TEMPORARY_COMMUNION
+5447,0,0,0,0,0,0,0
+//-- SH_BLESSING_OF_MYSTICAL_CREATURES
+5448,0,0,0,0,0,0,0
+//==========================================
+
+//===== Hyper Novice =======================
+//-- HN_SELFSTUDY_TATICS
+//5449,0,0,0,0,0,0,0
+//-- HN_SELFSTUDY_SOCERY
+//5450,0,0,0,0,0,0,0
+//-- HN_DOUBLEBOWLINGBASH
+5451,0,0,0,0,0,0,0
+//-- HN_MEGA_SONIC_BLOW
+5452,0,0,0,0,0,0,0
+//-- HN_SHIELD_CHAIN_RUSH
+5453,0,0,0,0,0,0,0
+//-- HN_SPIRAL_PIERCE_MAX
+5454,0,0,0,0,0,0,0
+//-- HN_METEOR_STORM_BUSTER
+5455,0,0,0,0,0,0,0
+//-- HN_JUPITEL_THUNDER_STORM
+5456,0,0,0,0,0,0,0
+//-- HN_JACK_FROST_NOVA
+5457,0,0,0,0,0,0,0
+//-- HN_HELLS_DRIVE
+5458,0,0,0,0,0,0,0
+//-- HN_GROUND_GRAVITATION
+5459,0,0,0,0,0,0,0
+//-- HN_NAPALM_VULCAN_STRIKE
+5460,0,0,0,0,0,0,0
+//-- HN_BREAKINGLIMIT
+5461,0,0,0,0,0,0,0
+//-- HN_RULEBREAK
+5462,0,0,0,0,0,0,0
+//==========================================
+
+//===== Sky Emperor ========================
+//-- SKE_SKY_MASTERY
+//5463,0,0,0,0,0,0,0
+//-- SKE_WAR_BOOK_MASTERY
+//5464,0,0,0,0,0,0,0
+//-- SKE_RISING_SUN
+5465,0,500,0,30000:60000:90000:120000:150000,0,500,0
+//-- SKE_NOON_BLAST
+5466,0,500,0,0,0,700,0
+//-- SKE_SUNSET_BLAST
+5467,0,500,0,0,0,300,0
+//-- SKE_RISING_MOON
+5468,0,500,0,30000:60000:90000:120000:150000,0,500,0
+//-- SKE_MIDNIGHT_KICK
+5469,1000,0,0,0,0,700,500
+//-- SKE_DAWN_BREAK
+5470,1000,0,0,0,0,300,500
+//-- SKE_TWINKLING_GALAXY
+5471,1000,0,0,4500,0,5000,500
+//-- SKE_STAR_BURST
+5472,0,500,0,4500,0,1000,500
+//-- SKE_STAR_CANNON
+5473,0,0,0,4500,0,5000,500
+//-- SKE_ALL_IN_THE_SKY
+5474,0,500,0,0,0,60000,1000
+//-- SKE_ENCHANTING_SKY
+5475,1000,0,0,90000:180000:270000:360000:450000:540000:630000:720000:810000:900000,0,60000,500
+//==========================================
+
+//===== Shinkiro/Shiranui ==================
+//-- SS_TOKEDASU
+5476,0,0,0,0,0,0,0
+//-- SS_SHIMIRU
+5477,0,0,0,0,0,0,0
+//-- SS_AKUMUKESU
+5478,0,0,0,0,0,0,0
+//-- SS_SHINKIROU
+5479,0,0,0,0,0,0,0
+//-- SS_KAGEGARI
+5480,0,0,0,0,0,0,0
+//-- SS_KAGENOMAI
+5481,0,0,0,0,0,0,0
+//-- SS_KAGEGISSEN
+5482,0,0,0,0,0,0,0
+//-- SS_FUUMASHOUAKU
+5483,0,0,0,0,0,0,0
+//-- SS_FUUMAKOUCHIKU
+5484,0,0,0,0,0,0,0
+//-- SS_KUNAIWAIKYOKU
+5485,0,0,0,0,0,0,0
+//-- SS_KUNAIKAITEN
+5486,0,0,0,0,0,0,0
+//-- SS_KUNAIKUSSETSU
+5487,0,0,0,0,0,0,0
+//-- SS_SEKIENHOU
+5488,0,0,0,0,0,0,0
+//-- SS_REIKETSUHOU
+5489,0,0,0,0,0,0,0
+//-- SS_RAIDENPOU
+5490,0,0,0,0,0,0,0
+//-- SS_KINRYUUHOU
+5491,0,0,0,0,0,0,0
+//-- SS_ANTENPOU
+5492,0,0,0,0,0,0,0
+//-- SS_KAGEAKUMU
+5493,0,0,0,0,0,0,0
+//-- SS_HITOUAKUMU
+5494,0,0,0,0,0,0,0
+//-- SS_ANKOKURYUUAKUMU
+5495,0,0,0,0,0,0,0
+//==========================================
+
+//===== Extra 2021 Expanded Job Skills =====
+//-- NW_THE_VIGILANTE_AT_NIGHT_GUN_GATLING
+5496,0,0,0,0,0,0,0
+//-- NW_THE_VIGILANTE_AT_NIGHT_GUN_SHOTGUN
+5497,0,0,0,0,0,0,0
+//-- SS_FUUMAKOUCHIKU_BLASTING
+5498,0,0,0,0,0,0,0
+//==========================================
