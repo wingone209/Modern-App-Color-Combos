@@ -1895,6 +1895,71 @@
 	export_constant(SC_RUSH_QUAKE2);
 	export_constant(SC_G_LIFEPOTION);
 
+	// Hyper Novice
+	export_constant(SC_SHIELDCHAINRUSH);
+	export_constant(SC_MISTYFROST);
+	export_constant(SC_GROUNDGRAVITY);
+	export_constant(SC_BREAKINGLIMIT);
+	export_constant(SC_RULEBREAK);
+
+	// Sky Emperor
+	export_constant(SC_RISING_SUN);
+	export_constant(SC_NOON_SUN);
+	export_constant(SC_SUNSET_SUN);
+	export_constant(SC_RISING_MOON);
+	export_constant(SC_MIDNIGHT_MOON);
+	export_constant(SC_DAWN_MOON);
+	export_constant(SC_STAR_BURST);
+	export_constant(SC_SKY_ENCHANT);
+
+	// Soul Ascetic
+	export_constant(SC_TALISMAN_OF_PROTECTION);
+	export_constant(SC_TALISMAN_OF_WARRIOR);
+	export_constant(SC_TALISMAN_OF_MAGICIAN);
+	export_constant(SC_TALISMAN_OF_FIVE_ELEMENTS);
+	export_constant(SC_T_FIRST_GOD);
+	export_constant(SC_T_SECOND_GOD);
+	export_constant(SC_T_THIRD_GOD);
+	export_constant(SC_T_FOURTH_GOD);
+	export_constant(SC_T_FIVETH_GOD);
+	export_constant(SC_HEAVEN_AND_EARTH);
+
+	// Night Watch
+	export_constant(SC_NW_P_F_I);
+	export_constant(SC_INTENSIVE_AIM);
+	export_constant(SC_INTENSIVE_AIM_COUNT);
+	export_constant(SC_GRENADE_FRAGMENT_1);
+	export_constant(SC_GRENADE_FRAGMENT_2);
+	export_constant(SC_GRENADE_FRAGMENT_3);
+	export_constant(SC_GRENADE_FRAGMENT_4);
+	export_constant(SC_GRENADE_FRAGMENT_5);
+	export_constant(SC_GRENADE_FRAGMENT_6);
+	export_constant(SC_AUTO_FIRING_LAUNCHEREFST);
+	export_constant(SC_HIDDEN_CARD);
+	export_constant(SC_NW_GRENADE_MASTERY);
+
+	// Shinkiro/Shiranui
+	export_constant(SC_SHADOW_CLOCK);
+	export_constant(SC_SHINKIROU_CALL);
+	export_constant(SC_NIGHTMARE);
+	export_constant(SC_SBUNSHIN);
+
+	// Spirit Handler
+	export_constant(SC_HOGOGONG);
+	export_constant(SC_MARINE_FESTIVAL);
+	export_constant(SC_SANDY_FESTIVAL);
+	export_constant(SC_KI_SUL_RAMPAGE);
+	export_constant(SC_COLORS_OF_HYUN_ROK_1);
+	export_constant(SC_COLORS_OF_HYUN_ROK_2);
+	export_constant(SC_COLORS_OF_HYUN_ROK_3);
+	export_constant(SC_COLORS_OF_HYUN_ROK_4);
+	export_constant(SC_COLORS_OF_HYUN_ROK_5);
+	export_constant(SC_COLORS_OF_HYUN_ROK_6);
+	export_constant(SC_COLORS_OF_HYUN_ROK_BUFF);
+	export_constant(SC_TEMPORARY_COMMUNION);
+	export_constant(SC_BLESSING_OF_M_CREATURES);
+	export_constant(SC_BLESSING_OF_M_C_DEBUFF);
+
 #ifdef RENEWAL
 	export_constant(SC_EXTREMITYFIST2);
 #endif
@@ -2746,6 +2811,60 @@
 	export_deprecated_constant2("SI_CHEERUP",992);
 	export_deprecated_constant2("SI_S_MANAPOTION",995);
 	export_deprecated_constant2("SI_M_DEFSCROLL",996);
+
+	export_deprecated_constant2("SI_NW_P_F_I", 1344);
+	export_deprecated_constant2("SI_INTENSIVE_AIM", 1345);
+	export_deprecated_constant2("SI_INTENSIVE_AIM_COUNT", 1346);
+	export_deprecated_constant2("SI_GRENADE_FRAGMENT_1", 1347);
+	export_deprecated_constant2("SI_GRENADE_FRAGMENT_2", 1348);
+	export_deprecated_constant2("SI_GRENADE_FRAGMENT_3", 1349);
+	export_deprecated_constant2("SI_GRENADE_FRAGMENT_4", 1350);
+	export_deprecated_constant2("SI_GRENADE_FRAGMENT_5", 1351);
+	export_deprecated_constant2("SI_GRENADE_FRAGMENT_6", 1352);
+	export_deprecated_constant2("SI_AUTO_FIRING_LAUNCHEREFST", 1353);
+	export_deprecated_constant2("SI_HIDDEN_CARD", 1354);
+	export_deprecated_constant2("SI_NW_GRENADE_MASTERY", 1355);
+	export_deprecated_constant2("SI_TALISMAN_OF_PROTECTION", 1356);
+	export_deprecated_constant2("SI_TALISMAN_OF_WARRIOR", 1357);
+	export_deprecated_constant2("SI_TALISMAN_OF_MAGICIAN", 1358);
+	export_deprecated_constant2("SI_TALISMAN_OF_FIVE_ELEMENTS", 1359);
+	export_deprecated_constant2("SI_T_FIRST_GOD", 1360);
+	export_deprecated_constant2("SI_T_SECOND_GOD", 1361);
+	export_deprecated_constant2("SI_T_THIRD_GOD", 1362);
+	export_deprecated_constant2("SI_T_FOURTH_GOD", 1363);
+	export_deprecated_constant2("SI_T_FIVETH_GOD", 1364);
+	export_deprecated_constant2("SI_HEAVEN_AND_EARTH", 1365);
+	export_deprecated_constant2("SI_HOGOGONG", 1366);
+	export_deprecated_constant2("SI_MARINE_FESTIVAL", 1367);
+	export_deprecated_constant2("SI_SANDY_FESTIVAL", 1368);
+	export_deprecated_constant2("SI_KI_SUL_RAMPAGE", 1369);
+	export_deprecated_constant2("SI_COLORS_OF_HYUN_ROK_1", 1370);
+	export_deprecated_constant2("SI_COLORS_OF_HYUN_ROK_2", 1371);
+	export_deprecated_constant2("SI_COLORS_OF_HYUN_ROK_3", 1372);
+	export_deprecated_constant2("SI_COLORS_OF_HYUN_ROK_4", 1373);
+	export_deprecated_constant2("SI_COLORS_OF_HYUN_ROK_5", 1374);
+	export_deprecated_constant2("SI_COLORS_OF_HYUN_ROK_6", 1375);
+	export_deprecated_constant2("SI_COLORS_OF_HYUN_ROK_BUFF", 1376);
+	export_deprecated_constant2("SI_TEMPORARY_COMMUNION", 1377);
+	export_deprecated_constant2("SI_BLESSING_OF_M_CREATURES", 1378);
+	export_deprecated_constant2("SI_BLESSING_OF_M_C_DEBUFF", 1379);
+	export_deprecated_constant2("SI_SHIELDCHAINRUSH", 1380);
+	export_deprecated_constant2("SI_MISTYFROST", 1381);
+	export_deprecated_constant2("SI_GROUNDGRAVITY", 1382);
+	export_deprecated_constant2("SI_BREAKINGLIMIT", 1383);
+	export_deprecated_constant2("SI_RULEBREAK", 1384);
+	export_deprecated_constant2("SI_RISING_SUN", 1385);
+	export_deprecated_constant2("SI_NOON_SUN", 1386);
+	export_deprecated_constant2("SI_SUNSET_SUN", 1387);
+	export_deprecated_constant2("SI_RISING_MOON", 1388);
+	export_deprecated_constant2("SI_MIDNIGHT_MOON", 1389);
+	export_deprecated_constant2("SI_DAWN_MOON", 1390);
+	export_deprecated_constant2("SI_STAR_BURST", 1391);
+	export_deprecated_constant2("SI_SKY_ENCHANT", 1392);
+	export_deprecated_constant2("SI_SHADOW_CLOCK", 1393);
+	export_deprecated_constant2("SI_SHINKIROU_CALL", 1394);
+	export_deprecated_constant2("SI_NIGHTMARE", 1395);
+	export_deprecated_constant2("SI_SBUNSHIN", 1415);
 
 /// Do not modify code below this, until the end of the API hook, since it will be automatically generated again
 /// @APIHOOK_START(EFST_CONST)
@@ -10065,6 +10184,18 @@
 	export_constant(UNT_LIGHTNING_LAND);
 	export_constant(UNT_VENOM_SWAMP);
 	export_constant(UNT_CONFLAGRATION);
+	export_constant(UNT_CANE_OF_EVIL_EYE);
+	export_constant(UNT_TWINKLING_GALAXY);
+	export_constant(UNT_STAR_CANNON);
+	export_constant(UNT_GRENADES_DROPPING);
+	export_constant(UNT_FUUMASHOUAKU);
+	export_constant(UNT_MISSION_BOMBARD);
+	export_constant(UNT_TOTEM_OF_TUTELARY);
+	export_constant(UNT_HYUN_ROKS_BREEZE);
+	export_constant(UNT_SHINKIROU);
+	export_constant(UNT_JACK_FROST_NOVA);
+	export_constant(UNT_GROUND_GRAVITATION);
+	export_constant(UNT_KUNAIWAIKYOKU);
 
 	export_constant(UNT_DEEPBLINDTRAP);
 	export_constant(UNT_SOLIDTRAP);

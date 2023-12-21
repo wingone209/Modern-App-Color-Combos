@@ -96,8 +96,8 @@ bool YamlUpgradeTool::initialize( int argc, char* argv[] ){
 	if (fileExists(skill_db.getDefaultLocation())) {
 		skill_db.load();
 	} else {
-		sv_readdb(path_db_mode.c_str(), "skill_db.txt", ',', 18, 18, -1, parse_skill_constants_txt, false);
-		sv_readdb(path_db_import.c_str(), "skill_db.txt", ',', 18, 18, -1, parse_skill_constants_txt, false);
+		sv_readdb(path_db_mode.c_str(), "skill_db.txt", ',', 19, 19, -1, parse_skill_constants_txt, false);
+		sv_readdb(path_db_import.c_str(), "skill_db.txt", ',', 19, 19, -1, parse_skill_constants_txt, false);
 	}
 
 	// Load constants

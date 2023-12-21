@@ -604,7 +604,7 @@ static bool parse_mob_constants_txt(char *split[], int columns, int current) {
 
 static bool parse_skill_constants_txt(char *split[], int columns, int current) {
 	uint16 skill_id = atoi(split[0]);
-	char *name = trim(split[16]);
+	char *name = trim(split[17]);
 
 	aegis_skillnames[skill_id] = std::string(name);
 

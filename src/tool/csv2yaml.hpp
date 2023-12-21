@@ -37,8 +37,8 @@ namespace rathena{
 #define MAX_ITEMRATIO_MOBS 10
 //Update this max as necessary. 55 is the value needed for Super Baby currently
 //Raised to 105 since Expanded Super Baby needs it.
-#define MAX_SKILL_TREE 105
-#define MAX_PC_SKILL_REQUIRE 5 /// Max skill tree requirement
+#define MAX_SKILL_TREE 120
+#define MAX_PC_SKILL_REQUIRE 6 /// Max skill tree requirement
 ///Maximum amount of items a combo may require
 #define MAX_ITEMS_PER_COMBO 6
 #define MAX_HOM_SKILL_REQUIRE 5

@@ -192,21 +192,3 @@
 5496,0,6,0,0,0,0,5,1,no,0,0,0,none,0,0,0,	NW_THE_VIGILANTE_AT_NIGHT_GUN_GATLING,The Vigilante At Night Gun Gatling
 5497,0,6,0,0,0,0,5,1,no,0,0,0,none,0,0,0,	NW_THE_VIGILANTE_AT_NIGHT_GUN_SHOTGUN,The Vigilante At Night Gun Shotgun
 5498,0,6,0,0,0,0,10,1,no,0,0,0,none,0,0,0,	SS_FUUMAKOUCHIKU_BLASTING,Huuma Shuriken - Construct Blasting
-
-// 2021 Mutated Homunculus Skills
-8044,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_BLAST_FORGE,Blast Forge
-8045,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_TEMPERING,Tempering
-8046,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MH_CLASSY_FLUTTER,Classy Flutter
-8047,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_TWISTER_CUTTER,Twister Cutter
-8048,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_ABSOLUTE_ZEPHYR,Absolute Zephyr
-8049,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MH_BRUSHUP_CLAW,Brushup Claw
-8050,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_BLAZING_AND_FURIOUS,Blazing And Furious
-8051,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_THE_ONE_FIGHTER_RISES,The One Fighter Rises
-8052,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MH_POLISHING_NEEDLE,Polishing Needle
-8053,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_TOXIN_OF_MANDARA,Toxin Of Mandara
-8054,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_NEEDLE_STINGER,Needle Stinger
-8055,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MH_LICHT_GEHORN,Licht Gehorn
-8056,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_GLANZEN_SPIES,Glanzen Spies
-8057,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_HEILIGE_PFERD,Heilige Pferd
-8058,0,0,0,0,0,0,10,0,yes,0,0,0,none,0,0,0,	MH_GOLDENE_TONE,Goldene Tone
-8059,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MH_BLAZING_LAVA,Blazing Lava
