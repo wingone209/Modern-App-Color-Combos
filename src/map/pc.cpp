@@ -7158,16 +7158,19 @@ uint8 pc_checkskill(map_session_data *sd, uint16 skill_id)
 
 #ifdef RENEWAL
 	if ((idx = skill_get_index(skill_id)) == 0) {
+		ShowError("pc_checkskill: Invalid skill id %d (char_id=%d).\n", skill_id, sd->status.char_id);
+		return 0;
+	}
 #else
 	if( ( idx = skill_db.get_index( skill_id, skill_id >= RK_ENCHANTBLADE, __FUNCTION__, __FILE__, __LINE__ ) ) == 0 ){
 		if( skill_id >= RK_ENCHANTBLADE ){
 			// Silently fail for now -> future update planned
 			return 0;
 		}
-#endif
 		ShowError("pc_checkskill: Invalid skill id %d (char_id=%d).\n", skill_id, sd->status.char_id);
 		return 0;
 	}
+#endif
 	if (SKILL_CHK_GUILD(skill_id) ) {
 		if (sd->status.guild_id>0 && sd->guild)
 			return guild_checkskill(sd->guild->guild,skill_id);
@@ -7187,16 +7190,19 @@ e_skill_flag pc_checkskill_flag(map_session_data &sd, uint16 skill_id) {
 
 #ifdef RENEWAL
 	if ((idx = skill_get_index(skill_id)) == 0) {
+		ShowError("pc_checkskill_flag: Invalid skill id %d (char_id=%d).\n", skill_id, sd.status.char_id);
+		return SKILL_FLAG_NONE;
+	}
 #else
 	if ((idx = skill_db.get_index(skill_id, skill_id >= RK_ENCHANTBLADE, __FUNCTION__, __FILE__, __LINE__)) == 0) {
 		if (skill_id >= RK_ENCHANTBLADE) {
 			// Silently fail for now -> future update planned
 			return SKILL_FLAG_NONE;
 		}
-#endif
 		ShowError("pc_checkskill_flag: Invalid skill id %d (char_id=%d).\n", skill_id, sd.status.char_id);
 		return SKILL_FLAG_NONE;
 	}
+#endif
 
 	return (sd.status.skill[idx].id == skill_id && sd.status.skill[idx].lv > 0) ? static_cast<e_skill_flag>(sd.status.skill[idx].flag) : SKILL_FLAG_NONE;
 }
@@ -12231,10 +12237,11 @@ bool pc_unequipitem(map_session_data *sd, int n, int flag) {
 		if( !battle_config.dancing_weaponswitch_fix )
 			status_change_end(&sd->bl, SC_DANCING); // Unequipping => stop dancing.
 #ifdef RENEWAL
-		if (battle_config.switch_remove_edp&2) {
+		if (battle_config.switch_remove_edp&2)
 #else
-		if (battle_config.switch_remove_edp&1) {
+		if (battle_config.switch_remove_edp&1)
 #endif
+		{
 			status_change_end(&sd->bl, SC_EDP);
 		}
 	}

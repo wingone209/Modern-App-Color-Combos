@@ -1296,11 +1296,11 @@ bool battle_status_block_damage(struct block_list *src, struct block_list *targe
 		status_change_end(target, SC_SAFETYWALL);
 	}
 
-	if ((sc->getSCE(SC_PNEUMA) && (flag&(BF_MAGIC | BF_LONG)) == BF_LONG) ||
+	if ((sc->getSCE(SC_PNEUMA) && (flag&(BF_MAGIC | BF_LONG)) == BF_LONG) || (
 #ifdef RENEWAL
-		(sc->getSCE(SC_BASILICA_CELL)
+		sc->getSCE(SC_BASILICA_CELL)
 #else
-		(sc->getSCE(SC_BASILICA)
+		sc->getSCE(SC_BASILICA)
 #endif
 		&& !status_bl_has_mode(src, MD_STATUSIMMUNE) && skill_id != SP_SOULEXPLOSION) ||
 		(sc->getSCE(SC_ZEPHYR) && !(flag&BF_MAGIC && skill_id) && !(skill_get_inf(skill_id)&(INF_GROUND_SKILL | INF_SELF_SKILL))) ||
@@ -6308,11 +6308,13 @@ static void battle_calc_attack_left_right_hands(struct Damage* wd, struct block_
 		} else if(sd->status.weapon == W_KATAR && !skill_id) { //Katars (offhand damage only applies to normal attacks, tested on Aegis 10.2)
 			skill = pc_checkskill(sd,TF_DOUBLE);
 			wd->damage2 = (int64)wd->damage * (1 + (skill * 2))/100;
+		}
 #ifdef RENEWAL
-		} else if(is_attack_right_handed(src, skill_id) && is_attack_left_handed(src, skill_id) && sd->status.weapon != W_KATAR) {	//Dual-wield
+		else if(is_attack_right_handed(src, skill_id) && is_attack_left_handed(src, skill_id) && sd->status.weapon != W_KATAR)	//Dual-wield
 #else
-		} else if(is_attack_right_handed(src, skill_id) && is_attack_left_handed(src, skill_id)) {	//Dual-wield
+		else if(is_attack_right_handed(src, skill_id) && is_attack_left_handed(src, skill_id))	//Dual-wield
 #endif
+		{
 			if (wd->damage) {
 				if( (sd->class_&MAPID_BASEMASK) == MAPID_THIEF ) {
 					skill = pc_checkskill(sd,AS_RIGHT);
@@ -7121,10 +7123,11 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 
 #ifdef RENEWAL
 	// In renewal only do it for non player attacks
-	if( tsd && !sd ){
+	if( tsd && !sd )
 #else
-	if( tsd ){
+	if( tsd )
 #endif
+	{
 		// Card Fix for target (tsd), 2 is not added to the "left" flag meaning "target cards only"
 		wd.damage += battle_calc_cardfix(BF_WEAPON, src, target, nk, right_element, left_element, wd.damage, 0, wd.flag);
 		if(is_attack_left_handed(src, skill_id))
@@ -9147,10 +9150,11 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 					case W_GRENADE:
 						if (sd->inventory_data[index]->subtype !=
 #ifdef RENEWAL
-							AMMO_BULLET) {
+							AMMO_BULLET)
 #else
-							AMMO_GRENADE) {
+							AMMO_GRENADE)
 #endif
+						{
 							clif_skill_fail(sd,0,USESKILL_FAIL_NEED_MORE_BULLET,0);
 							return ATK_NONE;
 						}
