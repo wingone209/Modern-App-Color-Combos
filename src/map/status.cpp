@@ -3036,7 +3036,7 @@ static int status_get_hpbonus(struct block_list *bl, enum e_status_bonus type) {
 #ifndef HP_SP_TABLES
 			if ((sd->class_&MAPID_UPPERMASK) == MAPID_SUPER_NOVICE && sd->status.base_level >= 99)
 				bonus += 2000; // Supernovice lvl99 hp bonus.
-			if ((sd->class_&MAPID_UPPERMASK) == MAPID_SUPER_NOVICE && sd->status.base_level >= 150)
+			if ((sd->class_&MAPID_THIRDMASK) == MAPID_SUPER_NOVICE_E && sd->status.base_level >= 150)
 				bonus += 2000; // Supernovice lvl150 hp bonus.
 #endif
 		}
@@ -3472,7 +3472,7 @@ static unsigned int status_calc_maxap_pc(map_session_data* sd) {
 
 	nullpo_ret(sd);
 
-	dmax = (sd->class_&JOBL_FOURTH) ? 200 : 0;
+	dmax = pc_is_trait_job(sd->class_) ? battle_config.base_ap : 0;
 	dmax += status_get_apbonus(&sd->bl, STATUS_BONUS_FIX);
 	equip_bonus = (dmax * status_get_apbonus_equip(sd) / 100);
 	item_bonus = (dmax * status_get_apbonus_item(&sd->bl) / 100);

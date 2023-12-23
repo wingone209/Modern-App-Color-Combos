@@ -1189,11 +1189,14 @@ ACMD_FUNC(jobchange)
 		}
 	}
 
-	if (job == JOB_KNIGHT2 || job == JOB_CRUSADER2 || job == JOB_WEDDING || job == JOB_XMAS || job == JOB_SUMMER || job == JOB_HANBOK || job == JOB_OKTOBERFEST
-		|| job == JOB_LORD_KNIGHT2 || job == JOB_PALADIN2 || job == JOB_BABY_KNIGHT2 || job == JOB_BABY_CRUSADER2 || job == JOB_STAR_GLADIATOR2
-		|| (job >= JOB_RUNE_KNIGHT2 && job <= JOB_MECHANIC_T2) || (job >= JOB_BABY_RUNE_KNIGHT2 && job <= JOB_BABY_MECHANIC2) || job == JOB_BABY_STAR_GLADIATOR2
-		|| job == JOB_STAR_EMPEROR2 || job == JOB_BABY_STAR_EMPEROR2 || job == JOB_SUMMER2
-		|| (job >= JOB_WINDHAWK2 && job <= JOB_IMPERIAL_GUARD2) || job == JOB_SKY_EMPEROR2)
+	if (job == JOB_KNIGHT2 || job == JOB_CRUSADER2 || job == JOB_WEDDING ||
+		(job >= JOB_XMAS && job <= JOB_SUMMER2) ||
+		job == JOB_LORD_KNIGHT2 || job == JOB_PALADIN2 || job == JOB_BABY_KNIGHT2 ||
+		job == JOB_BABY_CRUSADER2 || job == JOB_STAR_GLADIATOR2 ||
+		(job >= JOB_RUNE_KNIGHT2 && job <= JOB_RUNE_KNIGHT_T6) ||
+		(job >= JOB_BABY_RUNE_KNIGHT2 && job <= JOB_BABY_MECHANIC2) ||
+		job == JOB_BABY_STAR_GLADIATOR2 || job == JOB_STAR_EMPEROR2 || job == JOB_BABY_STAR_EMPEROR2 ||
+		(job >= JOB_WINDHAWK2 && job <= JOB_IMPERIAL_GUARD2) || job == JOB_SKY_EMPEROR2)
 	{ // Deny direct transformation into dummy jobs
 		clif_displaymessage(fd, msg_txt(sd,923)); //"You can not change to this job by command."
 		return 0;
@@ -1889,7 +1892,9 @@ ACMD_FUNC(bodystyle)
 
 	memset(atcmd_output, '\0', sizeof(atcmd_output));
 
-	if ( (sd->class_ & JOBL_FOURTH) || !(sd->class_ & JOBL_THIRD) || (sd->class_ & MAPID_THIRDMASK) == MAPID_SUPER_NOVICE_E || (sd->class_ & MAPID_THIRDMASK) == MAPID_STAR_EMPEROR || (sd->class_ & MAPID_THIRDMASK) == MAPID_SOUL_REAPER) {
+	if (pc_is_trait_job(sd->class_) || !(sd->class_ & JOBL_THIRD) ||
+		(sd->class_ & MAPID_THIRDMASK) == MAPID_SUPER_NOVICE_E || (sd->class_ & MAPID_THIRDMASK) == MAPID_STAR_EMPEROR ||
+		(sd->class_ & MAPID_THIRDMASK) == MAPID_SOUL_REAPER) {
 		clif_displaymessage(fd, msg_txt(sd,740));	// This job has no alternate body styles.
 		return -1;
 	}
@@ -2855,7 +2860,7 @@ ACMD_FUNC(param)
 	if( stat < PARAM_POW ){
 		status = pc_getstat( sd, SP_STR + stat - PARAM_STR );
 	}else{
-		if( !( sd->class_ & JOBL_FOURTH ) ){
+		if( !pc_is_trait_job(sd->class_) ){
 			clif_displaymessage(fd, msg_txt(sd, 797)); // This command is unavailable to non - 4th class.
 			return -1;
 		}
@@ -2981,7 +2986,7 @@ ACMD_FUNC(trait_all) {
 	return -1;
 #endif
 
-	if( !( sd->class_ & JOBL_FOURTH ) ){
+	if( !pc_is_trait_job(sd->class_) ){
 		clif_displaymessage(fd, msg_txt(sd, 797)); // This command is unavailable to non - 4th class.
 		return -1;
 	}
@@ -10559,13 +10564,13 @@ ACMD_FUNC(clonestat) {
 		pc_resetstate(sd);
 		if (pc_has_permission(sd, PC_PERM_BYPASS_STAT_ONCLONE)) {
 			for (i = PARAM_STR; i < PARAM_MAX; i++) {
-				if (i >= PARAM_POW && !(sd->class_ & JOBL_FOURTH))
+				if (i >= PARAM_POW && !pc_is_trait_job(sd->class_))
 					continue;
 				max_status[i] = SHRT_MAX;
 			}
 		} else {
 			for (i = PARAM_STR; i < PARAM_MAX; i++) {
-				if (i >= PARAM_POW && sd->class_ & JOBL_FOURTH)
+				if (i >= PARAM_POW && pc_is_trait_job(sd->class_))
 					continue;
 				max_status[i] = pc_maxparameter(sd, static_cast<e_params>(i));
 			}
@@ -10595,7 +10600,7 @@ ACMD_FUNC(clonestat) {
 			clif_updatestatus(sd, SP_USTR + i);
 		}
 
-		if (sd->class_ & JOBL_FOURTH) {
+		if (pc_is_trait_job(sd->class_)) {
 			clonestat_check(pow, PARAM_POW);
 			clonestat_check(sta, PARAM_STA);
 			clonestat_check(wis, PARAM_WIS);

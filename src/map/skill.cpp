@@ -8386,7 +8386,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		break;
 
 	case MO_KITRANSLATION:
-		if(dstsd && ((dstsd->class_&MAPID_BASEMASK) != MAPID_GUNSLINGER && (dstsd->class_&MAPID_UPPERMASK) != MAPID_REBELLION) && dstsd->spiritball < 5) {
+		if(dstsd && (dstsd->class_&MAPID_BASEMASK) != MAPID_GUNSLINGER && dstsd->spiritball < 5) {
 			//Require will define how many spiritballs will be transferred
 			struct s_skill_condition require;
 			require = skill_get_requirement(sd,skill_id,skill_lv);
@@ -8412,7 +8412,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case MO_ABSORBSPIRITS:
 		i = 0;
 		if (dstsd && (battle_check_target(src, bl, BCT_SELF) > 0 || (battle_check_target(src, bl, BCT_ENEMY) > 0 && (map_flag_vs(src->m) || (sd && sd->duel_group && sd->duel_group == dstsd->duel_group)))) && // Only works on self and enemies
-			((dstsd->class_&MAPID_BASEMASK) != MAPID_GUNSLINGER || (dstsd->class_&MAPID_UPPERMASK) != MAPID_REBELLION)) { // split the if for readability, and included gunslingers in the check so that their coins cannot be removed [Reddozen]
+			(dstsd->class_&MAPID_BASEMASK) != MAPID_GUNSLINGER) { // split the if for readability, and included gunslingers in the check so that their coins cannot be removed [Reddozen]
 			if (dstsd->spiritball > 0) {
 				i = dstsd->spiritball * 7;
 				pc_delspiritball(dstsd,dstsd->spiritball,0);
@@ -18078,7 +18078,7 @@ bool skill_check_condition_castbegin(map_session_data* sd, uint16 skill_id, uint
 
 			default: // Skills that require spirit/coin spheres.
 				if (sd->spiritball < require.spiritball) {
-					if ((sd->class_&MAPID_BASEMASK) == MAPID_GUNSLINGER || (sd->class_&MAPID_UPPERMASK) == MAPID_REBELLION)
+					if ((sd->class_&MAPID_BASEMASK) == MAPID_GUNSLINGER)
 						clif_skill_fail(sd, skill_id, USESKILL_FAIL_COINS, (require.spiritball == -1) ? 1 : require.spiritball);
 					else
 						clif_skill_fail(sd, skill_id, USESKILL_FAIL_SPIRITS, (require.spiritball == -1) ? 1 : require.spiritball);

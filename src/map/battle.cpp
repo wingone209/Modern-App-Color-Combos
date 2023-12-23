@@ -6316,11 +6316,11 @@ static void battle_calc_attack_left_right_hands(struct Damage* wd, struct block_
 #endif
 		{
 			if (wd->damage) {
-				if( (sd->class_&MAPID_BASEMASK) == MAPID_THIEF ) {
+				if((sd->class_&MAPID_UPPERMASK) == MAPID_ASSASSIN) {
 					skill = pc_checkskill(sd,AS_RIGHT);
 					ATK_RATER(wd->damage, 50 + (skill * 10))
 				}
-				else if(sd->class_ == MAPID_KAGEROUOBORO) {
+				else if((sd->class_ & MAPID_UPPERMASK) == MAPID_KAGEROUOBORO) {
 					skill = pc_checkskill(sd,KO_RIGHT);
 					ATK_RATER(wd->damage, 70 + (skill * 10))
 				}
@@ -6328,11 +6328,11 @@ static void battle_calc_attack_left_right_hands(struct Damage* wd, struct block_
 					wd->damage = 1;
 			}
 			if (wd->damage2) {
-				if( (sd->class_&MAPID_BASEMASK) == MAPID_THIEF) {
+				if((sd->class_ & MAPID_UPPERMASK) == MAPID_ASSASSIN) {
 					skill = pc_checkskill(sd,AS_LEFT);
 					ATK_RATEL(wd->damage2, 30 + (skill * 10))
 				}
-				else if(sd->class_ == MAPID_KAGEROUOBORO) {
+				else if((sd->class_ & MAPID_UPPERMASK) == MAPID_KAGEROUOBORO) {
 					skill = pc_checkskill(sd,KO_LEFT);
 					ATK_RATEL(wd->damage2, 50 + (skill * 10))
 				}
@@ -10661,7 +10661,8 @@ static const struct _battle_data {
 	{ "trait_points_job_change",            &battle_config.trait_points_job_change,         7,      1,      1000,           },
 	{ "max_trait_parameter",                &battle_config.max_trait_parameter,             100,    10,     SHRT_MAX,       },
 	{ "max_res_mres_reduction",             &battle_config.max_res_mres_reduction,          625,    1,      SHRT_MAX,       },
-	{ "max_ap",                             &battle_config.max_ap,                          200,    100,    1000000000,     },
+	{ "base_ap",                            &battle_config.base_ap,                         200,    100,    1000000000,     },
+	{ "max_ap",                             &battle_config.max_ap,                          1000,   100,    1000000000,     },
 	{ "ap_rate",                            &battle_config.ap_rate,                         100,    1,      INT_MAX,        },
 	{ "restart_ap_rate",                    &battle_config.restart_ap_rate,                 0,      0,      100,            },
 	{ "loose_ap_on_death",                  &battle_config.loose_ap_on_death,               1,      0,      1,              },

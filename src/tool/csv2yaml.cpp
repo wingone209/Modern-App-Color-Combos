@@ -4439,9 +4439,11 @@ static bool pc_readdb_job_basehpsp(char* fields[], int columns, int current) {
 			endlvl = tmplvl;
 	}
 
-	// These jobs don't have values less than level 99
-	if ((job_id >= JOB_RUNE_KNIGHT && job_id <= JOB_BABY_MECHANIC2) || job_id == JOB_KAGEROU || job_id == JOB_OBORO || job_id == JOB_REBELLION || job_id == JOB_BABY_KAGEROU || job_id == JOB_BABY_OBORO || job_id == JOB_BABY_REBELLION || job_id >= JOB_STAR_EMPEROR)
-		j = 98;
+	if (job_id >= JOB_DRAGON_KNIGHT && job_id <= JOB_SKY_EMPEROR2)
+		j = 199;// Trait era jobs start off at level 200.
+	else if ((job_id >= JOB_RUNE_KNIGHT && job_id <= JOB_BABY_MECHANIC2) || job_id == JOB_KAGEROU || job_id == JOB_OBORO || job_id == JOB_REBELLION || job_id == JOB_BABY_KAGEROU || job_id == JOB_BABY_OBORO || job_id == JOB_BABY_REBELLION || (job_id >= JOB_STAR_EMPEROR && job_id <= JOB_BABY_STAR_EMPEROR2))
+		j = 98;// These jobs don't have values less than level 99
+
 
 	if (type == 0) { // HP
 		for (; j < endlvl; j++) {
