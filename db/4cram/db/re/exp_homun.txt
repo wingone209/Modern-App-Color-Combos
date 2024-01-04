@@ -1,5 +1,5 @@
 // ===== Homunculus Exp Table =====
-// Homunculus
+// Homunculus / Mutated Homunculus
 // Note: Levels 221-250 use custom exp values since there's no known info on them.
 101
 177

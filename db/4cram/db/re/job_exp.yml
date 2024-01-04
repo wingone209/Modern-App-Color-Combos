@@ -1971,6 +1971,9 @@ Body:
       Baby_Acolyte: true
       Baby_Merchant: true
       Baby_Thief: true
+      Taekwon: true
+      Gangsi: true
+      Baby_Taekwon: true
     MaxJobLevel: 50
     JobExp:
       - Level: 1
@@ -2213,6 +2216,10 @@ Body:
       Baby_Bard: true
       Baby_Dancer: true
       Baby_Crusader2: true
+      Soul_Linker: true
+      Death_Knight: true
+      Dark_Collector: true
+      Baby_Soul_Linker: true
     MaxJobLevel: 50
     JobExp:
       - Level: 1
@@ -2808,10 +2815,7 @@ Body:
   - Jobs:
       Gunslinger: true
       Ninja: true
-      Taekwon: true
-      Gangsi: true
       Baby_Ninja: true
-      Baby_Taekwon: true
       Baby_Gunslinger: true
     MaxJobLevel: 70
     JobExp:
@@ -2958,11 +2962,7 @@ Body:
   - Jobs:
       Star_Gladiator: true
       Star_Gladiator2: true
-      Soul_Linker: true
-      Death_Knight: true
-      Dark_Collector: true
       Baby_Star_Gladiator: true
-      Baby_Soul_Linker: true
       Baby_Star_Gladiator2: true
     MaxJobLevel: 50
     JobExp:
