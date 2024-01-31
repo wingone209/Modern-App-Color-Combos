@@ -1898,6 +1898,7 @@
 	export_constant(SC_RUSH_QUAKE1);
 	export_constant(SC_RUSH_QUAKE2);
 	export_constant(SC_G_LIFEPOTION);
+	export_constant(SC_HNNOWEAPON);// Why is this here? Such a status already exists that could of been used. (Rytech)
 
 	// Hyper Novice
 	export_constant(SC_SHIELDCHAINRUSH);

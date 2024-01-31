@@ -1285,6 +1285,8 @@ enum sc_type : int16 {
 	
 	SC_G_LIFEPOTION,
 
+	SC_HNNOWEAPON,// Why is this here? Such a status already exists that could of been used. (Rytech)
+
 	// Hyper Novice
 	SC_SHIELDCHAINRUSH = 1001,
 	SC_MISTYFROST,
