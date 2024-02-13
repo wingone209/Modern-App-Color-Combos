@@ -1528,6 +1528,7 @@ Body:
       Target: Enemy
       Flag:
         PathCheck: true
+        RangedSingleUnit: true
   - Id: 5472
     Name: SKE_STAR_BURST
     Description: Star Burst
@@ -1610,6 +1611,7 @@ Body:
       Target: Enemy
       Flag:
         PathCheck: true
+        RangedSingleUnit: true
   - Id: 5474
     Name: SKE_ALL_IN_THE_SKY
     Description: All In The Sky
@@ -1619,7 +1621,7 @@ Body:
     DamageFlags:
       Critical: true
     Range: 9
-    Hit: Single
+    Hit: Multi_Hit
     HitCount: 1
     Element: Weapon
     CastCancel: true

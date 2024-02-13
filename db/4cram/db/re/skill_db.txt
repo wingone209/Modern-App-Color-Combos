@@ -161,9 +161,9 @@
 5469,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,2,	SKE_MIDNIGHT_KICK,Midnight Kick
 5470,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,2,	SKE_DAWN_BREAK,Dawn Break
 5471,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,0,	SKE_TWINKLING_GALAXY,Twinkling Galaxy// Status ID 1404 triggers.
-5472,1,8,1,-1,0x3,2,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_STAR_BURST,Star Burst// Unit ID 2409 appears?
+5472,1,8,1,-1,0x3,2,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_STAR_BURST,Star Burst// Unit ID 2409 appears? This can't be right.
 5473,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,3,	SKE_STAR_CANNON,Star Cannon// Status ID 1406 triggers.
-5474,9,6,1,-1,0x100,0,10,1,yes,0,0,0,weapon,0,0,0,	SKE_ALL_IN_THE_SKY,All In The Sky// High jump packet used for jump.
+5474,9,8,1,-1,0x100,0,10,1,yes,0,0,0,weapon,0,0,0,	SKE_ALL_IN_THE_SKY,All In The Sky// High jump packet used for jump.
 5475,0,6,4,0,0x1,0,10,1,yes,0,0,0,none,0,0,0,	SKE_ENCHANTING_SKY,Enchanting Sky
 
 // Shinkiro/Shiranui

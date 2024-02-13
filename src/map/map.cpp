@@ -533,7 +533,8 @@ int map_moveblock(struct block_list *bl, int x1, int y1, t_tick tick)
 						sc->getSCE(SC_PROPERTYWALK)->val3++;
 				}
 
-
+				if (sc->getSCE(SC_STAR_BURST))
+					skill_unit_move_unit_group(skill_id2group(sc->getSCE(SC_STAR_BURST)->val4), bl->m, x1 - x0, y1 - y0);
 			}
 			/* Guild Aura Moving */
 			if( bl->type == BL_PC && ((TBL_PC*)bl)->state.gmaster_flag ) {

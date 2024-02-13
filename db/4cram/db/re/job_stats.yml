@@ -7769,8 +7769,9 @@ Body:
         Agi: 1
   - Jobs:
       Summoner: true
-    HpFactor: 70
-    SpIncrease: 500
+    HpFactor: 100
+    HpIncrease: 800
+    SpIncrease: 250
     BonusStats:
       - Level: 1
         Dex: 1
@@ -10597,8 +10598,8 @@ Body:
       Sky_Emperor2: true
     MaxWeight: 42000
     HpFactor: 90
-    HpIncrease: 650
-    SpIncrease: 635
+    HpIncrease: 2760
+    SpIncrease: 710
     BonusStats:
       - Level: 1
         Str: 1
@@ -10739,8 +10740,8 @@ Body:
       Soul_Ascetic: true
     MaxWeight: 42000
     HpFactor: 75
-    HpIncrease: 850
-    SpIncrease: 860
+    HpIncrease: 440
+    SpIncrease: 960
     BonusStats:
       - Level: 1
         Vit: 1
@@ -10871,8 +10872,9 @@ Body:
   - Jobs:
       Shinkiro: true
     MaxWeight: 45000
-    HpFactor: 98
-    SpIncrease: 540
+    HpFactor: 75
+    HpIncrease: 0
+    SpIncrease: 710
     BonusStats:
       - Level: 1
         Str: 1
@@ -11014,8 +11016,9 @@ Body:
   - Jobs:
       Shiranui: true
     MaxWeight: 45000
-    HpFactor: 98
-    SpIncrease: 540
+    HpFactor: 75
+    HpIncrease: 0
+    SpIncrease: 710
     BonusStats:
       - Level: 1
         Vit: 1
@@ -11145,9 +11148,9 @@ Body:
   - Jobs:
       Night_Watch: true
     MaxWeight: 48000
-    HpFactor: 75
-    HpIncrease: 1800
-    SpIncrease: 800
+    HpFactor: 90
+    HpIncrease: 650
+    SpIncrease: 530
     BonusStats:
       - Level: 1
         Str: 1
@@ -11281,9 +11284,9 @@ Body:
   - Jobs:
       Hyper_Novice: true
     MaxWeight: 40000
-    HpFactor: 55
-    HpIncrease: 900
-    SpIncrease: 600
+    HpFactor: 50
+    HpIncrease: 500
+    SpIncrease: 500
     BonusStats:
       - Level: 1
         Str: 1
@@ -11426,9 +11429,9 @@ Body:
   - Jobs:
       Spirit_Handler: true
     MaxWeight: 42000
-    HpFactor: 80
-    HpIncrease: 1150
-    SpIncrease: 730
+    HpFactor: 100
+    HpIncrease: 6500
+    SpIncrease: 640
     BonusStats:
       - Level: 1
         Dex: 1

@@ -13520,10 +13520,12 @@ static unsigned int pc_calc_basehp(uint16 level, uint16 job_id) {
 	if (level >= 10 && (job_id == JOB_NINJA || job_id == JOB_GUNSLINGER))
 		base_hp += 90;
 #endif
+	if (job_id == JOB_SUMMONER)
+		base_hp += 16;
+
 	for (uint16 i = 2; i <= level; i++)
 		base_hp += floor(((job->hp_factor / 100.) * i) + 0.5); //Don't have round()
-	if (job_id == JOB_SUMMONER || job_id == JOB_SPIRIT_HANDLER)
-		base_hp += floor((base_hp / 2) + 0.5);
+
 	return (unsigned int)base_hp;
 }
 
@@ -13551,9 +13553,9 @@ static unsigned int pc_calc_basesp(uint16 level, uint16 job_id) {
 			else
 				base_sp = 9 + 3*level;
 			break;
-		case JOB_SUMMONER:
-		case JOB_SPIRIT_HANDLER:// Is this needed here? (Rytech)
-			base_sp -= floor(base_sp / 2);
+		case JOB_SUMMONER:// 8, 10, 13, 15, 18
+		//case JOB_SPIRIT_HANDLER:// 12, 15, 17, 20, 22
+			base_sp -= 4;// Temp. Needs more work. (Rytech)
 			break;
 	}
 

@@ -45,6 +45,7 @@ Header:
   Version: 3
 
 Body:
+#================================
   - Status: Rising_Sun
     Icon: EFST_RISING_SUN
     DurationLookup: SKE_RISING_SUN
@@ -52,6 +53,8 @@ Body:
       NoDispell: true
       NoClearance: true
       NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
     Fail:
       Sky_Enchant: true
     EndOnStart:
@@ -60,7 +63,7 @@ Body:
       Rising_Moon: true
       Midnight_Moon: true
       Dawn_Moon: true
-
+#================================
   - Status: Noon_Sun
     Icon: EFST_NOON_SUN
     DurationLookup: SKE_RISING_SUN
@@ -68,6 +71,8 @@ Body:
       NoDispell: true
       NoClearance: true
       NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
     Fail:
       Sky_Enchant: true
     EndOnStart:
@@ -76,7 +81,7 @@ Body:
       Rising_Moon: true
       Midnight_Moon: true
       Dawn_Moon: true
-
+#================================
   - Status: Sunset_Sun
     Icon: EFST_SUNSET_SUN
     DurationLookup: SKE_RISING_SUN
@@ -84,6 +89,8 @@ Body:
       NoDispell: true
       NoClearance: true
       NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
     Fail:
       Sky_Enchant: true
     EndOnStart:
@@ -92,7 +99,7 @@ Body:
       Rising_Moon: true
       Midnight_Moon: true
       Dawn_Moon: true
-
+#================================
   - Status: Rising_Moon
     Icon: EFST_RISING_MOON
     DurationLookup: SKE_RISING_MOON
@@ -100,6 +107,8 @@ Body:
       NoDispell: true
       NoClearance: true
       NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
     Fail:
       Sky_Enchant: true
     EndOnStart:
@@ -108,7 +117,7 @@ Body:
       Sunset_Sun: true
       Midnight_Moon: true
       Dawn_Moon: true
-
+#================================
   - Status: Midnight_Moon
     Icon: EFST_MIDNIGHT_MOON
     DurationLookup: SKE_RISING_MOON
@@ -116,6 +125,8 @@ Body:
       NoDispell: true
       NoClearance: true
       NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
     Fail:
       Sky_Enchant: true
     EndOnStart:
@@ -124,7 +135,7 @@ Body:
       Sunset_Sun: true
       Rising_Moon: true
       Dawn_Moon: true
-
+#================================
   - Status: Dawn_Moon
     Icon: EFST_DAWN_MOON
     DurationLookup: SKE_RISING_MOON
@@ -132,6 +143,8 @@ Body:
       NoDispell: true
       NoClearance: true
       NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
     Fail:
       Sky_Enchant: true
     EndOnStart:
@@ -140,7 +153,7 @@ Body:
       Sunset_Sun: true
       Rising_Moon: true
       Midnight_Moon: true
-
+#================================
   - Status: Star_Burst
     Icon: EFST_STAR_BURST
     DurationLookup: SKE_STAR_BURST
@@ -148,7 +161,10 @@ Body:
       NoDispell: true
       NoClearance: true
       NoBanishingBuster: true
-
+      BlEffect: true
+      DisplayPc: true
+      Debuff: true
+#================================
   - Status: Sky_Enchant
     Icon: EFST_SKY_ENCHANT
     DurationLookup: SKE_ENCHANTING_SKY
@@ -156,6 +172,8 @@ Body:
       NoDispell: true
       NoClearance: true
       NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
     EndOnStart:
       Rising_Sun: true
       Noon_Sun: true
@@ -163,3 +181,4 @@ Body:
       Rising_Moon: true
       Midnight_Moon: true
       Dawn_Moon: true
+#================================

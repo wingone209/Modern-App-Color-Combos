@@ -2631,6 +2631,7 @@ static int battle_range_type(struct block_list *src, struct block_list *target, 
 		case ABC_UNLUCKY_RUSH: // 7 cell cast range.
 		case MH_THE_ONE_FIGHTER_RISES: // 7 cell cast range.
 		//case ABC_DEFT_STAB: // 2 cell cast range???
+		case SKE_ALL_IN_THE_SKY: // 9 cell cast range.
 		case NPC_MAXPAIN_ATK:
 			return BF_SHORT;
 		case CD_PETITIO: { // Skill range is 2 but damage is melee with books and ranged with mace.
@@ -2997,6 +2998,15 @@ static bool is_attack_critical(struct Damage* wd, struct block_list *src, struct
 			case WH_GALESTORM:
 				if (sc && !sc->getSCE(SC_CALAMITYGALE))
 					return false;
+				break;
+			case SKE_NOON_BLAST:
+				if (sc && !(sc->getSCE(SC_NOON_SUN) || sc->getSCE(SC_SKY_ENCHANT)))
+					return false;
+				break;
+			case SKE_SUNSET_BLAST:
+				if (sc && !(sc->getSCE(SC_SUNSET_SUN) || sc->getSCE(SC_SKY_ENCHANT)))
+					return false;
+				break;
 		}
 		if(tsd && tsd->bonus.critical_def)
 			cri = cri * ( 100 - tsd->bonus.critical_def ) / 100;
@@ -5809,6 +5819,50 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 					skillratio += skillratio * 50 / 100;
 			}
 			break;
+		case SKE_RISING_SUN:
+			skillratio += 400 + 400 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_NOON_BLAST:
+			skillratio += 1400 + 900 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_SUNSET_BLAST:
+			skillratio += 800 + 300 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_RISING_MOON:
+			skillratio += 500 + 300 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_MIDNIGHT_KICK:
+			skillratio += 400 + 1000 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			if (sc && (sc->getSCE(SC_MIDNIGHT_MOON) || sc->getSCE(SC_SKY_ENCHANT)))
+				skillratio += 1000 + 200 * skill_lv;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_DAWN_BREAK:
+			skillratio += 200 + 400 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			if (sc && (sc->getSCE(SC_DAWN_MOON) || sc->getSCE(SC_SKY_ENCHANT)))
+				skillratio += 200 * skill_lv;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_TWINKLING_GALAXY:
+			skillratio += 100 + 400 * skill_lv + 3 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_STAR_BURST:
+			skillratio += 400 + 400 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_STAR_CANNON:
+			skillratio += 100 + 500 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_ALL_IN_THE_SKY:
+			skillratio += -100 + 2000 * skill_lv + 10 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
 		case ABR_BATTLE_BUSTER:// Need official formula.
 		case ABR_DUAL_CANNON_FIRE:// Need official formula.
 			skillratio += -100 + 8000;
@@ -6825,6 +6879,10 @@ static struct Damage initialize_weapon_data(struct block_list *src, struct block
 			case HN_DOUBLEBOWLINGBASH:
 				if (wd.miscflag > 1)
 					wd.div_ += min(4, wd.miscflag);
+				break;
+			case SKE_ALL_IN_THE_SKY:
+				if (tstatus->race == RC_DEMON || tstatus->race == RC_DEMIHUMAN)
+					wd.div_ = 3;
 				break;
 		}
 	} else {

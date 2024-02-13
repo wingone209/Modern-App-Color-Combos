@@ -4341,6 +4341,8 @@ int status_calc_pc_sub(map_session_data* sd, uint8 opt)
 		base_status->hit += 20;
 	if ((skill = pc_checkskill_imperial_guard(sd, 2)) > 0)// IG_SPEAR_SWORD_M
 		base_status->hit += skill * 3;
+	if ((skill = pc_checkskill(sd, SKE_WAR_BOOK_MASTERY)) > 0 && sd->status.weapon == W_BOOK)
+		base_status->hit += skill * 3;
 
 	if ((skill = pc_checkskill(sd, SU_SOULATTACK)) > 0)
 		base_status->rhw.range += skill_get_range2(&sd->bl, SU_SOULATTACK, skill, true);
@@ -4379,6 +4381,8 @@ int status_calc_pc_sub(map_session_data* sd, uint8 opt)
 		base_status->patk += skill * 3;
 		base_status->smatk += skill * 3;
 	}
+	if ((skill = pc_checkskill(sd, SKE_WAR_BOOK_MASTERY)) > 0 && sd->status.weapon == W_BOOK)
+		base_status->patk += 2 + skill;
 	if ((skill = pc_checkskill(sd, HN_SELFSTUDY_TATICS)) > 0)
 		base_status->patk += skill;
 	if ((skill = pc_checkskill(sd, HN_SELFSTUDY_SOCERY)) > 0)
@@ -13492,6 +13496,7 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 		case SC_GLORYWOUNDS:
 		case SC_SOULCOLD:
 		case SC_HAWKEYES:
+		case SC_STAR_BURST:
 			if (sce->val4) { // Clear the group.
 				std::shared_ptr<s_skill_unit_group> group = skill_id2group(sce->val4);
 
