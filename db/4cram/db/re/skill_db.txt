@@ -101,21 +101,21 @@
 // Soul Ascetic
 5416,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SOA_TALISMAN_MASTERY,Talisman Mastery
 5417,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SOA_SOUL_MASTERY,Soul Mastery
-5418,9,6,16,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SOA_TALISMAN_OF_PROTECTION,Talisman Of Protection
-5419,9,6,16,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SOA_TALISMAN_OF_WARRIOR,Talisman Of Warrior
-5420,9,6,16,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SOA_TALISMAN_OF_MAGICIAN,Talisman Of Magician
-5421,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_GATHERING,Soul Gathering
-5422,9,6,2,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SOA_TOTEM_OF_TUTELARY,Totem Of Tutelary
-5423,9,6,16,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SOA_TALISMAN_OF_FIVE_ELEMENTS,Talisman Of Five Elements
-5424,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SOA_TALISMAN_OF_SOUL_STEALING,Talisman Of Soul Stealing
-5425,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SOA_EXORCISM_OF_MALICIOUS_SOUL,Exorcism Of Malicious Soul
-5426,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,1,	SOA_TALISMAN_OF_BLUE_DRAGON,Talisman Of Blue Dragon
-5427,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,1,	SOA_TALISMAN_OF_WHITE_TIGER,Talisman Of White Tiger// Self cast but range of 9?
-5428,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,1,	SOA_TALISMAN_OF_RED_PHOENIX,Talisman Of Red Phoenix
-5429,9,6,2,0,0,0,5,1,yes,0,0,0,none,0,0,1,	SOA_TALISMAN_OF_BLACK_TORTOISE,Talisman Of Black Tortoise
-5430,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,1,	SOA_TALISMAN_OF_FOUR_BEARING_GOD,Talisman Of Four Bearing God
-5431,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS,Circle Of Directions And Elementals
-5432,0,6,4,0,0,0,10,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_OF_HEAVEN_AND_EARTH,Soul Of Heaven And Earth
+5418,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_PROTECTION,Talisman Of Protection// Make sure it only works on
+5419,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_WARRIOR,Talisman Of Warrior// targets with equipped weapon.
+5420,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_MAGICIAN,Talisman Of Magician
+5421,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_GATHERING,Soul Gathering// Skill fail 103
+5422,9,6,2,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SOA_TOTEM_OF_TUTELARY,Totem Of Tutelary
+5423,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,0,	SOA_TALISMAN_OF_FIVE_ELEMENTS,Talisman Of Five Elements
+5424,9,6,1,-2,0,0,5,1,yes,0,0,0,magic,0,0,0,	SOA_TALISMAN_OF_SOUL_STEALING,Talisman Of Soul Stealing// Replay shows it healing 100 per level.
+5425,0,8,4,-2,0x2,5:5:5:6:6,5,-5,yes,0,0,0,magic,0,0,2,	SOA_EXORCISM_OF_MALICIOUS_SOUL,Exorcism Of Malicious Soul// Does 1 hit if no soul energy.
+5426,9,6,1,-2,0,0,5,1,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_BLUE_DRAGON,Talisman Of Blue Dragon
+5427,0,8,4,-2,0x2,5:5:5:6:6,5,-2,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_WHITE_TIGER,Talisman Of White Tiger
+5428,9,8,1,-2,0x2,1:1:2:2:3,5,-3,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_RED_PHOENIX,Talisman Of Red Phoenix
+5429,9,8,2,-2,0,0,5,-3,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_BLACK_TORTOISE,Talisman Of Black Tortoise
+5430,9,8,1,-2,0x2,3:3:4:4:5,5,1,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_FOUR_BEARING_GOD,Talisman Of Four Bearing God
+5431,9,8,1,-2,0x2,3:3:4:4:5,5,5,yes,0,0,0,magic,0,0,0,	SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS,Circle Of Directions And Elementals
+5432,0,6,4,0,0x3,11,10,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_OF_HEAVEN_AND_EARTH,Soul Of Heaven And Earth// Affects only you and party members.
 
 // Spirit Handler
 5433,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SH_MYSTICAL_CREATURE_MASTERY,Mystical Creature Mastery

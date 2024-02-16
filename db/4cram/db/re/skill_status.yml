@@ -1,40 +1,74 @@
+# This file is a part of rAthena.
+#   Copyright(C) 2021 rAthena Development Team
+#   https://rathena.org - https://github.com/rathena
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program. If not, see <http://www.gnu.org/licenses/>.
+#
+###########################################################################
+# Skill Status Database
+###########################################################################
+# Assigns status to skills directly.
+###########################################################################
+# - Id                        Unique skill ID.
+#   Status                    Status Change that is associated to the skill.
+###########################################################################
 Header:
   Type: SKILL_DB
   Version: 3
 
 Body:
-# SKE_NOON_BLAST
-#  - Id: 5466
-#    Requires:
-#      Status:
-#        Rising_Sun: true
-#        Noon_Sun: true
-#        Sky_Enchant: true
+#================================
+# SOA_TALISMAN_OF_PROTECTION
+  - Id: 5418
+    Status: Talisman_Of_Protection
 
-# SKE_SUNSET_BLAST
-#  - Id: 5467
-#    Requires:
-#      Status:
-#        Noon_Sun: true
-#        Sunset_Sun: true
-#        Sky_Enchant: true
+# SOA_TALISMAN_OF_WARRIOR
+  - Id: 5419
+    Status: Talisman_Of_Warrior
 
-# SKE_MIDNIGHT_KICK
-#  - Id: 5469
-#    Requires:
-#      Status:
-#        Rising_Moon: true
-#        Midnight_Moon: true
-#        Sky_Enchant: true
+# SOA_TALISMAN_OF_MAGICIAN
+  - Id: 5420
+    Status: Talisman_Of_Magician
 
-# SKE_DAWN_BREAK
-#  - Id: 5470
-#    Requires:
-#      Status:
-#        Midnight_Moon: true
-#        Dawn_Moon: true
-#        Sky_Enchant: true
+# SOA_TALISMAN_OF_FIVE_ELEMENTS
+  - Id: 5423
+    Status: Talisman_Of_Five_Elements
 
+# SOA_TALISMAN_OF_BLUE_DRAGON
+  - Id: 5426
+    Status: T_First_God
+
+# SOA_TALISMAN_OF_WHITE_TIGER
+  - Id: 5427
+    Status: T_Second_God
+
+# SOA_TALISMAN_OF_RED_PHOENIX
+  - Id: 5428
+    Status: T_Third_God
+
+# SOA_TALISMAN_OF_BLACK_TORTOISE
+  - Id: 5429
+    Status: T_Fourth_God
+
+# SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS
+  - Id: 5431
+    Status: T_Fiveth_God
+
+# SOA_SOUL_OF_HEAVEN_AND_EARTH
+  - Id: 5432
+    Status: Heaven_And_Earth
+#================================
 # SKE_STAR_BURST
   - Id: 5472
     Status: Star_Burst
@@ -42,3 +76,4 @@ Body:
 # SKE_ENCHANTING_SKY
   - Id: 5475
     Status: Sky_Enchant
+#================================
