@@ -473,7 +473,7 @@ Body:
           Amount: 10
     Unit:
       Id: Totem_Of_Tutelary
-      Range:
+      Layout:
         - Level: 1
           Size: 2
         - Level: 2
@@ -489,6 +489,7 @@ Body:
       Flag:
         NoOverlap: true
         PathCheck: true
+        RangedSingleUnit: true
   - Id: 5423
     Name: SOA_TALISMAN_OF_FIVE_ELEMENTS
     Description: Talisman Of Five Elements
@@ -590,6 +591,7 @@ Body:
           Amount: 105
         - Level: 5
           Amount: 120
+      SpiritSphereCost: 20
   - Id: 5426
     Name: SOA_TALISMAN_OF_BLUE_DRAGON
     Description: Talisman Of Blue Dragon

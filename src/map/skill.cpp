@@ -575,6 +575,12 @@ int skill_calc_heal(struct block_list *src, struct block_list *target, uint16 sk
 				hp_bonus += skill * 2;
 #endif
 			break;
+		case SOA_TOTEM_OF_TUTELARY:
+			hp = 500 + 500 * skill_lv;
+			hp += 50 * skill_lv * pc_checkskill(sd, SOA_TALISMAN_MASTERY);
+			hp += 3 * status_get_crt(src);
+			hp = hp * status_get_lv(src) / 100;
+			break;
 		default:
 			if (skill_lv >= battle_config.max_heal_lv)
 				return battle_config.max_heal;
@@ -718,6 +724,7 @@ int skill_calc_heal(struct block_list *src, struct block_list *target, uint16 sk
 		case BA_APPLEIDUN:
 		case PR_SANCTUARY:
 		case NPC_EVILLAND:
+		case SOA_TOTEM_OF_TUTELARY:
 			break;
 		default:
 			{
@@ -2211,6 +2218,13 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl, uint
 		break;
 	case MT_RUSH_QUAKE:
 		sc_start( src, bl, SC_RUSH_QUAKE1, 100, skill_lv, skill_get_time( skill_id, skill_lv ) );
+		break;
+	case SOA_TALISMAN_OF_SOUL_STEALING:
+	{// Im guessing the SP recovery only happens when you hit your target since it wouldn't makes since if you didn't. Need confirm. (Rytech)
+		short sp_recover = 50 * skill_lv * status_get_lv(src) / 100;
+		clif_skill_nodamage(NULL, src, skill_id, sp_recover, 1);
+		status_heal(src, 0, sp_recover, 0);
+	}
 		break;
 	case HN_SHIELD_CHAIN_RUSH:
 	case HN_JACK_FROST_NOVA:
@@ -5749,6 +5763,11 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case IG_SHIELD_SHOOTING:
 	case TR_METALIC_FURY:
 	case IG_GRAND_JUDGEMENT:
+	case SOA_EXORCISM_OF_MALICIOUS_SOUL:
+	case SOA_TALISMAN_OF_WHITE_TIGER:
+	case SOA_TALISMAN_OF_RED_PHOENIX:
+	case SOA_TALISMAN_OF_FOUR_BEARING_GOD:
+	case SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS:
 	case HN_JUPITEL_THUNDER_STORM:
 		if( flag&1 ) {//Recursive invocation
 			int sflag = skill_area_temp[0] & 0xFFF;
@@ -5820,6 +5839,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 				case DK_DRAGONIC_BREATH:
 				case DK_HACKANDSLASHER:
 				case MT_SPARK_BLASTER:
+				case SOA_TALISMAN_OF_FOUR_BEARING_GOD:
 				case HN_JUPITEL_THUNDER_STORM:
 					clif_skill_nodamage(src,bl,skill_id,skill_lv,1);
 					break;
@@ -5953,6 +5973,16 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 				case IG_GRAND_JUDGEMENT:
 					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 					sc_start(src, src, skill_get_sc(skill_id), 100, skill_lv, skill_get_time(skill_id, skill_lv));
+					break;
+				case SOA_TALISMAN_OF_RED_PHOENIX:
+					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+					if (sc && sc->getSCE(SC_T_SECOND_GOD))
+						sc_start(src, src, SC_T_THIRD_GOD, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+					break;
+				case SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS:
+					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+					if (sc && sc->getSCE(SC_T_FOURTH_GOD))
+						sc_start(src, src, SC_T_FIVETH_GOD, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 					break;
 			}
 
@@ -6171,8 +6201,15 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case AG_ASTRAL_STRIKE_ATK:
 	case AG_DESTRUCTIVE_HURRICANE_CLIMAX:
 	case CD_ARBITRIUM:
+	case SOA_TALISMAN_OF_SOUL_STEALING:
 	case HN_METEOR_STORM_BUSTER:
 		skill_attack(BF_MAGIC,src,src,bl,skill_id,skill_lv,tick,flag);
+		break;
+
+	case SOA_TALISMAN_OF_BLUE_DRAGON:
+		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+		skill_attack(BF_MAGIC, src, src, bl, skill_id, skill_lv, tick, flag);
+		sc_start(src, src, SC_T_FIRST_GOD, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		break;
 
 	case IG_JUDGEMENT_CROSS:
@@ -8033,6 +8070,23 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			sc_start(src,bl,type,100,skill_lv,skill_get_time(skill_id,skill_lv)));
 		break;
 
+	case SOA_TALISMAN_OF_WARRIOR:
+	case SOA_TALISMAN_OF_MAGICIAN:
+	case SOA_TALISMAN_OF_FIVE_ELEMENTS:
+		if (dstsd)
+		{
+			short index = dstsd->equip_index[EQI_HAND_R];
+
+			if (index >= 0 && dstsd->inventory_data[index] && dstsd->inventory_data[index]->type == IT_WEAPON)
+			{// Requires targeted player to have a weapon equipped for the buff to be applied.
+				clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+				sc_start(src, bl, type, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+			}
+			else
+				clif_skill_fail(sd, skill_id, USESKILL_FAIL_LEVEL, 0);
+		}
+		break;
+
 	case NPC_GRADUAL_GRAVITY:
 		status_change_start(src, bl, type, 10000, skill_lv, 0, 0, 0, skill_get_time(skill_id, skill_lv), SCSTART_NOAVOID|SCSTART_NOTICKDEF|SCSTART_NORATEDEF);
 		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
@@ -8131,6 +8185,17 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 				clif_skill_nodamage(src, bl, skill_id, skill_lv, 1); // Placed here to display animation on target only.
 				skill_castend_nodamage_id(bl, bl, skill_id, skill_lv, tick, 1);
 			}
+		}
+		break;
+
+	case SOA_TALISMAN_OF_PROTECTION:
+		{
+			int heal_amount = 500 * skill_lv;
+			heal_amount += 50 * skill_lv * pc_checkskill(sd, SOA_TALISMAN_MASTERY);
+			heal_amount += 3 * sstatus->crt;
+			heal_amount = heal_amount * status_get_lv(src) / 100;
+			clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+			sc_start2(src, bl, type, 100, skill_lv, heal_amount, skill_get_time(skill_id, skill_lv));
 		}
 		break;
 
@@ -8509,6 +8574,16 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		}
 		break;
 
+	case SOA_SOUL_GATHERING:
+		if (sd)
+		{
+			short soulball_max = 5 + 3 * pc_checkskill(sd, SP_SOULENERGY);
+			clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+			for (i = 0; i < soulball_max; i++)
+				pc_addsoulball(sd, soulball_max);
+		}
+		break;
+
 	case MO_KITRANSLATION:
 		if(dstsd && (dstsd->class_&MAPID_BASEMASK) != MAPID_GUNSLINGER && dstsd->spiritball < 5) {
 			//Require will define how many spiritballs will be transferred
@@ -8625,6 +8700,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case MT_AXE_STOMP:
 	case MT_MIGHTY_SMASH:
 	case ABC_ABYSS_DAGGER:
+	case SOA_EXORCISM_OF_MALICIOUS_SOUL:
+	case SOA_TALISMAN_OF_WHITE_TIGER:
 	case SKE_RISING_MOON:
 	case SKE_MIDNIGHT_KICK:
 	case SKE_DAWN_BREAK:
@@ -8654,6 +8731,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		}
 		if (skill_id == IQ_MASSIVE_F_BLASTER || skill_id == SHC_IMPACT_CRATER || skill_id == MT_AXE_STOMP || skill_id == ABC_ABYSS_DAGGER)
 			sc_start(src, bl, type, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+		if (skill_id == SOA_TALISMAN_OF_WHITE_TIGER && sc && sc->getSCE(SC_T_FIRST_GOD))
+			sc_start(src, src, SC_T_SECOND_GOD, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		if (skill_id == SKE_RISING_MOON)
 		{
 			if (sc && sc->count)
@@ -8899,6 +8978,23 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		{
 			if (skill_id == IG_ULTIMATE_SACRIFICE)
 				status_set_hp(src, 1, 0);
+			party_foreachsamemap(skill_area_sub, sd, skill_get_splash(skill_id, skill_lv), src, skill_id, skill_lv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
+		}
+		break;
+
+	case SOA_SOUL_OF_HEAVEN_AND_EARTH:
+		if (sd == NULL || sd->status.party_id == 0 || (flag & 1))
+		{
+			status_heal(bl, 0, tstatus->max_sp, 0);
+			if (flag & 2)
+				status_heal(bl, 0, 0, 3 * skill_lv, 0);
+			sc_start(src, bl, type, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+		}
+		else if (sd)
+		{
+			clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+			if (map_find_skill_unit_oncell(&sd->bl, sd->bl.x, sd->bl.y, SOA_TOTEM_OF_TUTELARY, NULL, 0) != NULL)
+				flag |= 2;
 			party_foreachsamemap(skill_area_sub, sd, skill_get_splash(skill_id, skill_lv), src, skill_id, skill_lv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
 		}
 		break;
@@ -13897,6 +13993,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 	case EM_VENOM_SWAMP:
 	case EM_CONFLAGRATION:
 	case EM_TERRA_DRIVE:
+	case SOA_TOTEM_OF_TUTELARY:
 		flag|=1;//Set flag to 1 to prevent deleting ammo (it will be deleted on group-delete).
 		[[fallthrough]];
 	case GS_GROUNDDRIFT: //Ammo should be deleted right away.
@@ -14607,6 +14704,13 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 				}
 			}
 		}
+		break;
+
+	case SOA_TALISMAN_OF_BLACK_TORTOISE:
+		flag |= 1;
+		skill_unitsetting(src, skill_id, skill_lv, x, y, 0);
+		if (sc && sc->getSCE(SC_T_THIRD_GOD))
+			sc_start(src, src, SC_T_FOURTH_GOD, 100, skill_lv, skill_get_time2(skill_id, skill_lv));
 		break;
 
 	case NPC_RAINOFMETEOR:
@@ -15894,8 +15998,8 @@ static int skill_unit_onplace(struct skill_unit *unit, struct block_list *bl, t_
 int skill_unit_onplace_timer(struct skill_unit *unit, struct block_list *bl, t_tick tick)
 {
 	struct block_list *ss;
-	TBL_PC* tsd;
-	struct status_data *tstatus;
+	TBL_PC *sd, *tsd;
+	struct status_data *sstatus, *tstatus;
 	status_change *sc, *tsc;
 	struct skill_unit_group_tickset *ts;
 	enum sc_type type;
@@ -15915,9 +16019,11 @@ int skill_unit_onplace_timer(struct skill_unit *unit, struct block_list *bl, t_t
 
 	nullpo_ret(ss = map_id2bl(sg->src_id));
 
+	sd = BL_CAST(BL_PC, ss);
 	tsd = BL_CAST(BL_PC, bl);
-	tsc = status_get_sc(bl);
 	sc = status_get_sc(ss);
+	tsc = status_get_sc(bl);
+	sstatus = status_get_status_data(ss);
 	tstatus = status_get_status_data(bl);
 	type = skill_get_sc(sg->skill_id);
 	skill_id = sg->skill_id;
@@ -16096,6 +16202,39 @@ int skill_unit_onplace_timer(struct skill_unit *unit, struct block_list *bl, t_t
 				if( tsc && tsc->getSCE(SC_AKAITSUKI) && heal )
 					heal = ~heal + 1;
 				status_heal(bl, heal, 0, 0);
+			}
+			break;
+
+		case UNT_TOTEM_OF_TUTELARY:
+			{
+				int hp, sp;
+				struct mob_data* md = BL_CAST(BL_MOB, bl);
+
+				// Skill only checks for party members but since this is a healing skill its best
+				// to have this here to avoid healing certain types of mobs if allowed to affect them. (Rytech)
+				if (md && (md->mob_id == MOBID_EMPERIUM || status_get_class_(bl) == CLASS_BATTLEFIELD))
+					break;
+
+				if (tstatus->hp < tstatus->max_hp)
+				{
+					hp = skill_calc_heal(ss, bl, sg->skill_id, sg->skill_lv, true);
+					if (status_isimmune(bl))
+						hp = 0;
+					if (tsc && tsc->getSCE(SC_AKAITSUKI) && hp)
+						hp = ~hp + 1;
+					status_heal(bl, hp, 0, 2);
+				}
+
+				if (tstatus->sp < tstatus->max_sp)
+				{
+					sp = 50 * sg->skill_lv;
+					sp += 5 * sg->skill_lv * pc_checkskill(sd, SOA_TALISMAN_MASTERY);
+					sp += 5 * sstatus->crt;
+					sp = sp * status_get_lv(ss) / 100;
+					if (status_isimmune(bl))
+						sp = 0;
+					status_heal(bl, 0, sp, 2);
+				}
 			}
 			break;
 
@@ -18073,6 +18212,12 @@ bool skill_check_condition_castbegin(map_session_data* sd, uint16 skill_id, uint
 			if (!(sc && sc->getSCE(SC_THIRD_EXOR_FLAME)))
 				return false;
 			break;
+		case SOA_EXORCISM_OF_MALICIOUS_SOUL:
+			if (sd->soulball > 0 && sd->soulball < require.spiritball)
+				sd->soulball_old = require.spiritball = sd->soulball;
+			else
+				sd->soulball_old = require.spiritball;
+			break;
 		case SKE_NOON_BLAST:
 			if (!(sc && (sc->getSCE(SC_RISING_SUN) || sc->getSCE(SC_NOON_SUN) || sc->getSCE(SC_SKY_ENCHANT)))) {
 				clif_skill_fail(sd, skill_id, USESKILL_FAIL_LEVEL, 0);
@@ -18359,6 +18504,7 @@ bool skill_check_condition_castbegin(map_session_data* sd, uint16 skill_id, uint
 			case SP_SOULREAPER:
 			case SP_SOULEXPLOSION:
 			case SP_KAUTE:
+			case SOA_EXORCISM_OF_MALICIOUS_SOUL:
 				if (sd->soulball < require.spiritball) {
 					clif_skill_fail(sd, skill_id, USESKILL_FAIL_SPIRITS, 0);
 					return false;
@@ -18691,6 +18837,7 @@ void skill_consume_requirement(map_session_data *sd, uint16 skill_id, uint16 ski
 				case SP_SOULREAPER:
 				case SP_SOULEXPLOSION:
 				case SP_KAUTE:
+				case SOA_EXORCISM_OF_MALICIOUS_SOUL:
 					pc_delsoulball(sd, require.spiritball, false);
 					break;
 

@@ -6101,6 +6101,10 @@ static void battle_attack_sc_bonus(struct Damage* wd, struct block_list *src, st
 			ATK_ADDRATE(wd->damage, wd->damage2, sc->getSCE(SC_HEAT_BARREL)->val3);
 			RE_ALLATK_ADDRATE(wd, sc->getSCE(SC_HEAT_BARREL)->val3);
 		}
+		if (sc->getSCE(SC_HEAVEN_AND_EARTH)) {// No flag needed. Increases physical melee and ranged damage.
+			ATK_ADDRATE(wd->damage, wd->damage2, sc->getSCE(SC_HEAVEN_AND_EARTH)->val2);
+			RE_ALLATK_ADDRATE(wd, sc->getSCE(SC_HEAVEN_AND_EARTH)->val2);
+		}
 		if((wd->flag&(BF_LONG|BF_MAGIC)) == BF_LONG) {
 			if (sc->getSCE(SC_MTF_RANGEATK)) { // Monster Transformation bonus
 				ATK_ADDRATE(wd->damage, wd->damage2, sc->getSCE(SC_MTF_RANGEATK)->val1);
@@ -7452,6 +7456,21 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 				ad.div_ = 2;
 			}
 			break;
+		case SOA_TALISMAN_OF_FOUR_BEARING_GOD:
+			if (sc)
+			{
+				if (sc->getSCE(SC_T_FIRST_GOD))
+					ad.div_ = 2;
+				else if (sc->getSCE(SC_T_SECOND_GOD))
+					ad.div_ = 3;
+				else if (sc->getSCE(SC_T_THIRD_GOD))
+					ad.div_ = 4;
+				else if (sc->getSCE(SC_T_FOURTH_GOD))
+					ad.div_ = 5;
+				else if (sc->getSCE(SC_T_FIVETH_GOD))
+					ad.div_ = 7;
+			}
+			break;
 	}
 
 	//Set miscellaneous data that needs be filled
@@ -8292,6 +8311,67 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 							skillratio += 150 * skill_lv;
 						RE_LVL_DMOD(100);
 						break;
+					case SOA_TALISMAN_OF_SOUL_STEALING:
+						skillratio += -100 + 1000 + 500 * skill_lv;
+						skillratio += 7 * skill_lv * (pc_checkskill(sd, SOA_TALISMAN_MASTERY) + pc_checkskill(sd, SOA_SOUL_MASTERY));
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SOA_EXORCISM_OF_MALICIOUS_SOUL:
+					{
+						int baseratio = 150 * skill_lv + 2 * pc_checkskill(sd, SOA_SOUL_MASTERY);
+						if ((tsc && tsc->getSCE(SC_SOULCURSE)) ||
+							map_find_skill_unit_oncell(&sd->bl, sd->bl.x, sd->bl.y, SOA_TOTEM_OF_TUTELARY, NULL, 0) != NULL)
+							baseratio += 100 * skill_lv;
+						skillratio += -100 + baseratio * sd->soulball_old;
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+					}
+						break;
+					case SOA_TALISMAN_OF_BLUE_DRAGON:
+						skillratio += -100 + 900 * skill_lv;
+						if (sc && sc->getSCE(SC_T_FIVETH_GOD))
+							skillratio += 450 * skill_lv;
+						skillratio += 15 * skill_lv * pc_checkskill(sd, SOA_TALISMAN_MASTERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SOA_TALISMAN_OF_WHITE_TIGER:
+						skillratio += -100 + 700 * skill_lv;
+						if (sc && sc->getSCE(SC_T_FIVETH_GOD))
+							skillratio += 300 * skill_lv;
+						skillratio += 15 * skill_lv * pc_checkskill(sd, SOA_TALISMAN_MASTERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SOA_TALISMAN_OF_RED_PHOENIX:
+						skillratio += -100 + 1500 + 600 * skill_lv;
+						if (sc && sc->getSCE(SC_T_FIVETH_GOD))
+							skillratio += 500 + 300 * skill_lv;
+						skillratio += 15 * skill_lv * pc_checkskill(sd, SOA_TALISMAN_MASTERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SOA_TALISMAN_OF_BLACK_TORTOISE:
+						skillratio += -100 + 2000 + 900 * skill_lv;
+						if (sc && sc->getSCE(SC_T_FIVETH_GOD))
+							skillratio += 450 * skill_lv;
+						skillratio += 15 * skill_lv * pc_checkskill(sd, SOA_TALISMAN_MASTERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SOA_TALISMAN_OF_FOUR_BEARING_GOD:
+						skillratio += -100 + 200 * skill_lv;
+						skillratio += 15 * skill_lv * pc_checkskill(sd, SOA_TALISMAN_MASTERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS:
+						skillratio += -100 + 1500 * skill_lv;
+						skillratio += 15 * skill_lv * (pc_checkskill(sd, SOA_TALISMAN_MASTERY) + pc_checkskill(sd, SOA_SOUL_MASTERY));
+						skillratio += 10 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
 					case EM_EL_FLAMEROCK:
 						skillratio += -100 + 2400;
 						if (ed)
@@ -8392,6 +8472,12 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 #ifdef RENEWAL
 		ad.damage += battle_calc_cardfix(BF_MAGIC, src, target, nk, s_ele, 0, ad.damage, 0, ad.flag);
 #endif
+		// Status's that increase magic attack damage by a percentage.
+		if (sc)
+		{
+			if (sc->getSCE(SC_HEAVEN_AND_EARTH))
+				MATK_ADDRATE(sc->getSCE(SC_HEAVEN_AND_EARTH)->val2);
+		}
 
 		if(sd) {
 			//Damage bonuses

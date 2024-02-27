@@ -4132,6 +4132,8 @@ int status_calc_pc_sub(map_session_data* sd, uint8 opt)
 		base_status->int_ += skill;
 	if (pc_checkskill(sd, SU_POWEROFLAND) > 0)
 		base_status->int_ += 20;
+	if ((skill = pc_checkskill(sd, SOA_SOUL_MASTERY)) > 0)
+		base_status->spl += skill;
 
 	// Bonuses from cards and equipment as well as base stat, remember to avoid overflows.
 	i = base_status->str + sd->status.str + sd->indexed_bonus.param_bonus[PARAM_STR] + sd->indexed_bonus.param_equip[PARAM_STR];
@@ -4381,6 +4383,8 @@ int status_calc_pc_sub(map_session_data* sd, uint8 opt)
 		base_status->patk += skill * 3;
 		base_status->smatk += skill * 3;
 	}
+	if ((skill = pc_checkskill(sd, SOA_TALISMAN_MASTERY)) > 0)
+		base_status->smatk += skill;
 	if ((skill = pc_checkskill(sd, SKE_WAR_BOOK_MASTERY)) > 0 && sd->status.weapon == W_BOOK)
 		base_status->patk += 2 + skill;
 	if ((skill = pc_checkskill(sd, HN_SELFSTUDY_TATICS)) > 0)
@@ -4781,6 +4785,29 @@ int status_calc_pc_sub(map_session_data* sd, uint8 opt)
 			sd->indexed_bonus.subele[ELE_DARK] += sc->getSCE(SC_HOLY_S)->val2;
 			sd->indexed_bonus.subele[ELE_UNDEAD] += sc->getSCE(SC_HOLY_S)->val2;
 			sd->indexed_bonus.magic_atk_ele[ELE_HOLY] += sc->getSCE(SC_HOLY_S)->val2;
+		}
+		if (sc->getSCE(SC_TALISMAN_OF_FIVE_ELEMENTS))
+		{
+			i = sc->getSCE(SC_TALISMAN_OF_FIVE_ELEMENTS)->val2;
+
+			sd->right_weapon.addele[ELE_NEUTRAL] += i;
+			sd->right_weapon.addele[ELE_WATER] += i;
+			sd->right_weapon.addele[ELE_EARTH] += i;
+			sd->right_weapon.addele[ELE_FIRE] += i;
+			sd->right_weapon.addele[ELE_WIND] += i;
+			if (!battle_config.left_cardfix_to_right)
+			{
+				sd->left_weapon.addele[ELE_NEUTRAL] += i;
+				sd->left_weapon.addele[ELE_WATER] += i;
+				sd->left_weapon.addele[ELE_EARTH] += i;
+				sd->left_weapon.addele[ELE_FIRE] += i;
+				sd->left_weapon.addele[ELE_WIND] += i;
+			}
+			sd->indexed_bonus.magic_addele[ELE_NEUTRAL] += i;
+			sd->indexed_bonus.magic_addele[ELE_WATER] += i;
+			sd->indexed_bonus.magic_addele[ELE_EARTH] += i;
+			sd->indexed_bonus.magic_addele[ELE_FIRE] += i;
+			sd->indexed_bonus.magic_addele[ELE_WIND] += i;
 		}
 		if (sc->getSCE(SC_SUMMON_ELEMENTAL_ARDOR))
 			sd->indexed_bonus.magic_atk_ele[ELE_FIRE] += 10;
@@ -8522,6 +8549,8 @@ static signed short status_calc_patk(struct block_list *bl, status_change *sc, i
 	if( sc->getSCE( SC_ATTACK_STANCE ) ){
 		patk += sc->getSCE( SC_ATTACK_STANCE )->val3;
 	}
+	if (sc->getSCE(SC_TALISMAN_OF_WARRIOR))
+		patk += sc->getSCE(SC_TALISMAN_OF_WARRIOR)->val2;
 
 	return (short)cap_value(patk, 0, SHRT_MAX);
 }
@@ -8549,6 +8578,10 @@ static signed short status_calc_smatk(struct block_list *bl, status_change *sc, 
 	if( sc->getSCE( SC_ATTACK_STANCE ) ){
 		smatk += sc->getSCE( SC_ATTACK_STANCE )->val3;
 	}
+	if (sc->getSCE(SC_TALISMAN_OF_MAGICIAN))
+		smatk += sc->getSCE(SC_TALISMAN_OF_MAGICIAN)->val2;
+	if (sc->getSCE(SC_T_FIVETH_GOD))
+		smatk += sc->getSCE(SC_T_FIVETH_GOD)->val2;
 
 	return (short)cap_value(smatk, 0, SHRT_MAX);
 }
@@ -12703,6 +12736,25 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 		case SC_SPELL_ENCHANTING:
 			val2 = 4 * val1;// SMatk Increase
 			break;
+		case SC_TALISMAN_OF_PROTECTION:
+			val4 = tick / 3000;
+			tick_time = 3000;
+			break;
+		case SC_TALISMAN_OF_WARRIOR:
+			val2 = 2 * val1;// PAtk Increase
+			break;
+		case SC_TALISMAN_OF_MAGICIAN:
+			val2 = 2 * val1;// SMatk Increase
+			break;
+		case SC_TALISMAN_OF_FIVE_ELEMENTS:
+			val2 = 4 * val1;// Damage Increase
+			break;
+		case SC_T_FIVETH_GOD:
+			val2 = 5 * val1;// SMatk Increase
+			break;
+		case SC_HEAVEN_AND_EARTH:
+			val2 = 5 + 2 * val1;// Damage Increase
+			break;
 		case SC_FLAMETECHNIC:
 		case SC_FLAMEARMOR:
 		case SC_COLD_FORCE:
@@ -14853,6 +14905,15 @@ TIMER_FUNC(status_change_timer){
 			clif_specialeffect(bl, 1808, AREA);
 			skill_castend_nodamage_id(bl, bl, CD_MEDIALE_VOTUM, sce->val1, tick, 1);
 			sc_timer_next(2000 + tick);
+			return 0;
+		}
+		break;
+
+	case SC_TALISMAN_OF_PROTECTION:
+		if (--(sce->val4) >= 0) {
+			clif_skill_nodamage(NULL, bl, AL_HEAL, sce->val2, 1);
+			status_heal(bl, sce->val2, 0, 0);
+			sc_timer_next(3000 + tick);
 			return 0;
 		}
 		break;

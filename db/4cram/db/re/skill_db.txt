@@ -101,13 +101,13 @@
 // Soul Ascetic
 5416,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SOA_TALISMAN_MASTERY,Talisman Mastery
 5417,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SOA_SOUL_MASTERY,Soul Mastery
-5418,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_PROTECTION,Talisman Of Protection// Make sure it only works on
-5419,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_WARRIOR,Talisman Of Warrior// targets with equipped weapon.
+5418,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_PROTECTION,Talisman Of Protection// Might need to redo code to use skill_calc_heal.
+5419,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_WARRIOR,Talisman Of Warrior// Is the buff removed if player removes or switches weapons?
 5420,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_MAGICIAN,Talisman Of Magician
 5421,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_GATHERING,Soul Gathering// Skill fail 103
 5422,9,6,2,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SOA_TOTEM_OF_TUTELARY,Totem Of Tutelary
 5423,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,0,	SOA_TALISMAN_OF_FIVE_ELEMENTS,Talisman Of Five Elements
-5424,9,6,1,-2,0,0,5,1,yes,0,0,0,magic,0,0,0,	SOA_TALISMAN_OF_SOUL_STEALING,Talisman Of Soul Stealing// Replay shows it healing 100 per level.
+5424,9,6,1,-2,0,0,5,1,yes,0,0,0,magic,0,0,0,	SOA_TALISMAN_OF_SOUL_STEALING,Talisman Of Soul Stealing// Does it recover SP even if the attack misses?
 5425,0,8,4,-2,0x2,5:5:5:6:6,5,-5,yes,0,0,0,magic,0,0,2,	SOA_EXORCISM_OF_MALICIOUS_SOUL,Exorcism Of Malicious Soul// Does 1 hit if no soul energy.
 5426,9,6,1,-2,0,0,5,1,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_BLUE_DRAGON,Talisman Of Blue Dragon
 5427,0,8,4,-2,0x2,5:5:5:6:6,5,-2,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_WHITE_TIGER,Talisman Of White Tiger
