@@ -46,3 +46,60 @@ Header:
 
 Body:
 #================================
+#  - Status: 
+#    Icon: 
+#    DurationLookup: 
+#    Flags:
+#      NoDispell: true
+#      NoClearance: true
+#      NoBanishingBuster: true
+#      BlEffect: true
+#      DisplayPc: true
+#    Fail:
+#      : true
+#    EndOnStart:
+#      : true
+#================================
+  - Status: Shadow_Clock
+    Icon: EFST_SHADOW_CLOCK
+    DurationLookup: SS_TOKEDASU
+    CalcFlags:
+      Speed: true
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
+#================================
+# Note: This status doesn't appear
+#       to be used officially.
+#  - Status: Shinkirou_Call
+#    Icon: EFST_SHINKIROU_CALL
+#    DurationLookup: SS_SHINKIROU
+#    Flags:
+#      NoDispell: true
+#      NoClearance: true
+#      NoBanishingBuster: true
+#      BlEffect: true
+#      DisplayPc: true
+#================================
+  - Status: Nightmare
+    Icon: EFST_NIGHTMARE
+    DurationLookup: SS_KAGEGARI
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
+      Debuff: true
+#================================
+  - Status: Sbunshin
+    Icon: EFST_SBUNSHIN
+    DurationLookup: SS_SHINKIROU
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+#================================

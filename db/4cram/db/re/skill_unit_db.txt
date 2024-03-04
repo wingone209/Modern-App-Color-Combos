@@ -31,12 +31,13 @@
 //
 //    u1   u2 lay  r intr target  flag
 //
+//  21,0x86,    ,  0, 1,1000,enemy, 0x010	//MG_THUNDERSTORM - single hit
+//  89,0x86,    ,  4, 1, 450,enemy, 0x018	//WZ_STORMGUST - repeated hit
 
 5412,0x120,   ,  0, 1,1000,enemy, 0x018	//NW_GRENADES_DROPPING
 5415,0x123,   ,  0, 1,1000,enemy, 0x018	//NW_MISSION_BOMBARD
 
 5422,0x124,   ,  2:2:3:3:4, 0,1500,party, 0x2018//SOA_TOTEM_OF_TUTELARY - Official uses range but im using layout instead due to 2 skills checking for it.
-
 5429,0x86,    ,  0, 3:3:4:4:5,1000,enemy, 0x010	//SOA_TALISMAN_OF_BLACK_TORTOISE
 
 5445,0x125,   ,  0, 1,1000,enemy, 0x018	//SH_HYUN_ROKS_BREEZE
@@ -48,6 +49,12 @@
 5472,0x86,    ,  0, 2, 300,enemy, 0x000	//SKE_STAR_BURST
 5473,0x11f,0x86, 0, 3, 300,enemy, 0x2010//SKE_STAR_CANNON
 
-5479,0x126,   ,  0, 1,1000,enemy, 0x018	//SS_SHINKIROU
-5483,0x122,   ,  0, 1,1000,enemy, 0x018	//SS_FUUMASHOUAKU
-5485,0x12a,   ,  0, 1,1000,enemy, 0x018	//SS_KUNAIWAIKYOKU
+5476,0x86,    ,  0, 2,1000,enemy, 0x010	//SS_TOKEDASU
+5479,0x126,   ,  0, 0,1000,enemy, 0x018	//SS_SHINKIROU - Size is 1x1 right?
+5480,0x86,    ,  0, 2,1000,enemy, 0x010	//SS_KAGEGARI
+5483,0x122,   ,  0, 2:2:2:2:3:3:3:3:4:4,250,enemy, 0x018	//SS_FUUMASHOUAKU
+5485,0x12a,   ,  0, 2,1000,enemy, 0x018	//SS_KUNAIWAIKYOKU - 2 AoEs?
+5486,0x129,   ,  0, 2:2:3:3:4,500,enemy, 0x018	//SS_KUNAIKAITEN - Another 2 AoE's?
+5487,0x12b,   ,  0, 2,250,enemy, 0x018	//SS_KUNAIKUSSETSU
+5488,0x12c,   ,  0, 0,1000,enemy, 0x010	//SS_SEKIENHOU - Special AoE Shape. Radius of 4?
+5489,0x86,    ,  0, 2:2:2:2:3:3:3:3:4:4,1000,enemy, 0x010	//SS_REIKETSUHOU

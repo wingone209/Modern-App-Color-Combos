@@ -46,3 +46,17 @@ Header:
 
 Body:
 #================================
+#  - Status: 
+#    Icon: 
+#    DurationLookup: 
+#    Flags:
+#      NoDispell: true
+#      NoClearance: true
+#      NoBanishingBuster: true
+#      BlEffect: true
+#      DisplayPc: true
+#    Fail:
+#      : true
+#    EndOnStart:
+#      : true
+#================================

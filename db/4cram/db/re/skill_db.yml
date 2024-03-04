@@ -2004,22 +2004,61 @@ Body:
     Name: SS_TOKEDASU
     Description: Melt Away
     MaxLevel: 5
+    Type: Magic
     TargetType: Ground
     Range: 5
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -2
+    Element: Dark
+    Knockback: 3
     CastCancel: true
+    Duration1: 2000
+    Cooldown:
+      - Level: 1
+        Time: 6000
+      - Level: 2
+        Time: 5000
+      - Level: 3
+        Time: 4000
+      - Level: 4
+        Time: 3000
+      - Level: 5
+        Time: 2000
     Requires:
       SpCost: 35
+    Unit:
+      Id: Dummyskill
+      Range: 2
+      Interval: 1000
+      Target: Enemy
+      Flag:
+        PathCheck: true
   - Id: 5477
     Name: SS_SHIMIRU
     Description: Infiltrate
     MaxLevel: 5
+    Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 11
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -2
+    Element: Weapon
+    SplashArea: 15
     CastCancel: true
+    Duration1: 2000
+    Cooldown:
+      - Level: 1
+        Time: 1500
+      - Level: 2
+        Time: 1250
+      - Level: 3
+        Time: 1000
+      - Level: 4
+        Time: 750
+      - Level: 5
+        Time: 500
     Requires:
       SpCost: 40
   - Id: 5478
@@ -2027,9 +2066,17 @@ Body:
     Description: Nightmare Erasion
     MaxLevel: 1
     TargetType: Self
+    DamageFlags:
+      NoDamage: true
+      Splash: true
     Hit: Single
     HitCount: 1
+    SplashArea: 7
     CastCancel: true
+    CastTime: 1000
+    AfterCastActDelay: 250
+    Cooldown: 15000
+    FixedCastTime: 200
     Requires:
       SpCost: 10
   - Id: 5479
@@ -2037,15 +2084,21 @@ Body:
     Description: Mirage
     MaxLevel: 1
     TargetType: Ground
+    DamageFlags:
+      NoDamage: true
     Range: 5
     Hit: Single
     HitCount: 1
+    ActiveInstance: 3
     CastCancel: true
+    CastTime: 2000
+    Duration1: 20000
+    Cooldown: 3000
+    FixedCastTime: 1000
     Requires:
       SpCost: 25
     Unit:
       Id: Shinkirou
-      Range: 1
       Interval: 1000
       Target: Enemy
       Flag:
@@ -2055,12 +2108,17 @@ Body:
     Name: SS_KAGEGARI
     Description: Shadow Hunting
     MaxLevel: 10
+    Type: Weapon
     TargetType: Ground
     Range: 2
     Hit: Single
     HitCount: 1
+    Element: Weapon
     GiveAp: 1
     CastCancel: true
+    AfterCastActDelay: 150
+    Duration1: 5000
+    Cooldown: 300
     Requires:
       SpCost:
         - Level: 1
@@ -2083,15 +2141,70 @@ Body:
           Amount: 46
         - Level: 10
           Amount: 48
+    Unit:
+      Id: Dummyskill
+      Range: 2
+      Interval: 1000
+      Target: Enemy
+      Flag:
+        PathCheck: true
   - Id: 5481
     Name: SS_KAGENOMAI
     Description: Shadow Dance
     MaxLevel: 10
+    Type: Weapon
     TargetType: Self
-    Hit: Single
-    HitCount: 1
+    DamageFlags:
+      Splash: true
+    Hit: Multi_Hit
+    HitCount: -5
+    Element: Weapon
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 2
+      - Level: 5
+        Area: 3
+      - Level: 6
+        Area: 3
+      - Level: 7
+        Area: 3
+      - Level: 8
+        Area: 3
+      - Level: 9
+        Area: 4
+      - Level: 10
+        Area: 4
     GiveAp: 1
     CastCancel: true
+    CastTime:
+      - Level: 1
+        Time: 1900
+      - Level: 2
+        Time: 1800
+      - Level: 3
+        Time: 1700
+      - Level: 4
+        Time: 1600
+      - Level: 5
+        Time: 1500
+      - Level: 6
+        Time: 1400
+      - Level: 7
+        Time: 1300
+      - Level: 8
+        Time: 1200
+      - Level: 9
+        Time: 1100
+      - Level: 10
+        Time: 1000
+    AfterCastActDelay: 500
+    Cooldown: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -2118,11 +2231,21 @@ Body:
     Name: SS_KAGEGISSEN
     Description: Shadow Flash
     MaxLevel: 10
+    Type: Weapon
     TargetType: Attack
+    Flags:
+      TargetTrap: true
     Range: 1
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -4
+    Element: Weapon
+    SplashArea: 1
+    ActiveInstance: 10
     CastCancel: true
+    CastTime: 1000
+    AfterCastActDelay: 250
+    Cooldown: 1000
+    FixedCastTime: 500
     Requires:
       SpCost:
         - Level: 1
@@ -2149,12 +2272,21 @@ Body:
     Name: SS_FUUMASHOUAKU
     Description: Huuma Shuriken - Grasp
     MaxLevel: 10
+    Type: Weapon
     TargetType: Ground
     Range: 9
     Hit: Single
     HitCount: 1
+    Element: Weapon
+    ActiveInstance: 2
     GiveAp: 2
     CastCancel: true
+    CastTime: 1200
+    AfterCastActDelay: 500
+    Duration1: 5000
+    Duration2: 5000
+    Cooldown: 1000
+    FixedCastTime: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -2179,8 +2311,28 @@ Body:
           Amount: 56
     Unit:
       Id: Fuumashouaku
-      Range: 1
-      Interval: 1000
+      Range:
+        - Level: 1
+          Size: 2
+        - Level: 2
+          Size: 2
+        - Level: 3
+          Size: 2
+        - Level: 4
+          Size: 2
+        - Level: 5
+          Size: 3
+        - Level: 6
+          Size: 3
+        - Level: 7
+          Size: 3
+        - Level: 8
+          Size: 3
+        - Level: 9
+          Size: 4
+        - Level: 10
+          Size: 4
+      Interval: 250
       Target: Enemy
       Flag:
         NoOverlap: true
@@ -2189,11 +2341,20 @@ Body:
     Name: SS_FUUMAKOUCHIKU
     Description: Huuma Shuriken - Construct
     MaxLevel: 10
+    Type: Weapon
     TargetType: Ground
+    Flags:
+      TargetTrap: true
     Range: 1
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -3
+    Element: Weapon
+    SplashArea: 2
+    ActiveInstance: 13
     CastCancel: true
+    CastTime: 1200
+    Cooldown: 1000
+    FixedCastTime: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -2220,12 +2381,19 @@ Body:
     Name: SS_KUNAIWAIKYOKU
     Description: Kunai - Distortion
     MaxLevel: 10
+    Type: Weapon
     TargetType: Ground
     Range: 9
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -2
+    Element: Weapon
     GiveAp: 1
     CastCancel: true
+    CastTime: 200
+    AfterCastActDelay: 500
+    Duration1: 5000
+    Duration2: 5000
+    Cooldown: 350
     Requires:
       SpCost:
         - Level: 1
@@ -2248,9 +2416,12 @@ Body:
           Amount: 44
         - Level: 10
           Amount: 46
+      Ammo:
+        Kunai: true
+      AmmoAmount: 2
     Unit:
       Id: Kunaiwaikyoku
-      Range: 1
+      Range: 2
       Interval: 1000
       Target: Enemy
       Flag:
@@ -2260,31 +2431,86 @@ Body:
     Name: SS_KUNAIKAITEN
     Description: Kunai - Rotation
     MaxLevel: 5
+    Type: Weapon
     TargetType: Self
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -3
+    Element: Weapon
     CastCancel: true
+    AfterCastActDelay: 500
+    Duration1: 2000
+    Duration2: 2000
+    Cooldown: 2000
     Requires:
       SpCost: 55
+      Ammo:
+        Kunai: true
+      AmmoAmount: 5
+    Unit:
+      Id: Kunaikaiten
+      Range:
+        - Level: 1
+          Size: 2
+        - Level: 2
+          Size: 2
+        - Level: 3
+          Size: 3
+        - Level: 4
+          Size: 3
+        - Level: 5
+          Size: 4
+      Interval: 500
+      Target: Enemy
+      Flag:
+        NoOverlap: true
+        PathCheck: true
   - Id: 5487
     Name: SS_KUNAIKUSSETSU
     Description: Kunai - Refraction
     MaxLevel: 10
+    Type: Weapon
     TargetType: Self
+    DamageFlags:
+      Splash: true
     Hit: Single
     HitCount: 1
+    Element: Weapon
+    SplashArea: 7
     CastCancel: true
+    CastTime: 1500
+    AfterCastActDelay: 500
+    Duration1: 2000
+    Cooldown: 2000
+    FixedCastTime: 500
     Requires:
       SpCost: 50
+      Ammo:
+        Kunai: true
+      AmmoAmount: 5
+    Unit:
+      Id: Kunaikussetsu
+      Range: 2
+      Interval: 250
+      Target: Enemy
+      Flag:
+        NoOverlap: true
+        PathCheck: true
   - Id: 5488
     Name: SS_SEKIENHOU
     Description: Red Flame Cannon
     MaxLevel: 10
+    Type: Magic
     TargetType: Ground
     Range: 1
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -3
+    Element: Fire
     CastCancel: true
+    CastTime: 2000
+    AfterCastActDelay: 500
+    Duration1: 100
+    Cooldown: 1000
+    FixedCastTime: 1500
     Requires:
       SpCost:
         - Level: 1
@@ -2307,15 +2533,31 @@ Body:
           Amount: 60
         - Level: 10
           Amount: 62
+      ItemCost:
+        - Item: SS_Charm_F
+          Amount: 1
+    Unit:
+      Id: Sekienhou
+      Interval: 1000
+      Target: Enemy
+      Flag:
+        PathCheck: true
   - Id: 5489
     Name: SS_REIKETSUHOU
     Description: Cold Blooded Cannon
     MaxLevel: 10
+    Type: Magic
     TargetType: Ground
     Range: 9
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -6
+    Element: Water
     CastCancel: true
+    CastTime: 3000
+    AfterCastActDelay: 500
+    Duration1: 100
+    Cooldown: 500
+    FixedCastTime: 1500
     Requires:
       SpCost:
         - Level: 1
@@ -2338,15 +2580,55 @@ Body:
           Amount: 58
         - Level: 10
           Amount: 61
+      ItemCost:
+        - Item: SS_Charm_W
+          Amount: 1
+    Unit:
+      Id: Dummyskill
+      Range:
+        - Level: 1
+          Size: 2
+        - Level: 2
+          Size: 2
+        - Level: 3
+          Size: 2
+        - Level: 4
+          Size: 2
+        - Level: 5
+          Size: 3
+        - Level: 6
+          Size: 3
+        - Level: 7
+          Size: 3
+        - Level: 8
+          Size: 3
+        - Level: 9
+          Size: 4
+        - Level: 10
+          Size: 4
+      Interval: 1000
+      Target: Enemy
+      Flag:
+        PathCheck: true
   - Id: 5490
     Name: SS_RAIDENPOU
     Description: Thundering Cannon
     MaxLevel: 10
+    Type: Magic
     TargetType: Ground
+    Flags:
+      TargetTrap: true
     Range: 1
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -2
+    Element: Wind
+    SplashArea: 1
+    ActiveInstance: 13
     CastCancel: true
+    CastTime: 2000
+    AfterCastActDelay: 500
+    Cooldown: 1000
+    FixedCastTime: 1500
     Requires:
       SpCost:
         - Level: 1
@@ -2369,15 +2651,28 @@ Body:
           Amount: 60
         - Level: 10
           Amount: 62
+      ItemCost:
+        - Item: SS_Charm_L
+          Amount: 1
   - Id: 5491
     Name: SS_KINRYUUHOU
     Description: Golden Dragon Cannon
     MaxLevel: 10
+    Type: Magic
     TargetType: Attack
+    Flags:
+      TargetTrap: true
     Range: 13
     Hit: Single
     HitCount: 1
+    Element: Earth
+    SplashArea: 1
+    ActiveInstance: 13
     CastCancel: true
+    CastTime: 3000
+    AfterCastActDelay: 500
+    Cooldown: 300
+    FixedCastTime: 1500
     Requires:
       SpCost:
         - Level: 1
@@ -2400,15 +2695,48 @@ Body:
           Amount: 46
         - Level: 10
           Amount: 48
+      ItemCost:
+        - Item: SS_Charm_G
+          Amount: 1
   - Id: 5492
     Name: SS_ANTENPOU
     Description: Darkening Cannon
     MaxLevel: 10
+    Type: Magic
     TargetType: Self
-    Hit: Single
-    HitCount: 1
+    DamageFlags:
+      Splash: true
+    Hit: Multi_Hit
+    HitCount: -2
+    Element: Dark
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 2
+      - Level: 5
+        Area: 2
+      - Level: 6
+        Area: 3
+      - Level: 7
+        Area: 3
+      - Level: 8
+        Area: 3
+      - Level: 9
+        Area: 3
+      - Level: 10
+        Area: 3
     GiveAp: 2
     CastCancel: true
+    CastTime: 3000
+    AfterCastActDelay: 500
+    Duration1: 5000
+    Cooldown: 500
+    FixedCastTime: 1500
     Requires:
       SpCost:
         - Level: 1
@@ -2431,14 +2759,26 @@ Body:
           Amount: 56
         - Level: 10
           Amount: 58
+      ItemCost:
+        - Item: SS_Charm
+          Amount: 1
   - Id: 5493
     Name: SS_KAGEAKUMU
     Description: Shadow - Nightmare
     MaxLevel: 1
+    Type: Weapon
     TargetType: Self
-    Hit: Single
-    HitCount: 1
+    DamageFlags:
+      Splash: true
+    Hit: Multi_Hit
+    HitCount: -4
+    Element: Weapon
+    SplashArea: 6
     CastCancel: true
+    CastTime: 2000
+    AfterCastActDelay: 500
+    Cooldown: 5000
+    FixedCastTime: 500
     Requires:
       SpCost: 70
       ApCost: 30
@@ -2446,10 +2786,19 @@ Body:
     Name: SS_HITOUAKUMU
     Description: Kunai - Nightmare
     MaxLevel: 1
+    Type: Weapon
     TargetType: Self
-    Hit: Single
-    HitCount: 1
+    DamageFlags:
+      Splash: true
+    Hit: Multi_Hit
+    HitCount: -8
+    Element: Weapon
+    SplashArea: 6
     CastCancel: true
+    CastTime: 2000
+    AfterCastActDelay: 500
+    Cooldown: 5000
+    FixedCastTime: 500
     Requires:
       SpCost: 70
       ApCost: 30
@@ -2457,10 +2806,19 @@ Body:
     Name: SS_ANKOKURYUUAKUMU
     Description: Dark Dragon - Nightmare
     MaxLevel: 1
+    Type: Magic
     TargetType: Self
-    Hit: Single
-    HitCount: 1
+    DamageFlags:
+      Splash: true
+    Hit: Multi_Hit
+    HitCount: -4
+    Element: Dark
+    SplashArea: 5
     CastCancel: true
+    CastTime: 2000
+    AfterCastActDelay: 500
+    Cooldown: 5000
+    FixedCastTime: 1500
     Requires:
       SpCost: 120
       ApCost: 30
@@ -2484,7 +2842,13 @@ Body:
     Name: SS_FUUMAKOUCHIKU_BLASTING
     Description: Huuma Shuriken - Construct Blasting
     MaxLevel: 10
+    Type: Weapon
+    TargetType: Attack
+    DamageFlags:
+      Splash: true
     Hit: Single
     HitCount: 1
+    Element: Weapon
+    SplashArea: 4
     Requires:
       SpCost: 1

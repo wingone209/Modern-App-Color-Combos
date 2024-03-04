@@ -29,6 +29,10 @@ Header:
 
 Body:
 #================================
+# 
+#  - Id: 
+#    Status: 
+#================================
 # SOA_TALISMAN_OF_PROTECTION
   - Id: 5418
     Status: Talisman_Of_Protection
@@ -76,4 +80,36 @@ Body:
 # SKE_ENCHANTING_SKY
   - Id: 5475
     Status: Sky_Enchant
+#================================
+# SS_TOKEDASU
+  - Id: 5476
+    Status: Shadow_Clock
+
+# SS_SHIMIRU
+  - Id: 5477
+    Status: Shadow_Clock
+
+# SS_SHINKIROU
+  - Id: 5479
+    Status: Sbunshin
+
+# SS_KAGEGARI
+  - Id: 5480
+    Status: Nightmare
+
+# SS_FUUMASHOUAKU
+  - Id: 5483
+    Status: Nightmare
+
+# SS_KUNAIWAIKYOKU
+  - Id: 5485
+    Status: Nightmare
+
+# SS_KUNAIKAITEN
+  - Id: 5486
+    Status: Shadow_Clock
+
+# SS_ANTENPOU
+  - Id: 5492
+    Status: Nightmare
 #================================

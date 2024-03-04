@@ -46,6 +46,20 @@ Header:
 
 Body:
 #================================
+#  - Status: 
+#    Icon: 
+#    DurationLookup: 
+#    Flags:
+#      NoDispell: true
+#      NoClearance: true
+#      NoBanishingBuster: true
+#      BlEffect: true
+#      DisplayPc: true
+#    Fail:
+#      : true
+#    EndOnStart:
+#      : true
+#================================
   - Status: Rising_Sun
     Icon: EFST_RISING_SUN
     DurationLookup: SKE_RISING_SUN
