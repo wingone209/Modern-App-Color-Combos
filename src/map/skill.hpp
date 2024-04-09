@@ -36,6 +36,11 @@ class status_change;
 #define SKILL_NAME_LENGTH 40 /// Max Skill Name length
 #define SKILL_DESC_LENGTH 40 /// Max Skill Desc length
 
+/// Flag to trigger a skills 2nd attack if the skill supports it.
+/// Note: A example is a skill that deals 2 different attacks through a single skill ID
+/// using different damage formulas, elements, number of hits, etc.
+#define SK_SECONDATK 0x10
+
 /// Used with tracking the hitcount of Earthquake for skills that can avoid the first attack
 #define NPC_EARTHQUAKE_FLAG 0x800
 
@@ -2670,9 +2675,8 @@ enum e_skill_unit_id : uint16 {
 	UNT_CATNIPPOWDER,
 	UNT_NYANGGRASS,
 
-	// Must correct this soon.
-	UNT_CREATINGSTAR,// Should be GROUNDDRIFT_NEUTRAL
-	UNT_DUMMY_0,// CREATINGSTAR
+	UNT_GROUNDDRIFT_NEUTRAL,
+	UNT_CREATINGSTAR,
 
 	UNT_RAIN_OF_CRYSTAL,
 	UNT_MYSTERY_ILLUSION,
@@ -2705,8 +2709,10 @@ enum e_skill_unit_id : uint16 {
 	UNT_SHINKIROU,// Mirage
 	UNT_JACK_FROST_NOVA,
 	UNT_GROUND_GRAVITATION,
-	UNT_UNKNOWN_3,// Shows Nothing
+	UNT_KUNAIKAITEN,// Kunai - Rotation
 	UNT_KUNAIWAIKYOKU,// Kunai - Distortion
+	UNT_KUNAIKUSSETSU,// Kunai - Refraction
+	UNT_SEKIENHOU,// Red Flame Cannon
 
 	// Skill units outside the normal unit range.
 	UNT_DEEPBLINDTRAP = 20852,

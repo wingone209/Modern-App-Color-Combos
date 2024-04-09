@@ -293,6 +293,9 @@ int skill_frostjoke_scream(struct block_list *bl,va_list ap);
 int skill_attack_area(struct block_list *bl,va_list ap);
 std::shared_ptr<s_skill_unit_group> skill_locate_element_field(struct block_list *bl); // [Skotlex]
 int skill_graffitiremover(struct block_list *bl, va_list ap); // [Valaris]
+int skill_fuumakouchiku_blasting(struct block_list* bl, va_list ap);
+int skill_kunaikussetsu(struct block_list* bl, va_list ap);
+int skill_shinkirou(struct block_list* bl, va_list ap);
 int skill_greed(struct block_list *bl, va_list ap);
 static int skill_cell_overlap(struct block_list *bl, va_list ap);
 static int skill_trap_splash(struct block_list *bl, va_list ap);
@@ -2226,6 +2229,17 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl, uint
 		status_heal(src, 0, sp_recover, 0);
 	}
 		break;
+	case SS_KAGEGARI:
+	case SS_FUUMASHOUAKU:
+	case SS_KUNAIWAIKYOKU:
+	case SS_ANTENPOU:
+		sc_start(src, bl, SC_NIGHTMARE, 100, skill_lv, skill_get_time2(skill_id, skill_lv));
+		break;
+	case SS_KAGEAKUMU:
+	case SS_HITOUAKUMU:
+	case SS_ANKOKURYUUAKUMU:
+		status_change_end(bl, SC_NIGHTMARE);
+		break;
 	case HN_SHIELD_CHAIN_RUSH:
 	case HN_JACK_FROST_NOVA:
 	case HN_GROUND_GRAVITATION:
@@ -3549,9 +3563,12 @@ void skill_attack_blow(struct block_list *src, struct block_list *dsrc, struct b
  * @param bl is the target to be attacked.
  * @param flag can hold a bunch of information:
  *        flag&1
- *        flag&2 - Disable re-triggered by double casting
- *        flag&4 - Skip to blow target (because already knocked back before skill_attack somewhere)
- *        flag&8 - SC_COMBO state used to deal bonus damage
+ *        flag&2  - Disable re-triggered by double casting
+ *        flag&4  - Skip to blow target (because already knocked back before skill_attack somewhere)
+ *        flag&8  - SC_COMBO state used to deal bonus damage
+ *        flag&16 - (SK_SECONDATK) Trigger a skills 2nd attack if the skill supports it.
+ *        Note: A example is a skill that deals 2 different attacks through a single skill ID
+ *        using different damage formulas, elements, number of hits, etc.
  *
  *        flag&0xFFF is passed to the underlying battle_calc_attack for processing.
  *             (usually holds number of targets, or just 1 for simple splash attacks)
@@ -3974,6 +3991,14 @@ int64 skill_attack (int attack_type, struct block_list* src, struct block_list *
 			if (flag&SD_ANIMATION)// For some reason the caster reacts on the splash flag. Best reduce amotion to minimize it for now. [Rytech]
 				dmg.dmotion = clif_skill_damage(dsrc, bl, tick, 10, dmg.dmotion, damage, dmg.div_, skill_id, -1, DMG_SPLASH);
 			else
+				dmg.dmotion = clif_skill_damage(dsrc, bl, tick, dmg.amotion, dmg.dmotion, damage, dmg.div_, skill_id, skill_lv, dmg_type);
+			break;
+		case SS_KAGENOMAI:
+		case SS_KAGEGISSEN:
+		case SS_ANTENPOU:
+			if (flag&SK_SECONDATK && sd->shinkirou_clone_id > 0)// Clones casting the skills.
+				dmg.dmotion = clif_skill_damage(map_id2bl(sd->shinkirou_clone_id), bl, tick, dmg.amotion, dmg.dmotion, damage, dmg.div_, skill_id, skill_lv, dmg_type);
+			else// Caster casting the skills.
 				dmg.dmotion = clif_skill_damage(dsrc, bl, tick, dmg.amotion, dmg.dmotion, damage, dmg.div_, skill_id, skill_lv, dmg_type);
 			break;
 		case AB_DUPLELIGHT_MELEE:
@@ -5298,6 +5323,25 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	}
 		break;
 
+	case SS_SHIMIRU:
+		short x, y;
+
+		sc_start(src, src, SC_SHADOW_CLOCK, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+
+		// Supposed to dash me to the opposite side of the target.
+		// Need to figure out how to get that accurate with that. (Rytech)
+		map_search_freecell(bl, 0, &x, &y, 1, 1, 0);
+		// Jump to the enemy before attacking but only if not in GvG area's.
+		if (skill_check_unit_movepos(5, src, x, y, 1, 1))
+			clif_blown(src);
+
+		// Move any mirage clones to you if in range.
+		if (sc && sc->getSCE(SC_SBUNSHIN))
+			map_foreachinrange(skill_shinkirou, src, 15, BL_SKILL, src, src, 0, 0, skill_id, skill_lv, tick);
+
+		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
+		break;
+
 	case DK_DRAGONIC_AURA:
 	case DK_STORMSLASH:
 	case CD_EFFLIGO:
@@ -5768,6 +5812,16 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case SOA_TALISMAN_OF_RED_PHOENIX:
 	case SOA_TALISMAN_OF_FOUR_BEARING_GOD:
 	case SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS:
+	case SS_TOKEDASU:
+	case SS_KAGENOMAI:
+	case SS_KAGEGISSEN:
+	case SS_SEKIENHOU:
+	case SS_RAIDENPOU:
+	case SS_KINRYUUHOU:
+	case SS_ANTENPOU:
+	case SS_KAGEAKUMU:
+	case SS_HITOUAKUMU:
+	case SS_ANKOKURYUUAKUMU:
 	case HN_JUPITEL_THUNDER_STORM:
 		if( flag&1 ) {//Recursive invocation
 			int sflag = skill_area_temp[0] & 0xFFF;
@@ -5787,6 +5841,10 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 			// Deft Stab - Make sure the flag of 2 is passed on when the skill is double casted.
 			if (skill_id == ABC_DEFT_STAB && flag&2)
 				sflag |= 2;
+
+			// Secondary attack.
+			if (flag&SK_SECONDATK)
+				sflag |= SK_SECONDATK;
 
 			if( flag&SD_LEVEL )
 				sflag |= SD_LEVEL; // -1 will be used in packets instead of the skill level
@@ -5813,6 +5871,11 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 #endif
 				case SJ_PROMINENCEKICK: // Trigger the 2nd hit. (100% fire damage.)
 					skill_attack(skill_get_type(skill_id), src, src, bl, skill_id, skill_lv, tick, sflag|8|SD_ANIMATION);
+					break;
+
+				case SS_ANKOKURYUUAKUMU:
+					if (tsc && tsc->getSCE(SC_NIGHTMARE))
+						skill_attack(skill_get_type(skill_id), src, src, bl, skill_id, skill_lv, tick, sflag|SK_SECONDATK);
 					break;
 			}
 		} else {
@@ -5983,6 +6046,14 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 					if (sc && sc->getSCE(SC_T_FOURTH_GOD))
 						sc_start(src, src, SC_T_FIVETH_GOD, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+					break;
+				case SS_KAGEGISSEN:
+				case SS_SEKIENHOU:
+				case SS_RAIDENPOU:
+				case SS_KINRYUUHOU:
+					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+					if (sc && sc->getSCE(SC_SBUNSHIN))
+						map_foreachinrange(skill_shinkirou, src, 15, BL_SKILL, src, bl, 0, 0, skill_id, skill_lv, tick);
 					break;
 			}
 
@@ -8705,6 +8776,11 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case SKE_RISING_MOON:
 	case SKE_MIDNIGHT_KICK:
 	case SKE_DAWN_BREAK:
+	case SS_KAGENOMAI:
+	case SS_ANTENPOU:
+	case SS_KAGEAKUMU:
+	case SS_HITOUAKUMU:
+	case SS_ANKOKURYUUAKUMU:
 	case BO_EXPLOSIVE_POWDER:
 	{
 		status_change *sc = status_get_sc(src);
@@ -8761,6 +8837,9 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 				src, skill_id, skill_lv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
 		if( !i && ( skill_id == RK_WINDCUTTER || skill_id == NC_AXETORNADO || skill_id == LG_CANNONSPEAR || skill_id == SR_SKYNETBLOW || skill_id == KO_HAPPOKUNAI ) )
 			clif_skill_damage(src,src,tick, status_get_amotion(src), 0, -30000, 1, skill_id, skill_lv, DMG_SINGLE);
+
+		if (sc && sc->getSCE(SC_SBUNSHIN) && (skill_id == SS_KAGENOMAI || skill_id == SS_ANTENPOU))
+			map_foreachinrange(skill_shinkirou, src, 15, BL_SKILL, src, src, 0, 0, skill_id, skill_lv, tick);
 	}
 		break;
 
@@ -8991,11 +9070,21 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			sc_start(src, bl, type, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		}
 		else if (sd)
-		{
+		{// Fix me. The animation and AP parts don't work on the caster when not in a party. (Rytech)
 			clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 			if (map_find_skill_unit_oncell(&sd->bl, sd->bl.x, sd->bl.y, SOA_TOTEM_OF_TUTELARY, NULL, 0) != NULL)
 				flag |= 2;
 			party_foreachsamemap(skill_area_sub, sd, skill_get_splash(skill_id, skill_lv), src, skill_id, skill_lv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
+		}
+		break;
+
+	case SS_AKUMUKESU:
+		if (flag&1)
+			status_change_end(bl, SC_NIGHTMARE);
+		else
+		{// Desc says it removes nightmare effect given to the targets. What targets? Friendly, enemy, all? I assume friendly only. (Rytech)
+			clif_skill_nodamage(bl, bl, skill_id, skill_lv, 1);
+			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skill_id, skill_lv), BL_CHAR, src, skill_id, skill_lv, tick, flag|BCT_NOENEMY|SD_SPLASH|1, skill_castend_nodamage_id);
 		}
 		break;
 
@@ -13780,6 +13869,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 		case SC_ESCAPE:
 		case SU_CN_METEOR:
 		case NPC_RAINOFMETEOR:
+		case SS_TOKEDASU:
 		case HN_METEOR_STORM_BUSTER:
 			break; //Effect is displayed on respective switch case.
 		default:
@@ -13830,6 +13920,18 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 		i = skill_get_splash(skill_id, skill_lv);
 		map_foreachinallarea(skill_area_sub, src->m, x-i, y-i, x+i, y+i, BL_CHAR, src,
 			PR_LEXAETERNA, 1, tick, flag|BCT_ENEMY|1, skill_castend_nodamage_id);
+		break;
+
+	case SS_TOKEDASU:// Don't ask me why. Ask Gravity why they did the behavior like this. (Rytech)
+		skill_area_temp[1] = 0;
+		clif_skill_poseffect(src, skill_id, skill_lv, src->x, src->y, tick);
+		map_foreachinrange(skill_area_sub, src, skill_get_splash(skill_id, skill_lv), BL_CHAR|BL_SKILL,
+			src, skill_id, skill_lv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
+
+		if (skill_blown(src, src, 3, unit_getdir(src), (enum e_skill_blown)(BLOWN_IGNORE_NO_KNOCKBACK|BLOWN_DONT_SEND_PACKET)))
+			clif_blown(src);
+
+		sc_start(src, src, type, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		break;
 
 	case SA_VOLCANO:
@@ -13994,12 +14096,54 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 	case EM_CONFLAGRATION:
 	case EM_TERRA_DRIVE:
 	case SOA_TOTEM_OF_TUTELARY:
+	case SS_KAGEGARI:
+	case SS_FUUMASHOUAKU:
 		flag|=1;//Set flag to 1 to prevent deleting ammo (it will be deleted on group-delete).
 		[[fallthrough]];
 	case GS_GROUNDDRIFT: //Ammo should be deleted right away.
 	case GN_WALLOFTHORN:
 	case GN_DEMONIC_FIRE:
 		skill_unitsetting(src,skill_id,skill_lv,x,y,0);
+		break;
+
+	case SS_SHINKIROU:
+		flag |= 1;
+		skill_unitsetting(src, skill_id, skill_lv, x, y, 0);
+		sc_start(src, src, SC_SBUNSHIN, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+		break;
+
+	case SS_FUUMAKOUCHIKU:
+		flag |= 1;
+		skill_unitsetting(src, skill_id, skill_lv, x, y, 0);
+		i = skill_get_splash(skill_id, skill_lv);
+		map_foreachinarea(skill_fuumakouchiku_blasting, src->m, x-i, y-i, x+i, y+i, BL_SKILL, src, skill_lv, tick);
+		break;
+
+	case SS_KUNAIWAIKYOKU:
+		flag |= 1;
+		skill_unitsetting(src, skill_id, skill_lv, x, y, 1);// Damage AoE
+		skill_unitsetting(src, skill_id, skill_lv, x, y, 0);// Kunai AoE
+		if (sc && sc->getSCE(SC_SBUNSHIN))
+			map_foreachinrange(skill_shinkirou, src, 15, BL_SKILL, src, src, x, y, skill_id, skill_lv, tick);
+		break;
+
+	case SS_KUNAIKAITEN:
+		flag |= 1;
+		skill_unitsetting(src, skill_id, skill_lv, x, y, 0);// Damage AoE
+		skill_unitsetting(src, SS_KUNAIWAIKYOKU, skill_lv, x, y, 0);// Kunai AoE
+		sc_start(src, src, SC_SHADOW_CLOCK, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+		break;
+
+	case SS_KUNAIKUSSETSU:
+		flag |= 1;
+		map_foreachinrange(skill_kunaikussetsu, src, skill_get_splash(skill_id, skill_lv), BL_SKILL, src, skill_lv, tick);
+		break;
+
+	case SS_REIKETSUHOU:
+		flag |= 1;
+		skill_unitsetting(src, skill_id, skill_lv, x, y, 0);
+		if (sc && sc->getSCE(SC_SBUNSHIN))
+			map_foreachinrange(skill_shinkirou, src, 15, BL_SKILL, src, src, 0, 0, skill_id, skill_lv, tick);
 		break;
 
 	case WZ_ICEWALL:
@@ -15454,6 +15598,25 @@ std::shared_ptr<s_skill_unit_group> skill_unitsetting(struct block_list *src, ui
 			layout = &skill_unit_layout[skill_get_splash(skill_id, skill_lv)];
 		}
 		break;
+	case SS_FUUMAKOUCHIKU:
+		// Check for the second attack flag.
+		// Note: Since group->target_flag is only used for BCT's, this can be used to pass other flags.
+		// But we don't want to pass all the flags from skill_unitsetting through to avoid possible
+		// issues and instead make sure to only pass whats needed to avoid breaking anything.
+		if (flag&SK_SECONDATK)
+			target |= SK_SECONDATK;
+		break;
+	case SS_KUNAIWAIKYOKU:
+		if (flag&1)
+		{// For the damaging AoE, not the kunai AoE.
+			limit = 100;
+			range = 2;
+
+			// Clone casted.
+			if (flag&SK_SECONDATK)
+				target |= SK_SECONDATK;
+		}
+		break;
 	}
 
 	// Init skill unit group
@@ -16096,6 +16259,10 @@ int skill_unit_onplace_timer(struct skill_unit *unit, struct block_list *bl, t_t
 		case UNT_SOLIDTRAP:
 		case UNT_SWIFTTRAP:
 		case UNT_FLAMETRAP:
+		case UNT_FUUMASHOUAKU:
+		case UNT_KUNAIKAITEN:
+		case UNT_KUNAIKUSSETSU:
+		case UNT_SEKIENHOU:
 			skill_attack(skill_get_type(sg->skill_id),ss,&unit->bl,bl,sg->skill_id,sg->skill_lv,tick,0);
 			break;
 
@@ -16155,6 +16322,13 @@ int skill_unit_onplace_timer(struct skill_unit *unit, struct block_list *bl, t_t
 					if(!battle_config.gx_allhit)
 						unit->val1--;
 					skill_attack(skill_get_type(sg->skill_id),ss,&unit->bl,bl,sg->skill_id,sg->skill_lv,tick,0);
+					break;
+				case SS_FUUMAKOUCHIKU:
+				case SS_KUNAIWAIKYOKU:
+					if (sg->target_flag&SK_SECONDATK)// Clone
+						skill_attack(skill_get_type(sg->skill_id), ss, &unit->bl, bl, sg->skill_id, sg->skill_lv, tick, SK_SECONDATK);
+					else// Caster
+						skill_attack(skill_get_type(sg->skill_id), ss, &unit->bl, bl, sg->skill_id, sg->skill_lv, tick, 0);
 					break;
 				default:
 					skill_attack(skill_get_type(sg->skill_id),ss,&unit->bl,bl,sg->skill_id,sg->skill_lv,tick,0);
@@ -20273,6 +20447,130 @@ int skill_graffitiremover(struct block_list *bl, va_list ap)
 		if (remove == 1)
 			skill_delunit(unit);
 		return 1;
+	}
+
+	return 0;
+}
+
+/// Huuma Shuriken - Construct Blasting
+int skill_fuumakouchiku_blasting(struct block_list* bl, va_list ap)
+{
+	struct skill_unit *unit = NULL;
+	struct block_list *src = va_arg(ap, struct block_list*);
+	uint16 skill_lv = va_arg(ap, int);
+	t_tick tick = va_arg(ap, t_tick);
+
+	nullpo_retr(0, bl);
+	nullpo_retr(0, src);
+
+	if (bl->type != BL_SKILL || (unit = (struct skill_unit*)bl) == NULL)
+		return 0;
+
+	if ((unit->group) && (unit->group->unit_id == UNT_FUUMASHOUAKU) && (unit->group->src_id == src->id))
+	{
+		clif_fuumakouchiku_blasting(bl, tick, skill_lv);
+		skill_unitsetting(src, SS_FUUMAKOUCHIKU, skill_lv, unit->bl.x, unit->bl.y, SK_SECONDATK);
+		skill_delunit(unit);
+		return 1;
+	}
+
+	return 0;
+}
+
+/// Kunai - Refraction
+int skill_kunaikussetsu(struct block_list* bl, va_list ap)
+{
+	struct skill_unit* unit = NULL;
+	struct block_list* src = va_arg(ap, struct block_list*);
+	uint16 skill_lv = va_arg(ap, int);
+	t_tick tick = va_arg(ap, t_tick);
+
+	nullpo_retr(0, bl);
+	nullpo_retr(0, src);
+
+	if (bl->type != BL_SKILL || (unit = (struct skill_unit*)bl) == NULL)
+		return 0;
+
+	if ((unit->group) && (unit->group->unit_id == UNT_KUNAIWAIKYOKU) && (unit->group->src_id == src->id))
+	{
+		skill_unitsetting(src, SS_KUNAIKUSSETSU, skill_lv, unit->bl.x, unit->bl.y, 0);
+		skill_delunit(unit);
+		return 1;
+	}
+
+	return 0;
+}
+
+/// Mirage Clones
+/// bl = The clone.
+/// src = The caster.
+/// target = The target if its a enemy targeted skill. If its self or ground casted it should be the caster.
+/// x, y = Gives the cords for ground targeted skills. If enemy target or self cast, set to 0.
+int skill_shinkirou(struct block_list* bl, va_list ap)
+{
+	map_session_data* sd;
+	struct skill_unit* unit = NULL;
+	struct block_list* src = va_arg(ap, struct block_list*);
+	struct block_list* target = va_arg(ap, struct block_list*);
+	int16 x = va_arg(ap, int);
+	int16 y = va_arg(ap, int);
+	uint16 skill_id = va_arg(ap, int);
+	uint16 skill_lv = va_arg(ap, int);
+	t_tick tick = va_arg(ap, t_tick);
+
+	nullpo_retr(0, bl);// The clone.
+	nullpo_retr(0, src);// The caster.
+	nullpo_retr(0, target);// The target if its a enemy targeted skill. If self or ground cast, it should be the caster.
+
+	sd = BL_CAST(BL_PC, src);// Used to store clone ID to pass to skill_attack later for animation purpose.
+
+	if (bl->type != BL_SKILL || (unit = (struct skill_unit*)bl) == NULL)
+		return 0;
+
+	if ((unit->group) && (unit->group->unit_id == UNT_SHINKIROU) && (unit->group->src_id == src->id))
+	{
+		switch (skill_id)
+		{
+			case SS_SHIMIRU:
+				// This code is enough to move the clones to where your standing.
+				// But it doesn't check if their being moved into each other or the target.
+				// Will need to fix this issue in the future. (Rytech)
+				map_search_freecell(src, 0, &x, &y, 1, 1, 0);
+				skill_unit_move_unit(bl, x, y);
+				break;
+
+			case SS_KAGENOMAI:
+				sd->shinkirou_clone_id = bl->id;
+				clif_skill_nodamage(bl, bl, skill_id, skill_lv, tick);
+				map_foreachinrange(skill_area_sub, bl, skill_get_splash(skill_id, skill_lv), BL_CHAR|BL_SKILL,
+					src, skill_id, skill_lv, tick, BCT_ENEMY|SD_SPLASH|SK_SECONDATK|1, skill_castend_damage_id);
+				break;
+
+			case SS_KAGEGISSEN:// Will be disabled in a future balance update. (Rytech)
+				sd->shinkirou_clone_id = bl->id;
+				clif_skill_nodamage(bl, target, skill_id, skill_lv, tick);
+				map_foreachinrange(skill_area_sub, target, skill_get_splash(skill_id, skill_lv), BL_CHAR|BL_SKILL,
+					src, skill_id, skill_lv, tick, BCT_ENEMY|SD_SPLASH|SK_SECONDATK|1, skill_castend_damage_id);
+				break;
+
+			case SS_KUNAIWAIKYOKU:
+				// Note: Damage AoE is placed but not the kunai one
+				// since only the caster should place the kunai AoE.
+				clif_skill_poseffect(bl, skill_id, skill_lv, x, y, tick);
+				skill_unitsetting(src, skill_id, skill_lv, x, y, SK_SECONDATK|1);// Damage AoE
+				break;
+
+			case SS_SEKIENHOU:
+			case SS_REIKETSUHOU:
+			case SS_RAIDENPOU:
+			case SS_KINRYUUHOU:
+			case SS_ANTENPOU:
+				sd->shinkirou_clone_id = bl->id;
+				clif_skill_nodamage(bl, bl, SS_ANTENPOU, skill_lv, tick);
+				map_foreachinrange(skill_area_sub, bl, skill_get_splash(SS_ANTENPOU, skill_lv), BL_CHAR|BL_SKILL,
+					src, SS_ANTENPOU, skill_lv, tick, BCT_ENEMY|SD_SPLASH|SK_SECONDATK|1, skill_castend_damage_id);
+				break;
+		}
 	}
 
 	return 0;

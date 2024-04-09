@@ -2006,11 +2006,13 @@ Body:
     MaxLevel: 5
     Type: Magic
     TargetType: Ground
+    DamageFlags:
+      Splash: true
     Range: 5
     Hit: Multi_Hit
     HitCount: -2
     Element: Dark
-    Knockback: 3
+    SplashArea: 2
     CastCancel: true
     Duration1: 2000
     Cooldown:
@@ -2026,21 +2028,12 @@ Body:
         Time: 2000
     Requires:
       SpCost: 35
-    Unit:
-      Id: Dummyskill
-      Range: 2
-      Interval: 1000
-      Target: Enemy
-      Flag:
-        PathCheck: true
   - Id: 5477
     Name: SS_SHIMIRU
     Description: Infiltrate
     MaxLevel: 5
     Type: Weapon
     TargetType: Attack
-    DamageFlags:
-      Splash: true
     Range: 11
     Hit: Multi_Hit
     HitCount: -2
@@ -2117,7 +2110,8 @@ Body:
     GiveAp: 1
     CastCancel: true
     AfterCastActDelay: 150
-    Duration1: 5000
+    Duration1: 100
+    Duration2: 5000
     Cooldown: 300
     Requires:
       SpCost:
@@ -2233,14 +2227,33 @@ Body:
     MaxLevel: 10
     Type: Weapon
     TargetType: Attack
-    Flags:
-      TargetTrap: true
-    Range: 1
+    DamageFlags:
+      Splash: true
+    Range: 2
     Hit: Multi_Hit
     HitCount: -4
     Element: Weapon
-    SplashArea: 1
-    ActiveInstance: 10
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 2
+      - Level: 5
+        Area: 2
+      - Level: 6
+        Area: 3
+      - Level: 7
+        Area: 3
+      - Level: 8
+        Area: 3
+      - Level: 9
+        Area: 3
+      - Level: 10
+        Area: 3
     CastCancel: true
     CastTime: 1000
     AfterCastActDelay: 250
@@ -2343,16 +2356,14 @@ Body:
     MaxLevel: 10
     Type: Weapon
     TargetType: Ground
-    Flags:
-      TargetTrap: true
-    Range: 1
+    Range: 9
     Hit: Multi_Hit
     HitCount: -3
     Element: Weapon
-    SplashArea: 2
-    ActiveInstance: 13
+    SplashArea: 4
     CastCancel: true
     CastTime: 1200
+    Duration1: 100
     Cooldown: 1000
     FixedCastTime: 1000
     Requires:
@@ -2377,6 +2388,13 @@ Body:
           Amount: 58
         - Level: 10
           Amount: 61
+    Unit:
+      Id: Dummyskill
+      Range: 4
+      Interval: 1000
+      Target: Enemy
+      Flag:
+        PathCheck: true
   - Id: 5485
     Name: SS_KUNAIWAIKYOKU
     Description: Kunai - Distortion
@@ -2421,11 +2439,10 @@ Body:
       AmmoAmount: 2
     Unit:
       Id: Kunaiwaikyoku
-      Range: 2
+      AlternateId: Dummyskill
       Interval: 1000
       Target: Enemy
       Flag:
-        NoOverlap: true
         PathCheck: true
   - Id: 5486
     Name: SS_KUNAIKAITEN
@@ -2470,8 +2487,6 @@ Body:
     MaxLevel: 10
     Type: Weapon
     TargetType: Self
-    DamageFlags:
-      Splash: true
     Hit: Single
     HitCount: 1
     Element: Weapon
@@ -2500,11 +2515,34 @@ Body:
     Description: Red Flame Cannon
     MaxLevel: 10
     Type: Magic
-    TargetType: Ground
-    Range: 1
+    TargetType: Attack
+    DamageFlags:
+      Splash: true
+    Range: 9
     Hit: Multi_Hit
     HitCount: -3
     Element: Fire
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 2
+      - Level: 5
+        Area: 2
+      - Level: 6
+        Area: 3
+      - Level: 7
+        Area: 3
+      - Level: 8
+        Area: 3
+      - Level: 9
+        Area: 3
+      - Level: 10
+        Area: 3
     CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
@@ -2536,12 +2574,6 @@ Body:
       ItemCost:
         - Item: SS_Charm_F
           Amount: 1
-    Unit:
-      Id: Sekienhou
-      Interval: 1000
-      Target: Enemy
-      Flag:
-        PathCheck: true
   - Id: 5489
     Name: SS_REIKETSUHOU
     Description: Cold Blooded Cannon
@@ -2595,7 +2627,7 @@ Body:
         - Level: 4
           Size: 2
         - Level: 5
-          Size: 3
+          Size: 2
         - Level: 6
           Size: 3
         - Level: 7
@@ -2603,9 +2635,9 @@ Body:
         - Level: 8
           Size: 3
         - Level: 9
-          Size: 4
+          Size: 3
         - Level: 10
-          Size: 4
+          Size: 3
       Interval: 1000
       Target: Enemy
       Flag:
@@ -2615,15 +2647,34 @@ Body:
     Description: Thundering Cannon
     MaxLevel: 10
     Type: Magic
-    TargetType: Ground
-    Flags:
-      TargetTrap: true
-    Range: 1
+    TargetType: Attack
+    DamageFlags:
+      Splash: true
+    Range: 9
     Hit: Multi_Hit
     HitCount: -2
     Element: Wind
-    SplashArea: 1
-    ActiveInstance: 13
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 2
+      - Level: 5
+        Area: 2
+      - Level: 6
+        Area: 3
+      - Level: 7
+        Area: 3
+      - Level: 8
+        Area: 3
+      - Level: 9
+        Area: 3
+      - Level: 10
+        Area: 3
     CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
@@ -2660,14 +2711,33 @@ Body:
     MaxLevel: 10
     Type: Magic
     TargetType: Attack
-    Flags:
-      TargetTrap: true
-    Range: 13
+    DamageFlags:
+      Splash: true
+    Range: 9
     Hit: Single
     HitCount: 1
     Element: Earth
-    SplashArea: 1
-    ActiveInstance: 13
+    SplashArea:
+      - Level: 1
+        Area: 1
+      - Level: 2
+        Area: 1
+      - Level: 3
+        Area: 1
+      - Level: 4
+        Area: 1
+      - Level: 5
+        Area: 1
+      - Level: 6
+        Area: 2
+      - Level: 7
+        Area: 2
+      - Level: 8
+        Area: 2
+      - Level: 9
+        Area: 2
+      - Level: 10
+        Area: 2
     CastCancel: true
     CastTime: 3000
     AfterCastActDelay: 500
@@ -2734,7 +2804,7 @@ Body:
     CastCancel: true
     CastTime: 3000
     AfterCastActDelay: 500
-    Duration1: 5000
+    Duration2: 5000
     Cooldown: 500
     FixedCastTime: 1500
     Requires:

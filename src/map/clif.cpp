@@ -6132,6 +6132,30 @@ int clif_skill_damage(struct block_list *src,struct block_list *dst,t_tick tick,
 }
 
 
+/// Animation for Huuma Shuriken - Construct Blasting.
+int clif_fuumakouchiku_blasting(struct block_list* dst, t_tick tick, uint16 skill_lv)
+{
+	unsigned char buf[64];
+
+	nullpo_ret(dst);
+
+	WBUFW(buf, 0) = 0x1de;
+	WBUFW(buf, 2) = SS_FUUMAKOUCHIKU_BLASTING;
+	WBUFL(buf, 4) = 0;
+	WBUFL(buf, 8) = dst->id;
+	WBUFL(buf, 12) = client_tick(tick);
+	WBUFL(buf, 16) = 0;
+	WBUFL(buf, 20) = 0;
+	WBUFL(buf, 24) = 0;
+	WBUFW(buf, 28) = skill_lv;
+	WBUFW(buf, 30) = 1;
+	WBUFB(buf, 32) = DMG_ENDURE;
+	clif_send(buf, packet_len(0x1de), dst, AREA);
+
+	return 1;
+}
+
+
 /// Ground skill attack effect and damage (ZC_NOTIFY_SKILL_POSITION).
 /// 0115 <skill id>.W <src id>.L <dst id>.L <tick>.L <src delay>.L <dst delay>.L <x>.W <y>.W <damage>.W <level>.W <div>.W <type>.B
 /*

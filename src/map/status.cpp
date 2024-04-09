@@ -8107,6 +8107,8 @@ static unsigned short status_calc_speed(struct block_list *bl, status_change *sc
 		if( sc->getSCE(SC_JAWAII_SERENADE) ){
 			val = max( val, 25 );
 		}
+		if (sc->getSCE(SC_SHADOW_CLOCK))
+			val = max(val, 60);
 
 		// !FIXME: official items use a single bonus for this [ultramage]
 		if( sc->getSCE(SC_SPEEDUP0) ) // Temporary item-based speedup

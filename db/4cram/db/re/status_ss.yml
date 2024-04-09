@@ -102,4 +102,5 @@ Body:
       NoDispell: true
       NoClearance: true
       NoBanishingBuster: true
+      NoSave: true
 #================================

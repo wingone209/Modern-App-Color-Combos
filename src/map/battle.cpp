@@ -2621,6 +2621,9 @@ static int battle_range_type(struct block_list *src, struct block_list *target, 
 		case BO_ACIDIFIED_ZONE_FIRE_ATK:
 		case BO_ACIDIFIED_ZONE_GROUND_ATK:
 		case BO_ACIDIFIED_ZONE_WIND_ATK:
+		case SS_KUNAIKAITEN: // Self casted.
+		case SS_KUNAIKUSSETSU: // Self casted.
+		case SS_HITOUAKUMU: // Self casted.
 			return BF_LONG;
 		case NJ_KIRIKAGE: // Cast range mimics NJ_SHADOWJUMP but damage is considered melee
 		case GC_CROSSIMPACT: // Cast range is 7 cells and player jumps to target but skill is considered melee
@@ -2632,6 +2635,7 @@ static int battle_range_type(struct block_list *src, struct block_list *target, 
 		case MH_THE_ONE_FIGHTER_RISES: // 7 cell cast range.
 		//case ABC_DEFT_STAB: // 2 cell cast range???
 		case SKE_ALL_IN_THE_SKY: // 9 cell cast range.
+		case SS_SHIMIRU: // 11 cell cast range.
 		case NPC_MAXPAIN_ATK:
 			return BF_SHORT;
 		case CD_PETITIO: { // Skill range is 2 but damage is melee with books and ranged with mace.
@@ -2847,7 +2851,8 @@ static bool is_skill_using_arrow(struct block_list *src, int skill_id)
 		struct status_data *sstatus = status_get_status_data(src);
 		map_session_data *sd = BL_CAST(BL_PC, src);
 
-		return ((sd && sd->state.arrow_atk) || (!sd && ((skill_id && skill_get_ammotype(skill_id)) || sstatus->rhw.range>3)) || (skill_id == HT_PHANTASMIC) || (skill_id == GS_GROUNDDRIFT));
+		return ((sd && sd->state.arrow_atk) || (!sd && ((skill_id && skill_get_ammotype(skill_id)) || sstatus->rhw.range>3)) ||
+			(skill_id == HT_PHANTASMIC) || (skill_id == GS_GROUNDDRIFT) || (skill_id == SS_FUUMASHOUAKU) || (skill_id == SS_FUUMAKOUCHIKU));
 	} else
 		return false;
 }
@@ -3517,6 +3522,11 @@ int battle_get_magic_element(struct block_list* src, struct block_list* target, 
 		case TR_SOUNDBLEND:
 			if (sd)
 				element = sd->bonus.arrow_ele;
+			break;
+		case SS_ANKOKURYUUAKUMU:
+			// Fire element for 2nd hit on targets with nightmare status. (Rytech)
+			if (mflag&SK_SECONDATK)
+				element = ELE_FIRE;
 			break;
 	}
 
@@ -5820,48 +5830,143 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			}
 			break;
 		case SKE_RISING_SUN:
-			skillratio += 400 + 400 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			skillratio += 400 + 400 * skill_lv;
+			skillratio += 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10);
+			skillratio += 5 * sstatus->pow;
 			RE_LVL_DMOD(100);
 			break;
 		case SKE_NOON_BLAST:
-			skillratio += 1400 + 900 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			skillratio += 1400 + 900 * skill_lv;
+			skillratio += 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10);
+			skillratio += 5 * sstatus->pow;
 			RE_LVL_DMOD(100);
 			break;
 		case SKE_SUNSET_BLAST:
-			skillratio += 800 + 300 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			skillratio += 800 + 300 * skill_lv;
+			skillratio += 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10);
+			skillratio += 5 * sstatus->pow;
 			RE_LVL_DMOD(100);
 			break;
 		case SKE_RISING_MOON:
-			skillratio += 500 + 300 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			skillratio += 500 + 300 * skill_lv;
+			skillratio += 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10);
+			skillratio += 5 * sstatus->pow;
 			RE_LVL_DMOD(100);
 			break;
 		case SKE_MIDNIGHT_KICK:
-			skillratio += 400 + 1000 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			skillratio += 400 + 1000 * skill_lv;
+			skillratio += 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10);
+			skillratio += 5 * sstatus->pow;
 			if (sc && (sc->getSCE(SC_MIDNIGHT_MOON) || sc->getSCE(SC_SKY_ENCHANT)))
 				skillratio += 1000 + 200 * skill_lv;
 			RE_LVL_DMOD(100);
 			break;
 		case SKE_DAWN_BREAK:
-			skillratio += 200 + 400 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			skillratio += 200 + 400 * skill_lv;
+			skillratio += 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10);
+			skillratio += 5 * sstatus->pow;
 			if (sc && (sc->getSCE(SC_DAWN_MOON) || sc->getSCE(SC_SKY_ENCHANT)))
 				skillratio += 200 * skill_lv;
 			RE_LVL_DMOD(100);
 			break;
 		case SKE_TWINKLING_GALAXY:
-			skillratio += 100 + 400 * skill_lv + 3 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			skillratio += 100 + 400 * skill_lv;
+			skillratio += 3 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10);
+			skillratio += 5 * sstatus->pow;
 			RE_LVL_DMOD(100);
 			break;
 		case SKE_STAR_BURST:
-			skillratio += 400 + 400 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			skillratio += 400 + 400 * skill_lv;
+			skillratio += 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10);
+			skillratio += 5 * sstatus->pow;
 			RE_LVL_DMOD(100);
 			break;
 		case SKE_STAR_CANNON:
-			skillratio += 100 + 500 * skill_lv + 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10) + 5 * sstatus->pow;
+			skillratio += 100 + 500 * skill_lv;
+			skillratio += 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10);
+			skillratio += 5 * sstatus->pow;
 			RE_LVL_DMOD(100);
 			break;
 		case SKE_ALL_IN_THE_SKY:
-			skillratio += -100 + 2000 * skill_lv + 10 * sstatus->pow;
+			skillratio += -100 + 2000 * skill_lv;
+			skillratio += 10 * sstatus->pow;
 			RE_LVL_DMOD(100);
+			break;
+		case SS_SHIMIRU:
+			skillratio += -100 + 700 * skill_lv;
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case SS_KAGEGARI:
+			skillratio += -100 + 500 + 400 * skill_lv;
+			skillratio += 5 * skill_lv * pc_checkskill(sd, SS_KAGEGISSEN);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SS_KAGENOMAI:
+			skillratio += -100 + 500 + 600 * skill_lv;
+			skillratio += 50 * skill_lv * pc_checkskill(sd, SS_KAGEGARI);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			if (wd->miscflag&SK_SECONDATK)
+				skillratio = skillratio * 30 / 100;
+			break;
+		case SS_KAGEGISSEN:
+			skillratio += -100 + 1700 + 800 * skill_lv;
+			skillratio += 100 * skill_lv * pc_checkskill(sd, SS_KAGENOMAI);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			if (wd->miscflag&SK_SECONDATK)
+				skillratio = skillratio * 30 / 100;
+			break;
+		case SS_FUUMASHOUAKU:
+			skillratio += -100 + 700 + 200 * skill_lv;
+			skillratio += 5 * skill_lv * pc_checkskill(sd, SS_FUUMAKOUCHIKU);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SS_FUUMAKOUCHIKU:
+			if (wd->miscflag&SK_SECONDATK)
+				skillratio += -100 + 800 + 600 * skill_lv;
+			else
+				skillratio += -100 + 600 + 400 * skill_lv;
+			skillratio += 30 * skill_lv * pc_checkskill(sd, SS_FUUMASHOUAKU);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SS_KUNAIWAIKYOKU:
+			skillratio += -100 + 400 * skill_lv;
+			skillratio += 7 * skill_lv * pc_checkskill(sd, SS_KUNAIKUSSETSU);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			if (wd->miscflag&SK_SECONDATK)
+				skillratio = skillratio * 30 / 100;
+			break;
+		case SS_KUNAIKAITEN:
+			skillratio += -100 + 800 + 500 * skill_lv;
+			skillratio += 50 * skill_lv * pc_checkskill(sd, SS_KUNAIWAIKYOKU);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SS_KUNAIKUSSETSU:
+			skillratio += -100 + 200 + 360 * skill_lv;
+			skillratio += 7 * skill_lv * pc_checkskill(sd, SS_KUNAIKAITEN);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SS_KAGEAKUMU:
+			skillratio += -100 + 15000;
+			skillratio += 10 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			if (tsc && tsc->getSCE(SC_NIGHTMARE))
+				skillratio += skillratio * 50 / 100;
+			break;
+		case SS_HITOUAKUMU:
+			skillratio += -100 + 15000;
+			skillratio += 10 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			if (tsc && tsc->getSCE(SC_NIGHTMARE))
+				skillratio += skillratio * 50 / 100;
 			break;
 		case ABR_BATTLE_BUSTER:// Need official formula.
 		case ABR_DUAL_CANNON_FIRE:// Need official formula.
@@ -6888,6 +6993,22 @@ static struct Damage initialize_weapon_data(struct block_list *src, struct block
 				if (tstatus->race == RC_DEMON || tstatus->race == RC_DEMIHUMAN)
 					wd.div_ = 3;
 				break;
+			case SS_KAGENOMAI:
+				if (wd.miscflag&SK_SECONDATK)
+					wd.div_ = -8;
+				break;
+			case SS_KAGEGISSEN:
+				if (wd.miscflag&SK_SECONDATK)
+					wd.div_ = -7;
+				break;
+			case SS_FUUMAKOUCHIKU:
+				if (wd.miscflag&SK_SECONDATK)
+					wd.div_ = -6;
+				break;
+			case SS_KUNAIWAIKYOKU:
+				if (wd.miscflag&SK_SECONDATK)
+					wd.div_ = -3;
+				break;
 		}
 	} else {
 		bool is_long = false;
@@ -7470,6 +7591,10 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 				else if (sc->getSCE(SC_T_FIVETH_GOD))
 					ad.div_ = 7;
 			}
+			break;
+		case SS_ANTENPOU:
+			if (mflag&SK_SECONDATK)
+				ad.div_ = -4;// Number of hits from a clone unconfirmed. (Rytech)
 			break;
 	}
 
@@ -8369,6 +8494,47 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 					case SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS:
 						skillratio += -100 + 1500 * skill_lv;
 						skillratio += 15 * skill_lv * (pc_checkskill(sd, SOA_TALISMAN_MASTERY) + pc_checkskill(sd, SOA_SOUL_MASTERY));
+						skillratio += 10 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SS_TOKEDASU:
+						skillratio += -100 + 700 * skill_lv;
+						skillratio += 5 * sstatus->con;
+						RE_LVL_DMOD(100);
+						break;
+					case SS_SEKIENHOU:
+						skillratio += -100 + 700 + 550 * skill_lv;
+						skillratio += 50 * skill_lv * pc_checkskill(sd, SS_ANTENPOU);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SS_REIKETSUHOU:
+						skillratio += -100 + 350 * skill_lv;
+						skillratio += 25 * skill_lv * pc_checkskill(sd, SS_ANTENPOU);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SS_RAIDENPOU:
+						skillratio += -100 + 650 * skill_lv;
+						skillratio += 50 * skill_lv * pc_checkskill(sd, SS_ANTENPOU);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SS_KINRYUUHOU:
+						skillratio += -100 + 150 + 220 * skill_lv;
+						skillratio += 7 * skill_lv * pc_checkskill(sd, SS_ANTENPOU);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SS_ANTENPOU:
+						skillratio += -100 + 400 + 500 * skill_lv;
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						if (mflag&SK_SECONDATK)
+							skillratio = skillratio * 30 / 100;
+						break;
+					case SS_ANKOKURYUUAKUMU:
+						skillratio += -100 + 12000;
 						skillratio += 10 * sstatus->spl;
 						RE_LVL_DMOD(100);
 						break;

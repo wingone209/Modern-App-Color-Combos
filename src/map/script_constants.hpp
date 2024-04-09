@@ -10169,8 +10169,8 @@
 	export_constant(UNT_FIRE_RAIN);
 	export_constant(UNT_CATNIPPOWDER);
 	export_constant(UNT_NYANGGRASS);
+	export_constant(UNT_GROUNDDRIFT_NEUTRAL);
 	export_constant(UNT_CREATINGSTAR);
-	export_constant(UNT_DUMMY_0);
 	export_constant(UNT_RAIN_OF_CRYSTAL);
 	export_constant(UNT_MYSTERY_ILLUSION);
 	export_constant(UNT_STRANTUM_TREMOR);
@@ -10193,6 +10193,7 @@
 	export_constant(UNT_TWINKLING_GALAXY);
 	export_constant(UNT_STAR_CANNON);
 	export_constant(UNT_GRENADES_DROPPING);
+	export_constant(UNT_UNKNOWN_2);
 	export_constant(UNT_FUUMASHOUAKU);
 	export_constant(UNT_MISSION_BOMBARD);
 	export_constant(UNT_TOTEM_OF_TUTELARY);
@@ -10200,7 +10201,10 @@
 	export_constant(UNT_SHINKIROU);
 	export_constant(UNT_JACK_FROST_NOVA);
 	export_constant(UNT_GROUND_GRAVITATION);
+	export_constant(UNT_KUNAIKAITEN);
 	export_constant(UNT_KUNAIWAIKYOKU);
+	export_constant(UNT_KUNAIKUSSETSU);
+	export_constant(UNT_SEKIENHOU);
 
 	export_constant(UNT_DEEPBLINDTRAP);
 	export_constant(UNT_SOLIDTRAP);
