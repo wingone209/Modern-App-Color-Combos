@@ -1287,6 +1287,13 @@ enum sc_type : int16 {
 
 	SC_HNNOWEAPON,// Why is this here? Such a status already exists that could of been used. (Rytech)
 
+	SC_PERIOD_RECEIVEITEM_2ND,
+	SC_PERIOD_PLUSEXP_2ND,
+
+	SC_EXTREMITYFIST2,
+	SC_POWERUP,
+	SC_AGIUP,
+
 	// Hyper Novice
 	SC_SHIELDCHAINRUSH = 1001,
 	SC_MISTYFROST,
@@ -1352,9 +1359,6 @@ enum sc_type : int16 {
 	SC_BLESSING_OF_M_CREATURES,
 	SC_BLESSING_OF_M_C_DEBUFF,
 
-#ifdef RENEWAL
-	SC_EXTREMITYFIST2, //! NOTE: This SC should be right before SC_MAX, so it doesn't disturb if RENEWAL is disabled
-#endif
 	SC_MAX, //Automatically updated max, used in for's to check we are within bounds.
 };
 
