@@ -1898,7 +1898,6 @@
 	export_constant(SC_RUSH_QUAKE1);
 	export_constant(SC_RUSH_QUAKE2);
 	export_constant(SC_G_LIFEPOTION);
-	export_constant(SC_HNNOWEAPON);// Why is this here? Such a status already exists that could of been used. (Rytech)
 	export_constant(SC_PERIOD_RECEIVEITEM_2ND);
 	export_constant(SC_PERIOD_PLUSEXP_2ND);
 	export_constant(SC_EXTREMITYFIST2);

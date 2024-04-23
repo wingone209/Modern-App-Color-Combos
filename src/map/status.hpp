@@ -1285,8 +1285,6 @@ enum sc_type : int16 {
 	
 	SC_G_LIFEPOTION,
 
-	SC_HNNOWEAPON,// Why is this here? Such a status already exists that could of been used. (Rytech)
-
 	SC_PERIOD_RECEIVEITEM_2ND,
 	SC_PERIOD_PLUSEXP_2ND,
 
