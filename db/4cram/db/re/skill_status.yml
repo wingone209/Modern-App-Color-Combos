@@ -33,6 +33,42 @@ Body:
 #  - Id: 
 #    Status: 
 #================================
+# HN_MEGA_SONIC_BLOW
+  - Id: 5452
+    Status: Stun
+
+# HN_SHIELD_CHAIN_RUSH
+  - Id: 5453
+    Status: Shieldchainrush
+
+# HN_SPIRAL_PIERCE_MAX
+  - Id: 5454
+    Status: Stop
+
+# HN_METEOR_STORM_BUSTER
+  - Id: 5455
+    Status: Stun
+
+# HN_JACK_FROST_NOVA
+  - Id: 5457
+    Status: Mistyfrost
+
+# HN_GROUND_GRAVITATION
+  - Id: 5459
+    Status: Groundgravity
+
+# HN_NAPALM_VULCAN_STRIKE
+  - Id: 5460
+    Status: Curse
+
+# HN_BREAKINGLIMIT
+  - Id: 5461
+    Status: Breakinglimit
+
+# HN_RULEBREAK
+  - Id: 5462
+    Status: Rulebreak
+#================================
 # SOA_TALISMAN_OF_PROTECTION
   - Id: 5418
     Status: Talisman_Of_Protection

@@ -1223,12 +1223,21 @@ Body:
     Name: HN_DOUBLEBOWLINGBASH
     Description: Double Bowling Bash
     MaxLevel: 10
+    Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 2
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: 3
+    Element: Weapon
+    SplashArea: 3
+    Knockback: 5
     GiveAp: 2
-    CastCancel: true
+    AfterCastActDelay: 1000
+    Duration2: 1000
+    Cooldown: 700
+    FixedCastTime: 350
     Requires:
       SpCost:
         - Level: 1
@@ -1255,12 +1264,19 @@ Body:
     Name: HN_MEGA_SONIC_BLOW
     Description: Mega Sonic Blow
     MaxLevel: 10
+    Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Critical: true
     Range: 2
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -8
+    Element: Weapon
     GiveAp: 1
     CastCancel: true
+    AfterCastActDelay: 500
+    Duration2: 5000
+    Cooldown: 300
     Requires:
       SpCost:
         - Level: 1
@@ -1287,32 +1303,23 @@ Body:
     Name: HN_SHIELD_CHAIN_RUSH
     Description: Shield Chain Rush
     MaxLevel: 10
+    Type: Weapon
     TargetType: Attack
-    Range:
-      - Level: 1
-        Size: 7
-      - Level: 2
-        Size: 7
-      - Level: 3
-        Size: 7
-      - Level: 4
-        Size: 7
-      - Level: 5
-        Size: 9
-      - Level: 6
-        Size: 9
-      - Level: 7
-        Size: 9
-      - Level: 8
-        Size: 9
-      - Level: 9
-        Size: 11
-      - Level: 10
-        Size: 11
-    Hit: Single
-    HitCount: 1
+    DamageFlags:
+      Splash: true
+    Range: 7
+    Hit: Multi_Hit
+    HitCount: -5
+    Element: Weapon
+    SplashArea: 3
     GiveAp: 1
     CastCancel: true
+    CastTime: 1200
+    AfterCastActDelay: 500
+    Duration1: 5000
+    Duration2: 1200
+    Cooldown: 300
+    FixedCastTime: 300
     Requires:
       SpCost:
         - Level: 1
@@ -1335,16 +1342,24 @@ Body:
           Amount: 62
         - Level: 10
           Amount: 65
+      State: Shield
   - Id: 5454
     Name: HN_SPIRAL_PIERCE_MAX
     Description: Spiral Pierce Max
     MaxLevel: 10
+    Type: Weapon
     TargetType: Attack
     Range: 7
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -5
+    Element: Weapon
     GiveAp: 1
     CastCancel: true
+    CastTime: 1000
+    AfterCastActDelay: 500
+    Duration2: 2000
+    Cooldown: 300
+    FixedCastTime: 300
     Requires:
       SpCost:
         - Level: 1
@@ -1371,12 +1386,61 @@ Body:
     Name: HN_METEOR_STORM_BUSTER
     Description: Meteor Storm Buster
     MaxLevel: 10
+    Type: Magic
     TargetType: Ground
     Range: 9
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -3
+    Element: Fire
+    SplashArea: 4
     GiveAp: 3
     CastCancel: true
+    CastTime: 4000
+    AfterCastActDelay: 300
+    Duration1:
+      - Level: 1
+        Time: 1500
+      - Level: 2
+        Time: 1500
+      - Level: 3
+        Time: 1500
+      - Level: 4
+        Time: 2000
+      - Level: 5
+        Time: 2000
+      - Level: 6
+        Time: 2000
+      - Level: 7
+        Time: 2500
+      - Level: 8
+        Time: 2500
+      - Level: 9
+        Time: 2500
+      - Level: 10
+        Time: 3000
+    Duration2: 5000
+    Cooldown:
+      - Level: 1
+        Time: 2100
+      - Level: 2
+        Time: 2200
+      - Level: 3
+        Time: 2300
+      - Level: 4
+        Time: 2400
+      - Level: 5
+        Time: 2500
+      - Level: 6
+        Time: 2600
+      - Level: 7
+        Time: 2700
+      - Level: 8
+        Time: 2800
+      - Level: 9
+        Time: 2900
+      - Level: 10
+        Time: 3000
+    FixedCastTime: 1500
     Requires:
       SpCost:
         - Level: 1
@@ -1399,16 +1463,92 @@ Body:
           Amount: 79
         - Level: 10
           Amount: 82
+    Unit:
+      Id: Dummyskill
+      Range: 2
+      Interval: 500
+      Target: Enemy
+      Flag:
+        PathCheck: true
   - Id: 5456
     Name: HN_JUPITEL_THUNDER_STORM
     Description: Jupitel Thunder Storm
     MaxLevel: 10
+    Type: Magic
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 11
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount:
+      - Level: 1
+        Count: -6
+      - Level: 2
+        Count: -6
+      - Level: 3
+        Count: -7
+      - Level: 4
+        Count: -7
+      - Level: 5
+        Count: -8
+      - Level: 6
+        Count: -8
+      - Level: 7
+        Count: -9
+      - Level: 8
+        Count: -9
+      - Level: 9
+        Count: -9
+      - Level: 10
+        Count: -9
+    Element: Wind
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 2
+      - Level: 5
+        Area: 3
+      - Level: 6
+        Area: 3
+      - Level: 7
+        Area: 3
+      - Level: 8
+        Area: 3
+      - Level: 9
+        Area: 4
+      - Level: 10
+        Area: 4
     GiveAp: 2
     CastCancel: true
+    CastTime:
+      - Level: 1
+        Time: 1100
+      - Level: 2
+        Time: 1200
+      - Level: 3
+        Time: 1300
+      - Level: 4
+        Time: 1400
+      - Level: 5
+        Time: 1500
+      - Level: 6
+        Time: 1600
+      - Level: 7
+        Time: 1700
+      - Level: 8
+        Time: 1800
+      - Level: 9
+        Time: 1900
+      - Level: 10
+        Time: 2000
+    AfterCastActDelay: 500
+    Cooldown: 1800
+    FixedCastTime: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -1435,12 +1575,60 @@ Body:
     Name: HN_JACK_FROST_NOVA
     Description: Jack Frost Nova
     MaxLevel: 10
+    Type: Magic
     TargetType: Ground
     Range: 9
-    Hit: Single
+    Hit: Multi_Hit
     HitCount: 1
+    Element: Water
     GiveAp: 3
     CastCancel: true
+    CastTime:
+      - Level: 1
+        Time: 1600
+      - Level: 2
+        Time: 1700
+      - Level: 3
+        Time: 1800
+      - Level: 4
+        Time: 1900
+      - Level: 5
+        Time: 2000
+      - Level: 6
+        Time: 2100
+      - Level: 7
+        Time: 2200
+      - Level: 8
+        Time: 2300
+      - Level: 9
+        Time: 2400
+      - Level: 10
+        Time: 2500
+    AfterCastActDelay: 300
+    Duration1:
+      - Level: 1
+        Time: 1200
+      - Level: 2
+        Time: 1400
+      - Level: 3
+        Time: 1600
+      - Level: 4
+        Time: 1800
+      - Level: 5
+        Time: 2000
+      - Level: 6
+        Time: 2200
+      - Level: 7
+        Time: 2400
+      - Level: 8
+        Time: 2600
+      - Level: 9
+        Time: 2800
+      - Level: 10
+        Time: 3000
+    Duration2: 5000
+    Cooldown: 3000
+    FixedCastTime: 1500
     Requires:
       SpCost:
         - Level: 1
@@ -1464,9 +1652,30 @@ Body:
         - Level: 10
           Amount: 85
     Unit:
-      Id: Jack_Frost_Nova
-      Range: 1
-      Interval: 1000
+      Id: Dummyskill
+      AlternateId: Jack_Frost_Nova
+      Range:
+        - Level: 1
+          Size: 3
+        - Level: 2
+          Size: 3
+        - Level: 3
+          Size: 3
+        - Level: 4
+          Size: 3
+        - Level: 5
+          Size: 3
+        - Level: 6
+          Size: 4
+        - Level: 7
+          Size: 4
+        - Level: 8
+          Size: 4
+        - Level: 9
+          Size: 4
+        - Level: 10
+          Size: 4
+      Interval: 300
       Target: Enemy
       Flag:
         NoOverlap: true
@@ -1475,11 +1684,60 @@ Body:
     Name: HN_HELLS_DRIVE
     Description: Hells Drive
     MaxLevel: 10
+    Type: Magic
     TargetType: Self
-    Hit: Single
-    HitCount: 1
+    DamageFlags:
+      Splash: true
+    Hit: Multi_Hit
+    HitCount: -3
+    Element: Earth
+    SplashArea:
+      - Level: 1
+        Area: 1
+      - Level: 2
+        Area: 1
+      - Level: 3
+        Area: 1
+      - Level: 4
+        Area: 2
+      - Level: 5
+        Area: 2
+      - Level: 6
+        Area: 2
+      - Level: 7
+        Area: 3
+      - Level: 8
+        Area: 3
+      - Level: 9
+        Area: 3
+      - Level: 10
+        Area: 4
     GiveAp: 1
     CastCancel: true
+    CastTime: 1200
+    AfterCastActDelay: 1000
+    Cooldown:
+      - Level: 1
+        Time: 2500
+      - Level: 2
+        Time: 2300
+      - Level: 3
+        Time: 2100
+      - Level: 4
+        Time: 1900
+      - Level: 5
+        Time: 1700
+      - Level: 6
+        Time: 1500
+      - Level: 7
+        Time: 1300
+      - Level: 8
+        Time: 1100
+      - Level: 9
+        Time: 900
+      - Level: 10
+        Time: 700
+    FixedCastTime: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -1506,11 +1764,58 @@ Body:
     Name: HN_GROUND_GRAVITATION
     Description: Ground Gravitation
     MaxLevel: 10
+    Type: Magic
     TargetType: Self
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -2
     GiveAp: 5
     CastCancel: true
+    CastTime:
+      - Level: 1
+        Time: 3000
+      - Level: 2
+        Time: 3000
+      - Level: 3
+        Time: 3000
+      - Level: 4
+        Time: 3200
+      - Level: 5
+        Time: 3500
+      - Level: 6
+        Time: 3800
+      - Level: 7
+        Time: 4100
+      - Level: 8
+        Time: 4400
+      - Level: 9
+        Time: 4700
+      - Level: 10
+        Time: 5000
+    AfterCastActDelay:
+      - Level: 1
+        Time: 2000
+      - Level: 2
+        Time: 2000
+      - Level: 3
+        Time: 2000
+      - Level: 4
+        Time: 1800
+      - Level: 5
+        Time: 1800
+      - Level: 6
+        Time: 1800
+      - Level: 7
+        Time: 1600
+      - Level: 8
+        Time: 1400
+      - Level: 9
+        Time: 1200
+      - Level: 10
+        Time: 1000
+    Duration1: 5000
+    Duration2: 5000
+    Cooldown: 5000
+    FixedCastTime: 1500
     Requires:
       SpCost:
         - Level: 1
@@ -1534,9 +1839,30 @@ Body:
         - Level: 10
           Amount: 88
     Unit:
-      Id: Ground_Gravitation
-      Range: 1
-      Interval: 1000
+      Id: Dummyskill
+      AlternateId: Ground_Gravitation
+      Range:
+        - Level: 1
+          Size: 2
+        - Level: 2
+          Size: 2
+        - Level: 3
+          Size: 2
+        - Level: 4
+          Size: 3
+        - Level: 5
+          Size: 3
+        - Level: 6
+          Size: 3
+        - Level: 7
+          Size: 4
+        - Level: 8
+          Size: 4
+        - Level: 9
+          Size: 4
+        - Level: 10
+          Size: 4
+      Interval: 500
       Target: Enemy
       Flag:
         NoOverlap: true
@@ -1545,12 +1871,22 @@ Body:
     Name: HN_NAPALM_VULCAN_STRIKE
     Description: Napalm Vulcan Strike
     MaxLevel: 10
+    Type: Magic
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 11
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -7
+    Element: Ghost
+    SplashArea: 2
     GiveAp: 1
     CastCancel: true
+    CastTime: 500
+    AfterCastActDelay: 500
+    Duration2: 20000
+    Cooldown: 300
+    FixedCastTime: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -1578,9 +1914,14 @@ Body:
     Description: Breaking Limit
     MaxLevel: 1
     TargetType: Self
+    DamageFlags:
+      NoDamage: true
     Hit: Single
     HitCount: 1
     CastCancel: true
+    Duration1: 300000
+    Cooldown: 60000
+    FixedCastTime: 1000
     Requires:
       SpCost: 150
       ApCost: 150
@@ -1589,9 +1930,14 @@ Body:
     Description: Rule Break
     MaxLevel: 1
     TargetType: Self
+    DamageFlags:
+      NoDamage: true
     Hit: Single
     HitCount: 1
     CastCancel: true
+    Duration1: 300000
+    Cooldown: 60000
+    FixedCastTime: 1000
     Requires:
       SpCost: 150
       ApCost: 150

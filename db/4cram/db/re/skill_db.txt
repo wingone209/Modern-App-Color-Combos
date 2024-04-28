@@ -138,18 +138,18 @@
 // Hyper Novice
 5449,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	HN_SELFSTUDY_TATICS,Self Study Tatics
 5450,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	HN_SELFSTUDY_SOCERY,Self Study Socery
-5451,2,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,2,	HN_DOUBLEBOWLINGBASH,Double Bowling Bash
-5452,2,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,1,	HN_MEGA_SONIC_BLOW,Mega Sonic Blow
-5453,7:7:7:7:9:9:9:9:11:11,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,1,	HN_SHIELD_CHAIN_RUSH,Shield Chain Rush
-5454,7,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,1,	HN_SPIRAL_PIERCE_MAX,Spiral Pierce Max
-5455,9,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,3,	HN_METEOR_STORM_BUSTER,Meteor Storm Buster
-5456,11,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,2,	HN_JUPITEL_THUNDER_STORM,Jupitel Thunder Storm
-5457,9,6,2,0,0,0,10,1,yes,0,0,0,none,0,0,3,	HN_JACK_FROST_NOVA,Jack Frost Nova
-5458,0,6,4,0,0,0,10,1,yes,0,0,0,none,0,0,1,	HN_HELLS_DRIVE,Hells Drive
-5459,0,6,4,0,0,0,10,1,yes,0,0,0,none,0,0,5,	HN_GROUND_GRAVITATION,Ground Gravitation
-5460,11,6,1,0,0,0,10,1,yes,0,0,0,none,0,0,1,	HN_NAPALM_VULCAN_STRIKE,Napalm Vulcan Strike
-5461,0,6,4,0,0,0,1,1,yes,0,0,0,none,0,0,0,	HN_BREAKINGLIMIT,Breaking Limit
-5462,0,6,4,0,0,0,1,1,yes,0,0,0,none,0,0,0,	HN_RULEBREAK,Rule Break
+5451,2,8,1,-1,0x2,3,10,3,no,0,0,0,weapon,5,0,2,	HN_DOUBLEBOWLINGBASH,Double Bowling Bash
+5452,2,8,1,-1,0x100,0,10,-8,yes,0,0,0,weapon,0,0,1,	HN_MEGA_SONIC_BLOW,Mega Sonic Blow
+5453,7,8,1,-1,0x2,3,10,-5,yes,0,0,0,weapon,0,0,1,	HN_SHIELD_CHAIN_RUSH,Shield Chain Rush
+5454,7,8,1,-1,0,0,10,-5,yes,0,0,0,weapon,0,0,1,	HN_SPIRAL_PIERCE_MAX,Spiral Pierce Max
+5455,9,8,2,3,0,4,10,-3,yes,0,0,0,magic,0,0,3,	HN_METEOR_STORM_BUSTER,Meteor Storm Buster// Fix Me - Applying stun chance on impact and explosion.
+5456,11,8,1,4,0x2,2:2:2:2:3:3:3:3:4:4,10,-6:-6:-7:-7:-8:-8:-9:-9:-9:-9,yes,0,0,0,magic,0,0,2,	HN_JUPITEL_THUNDER_STORM,Jupitel Thunder Storm// Hit count on levels 9-10 unconfirmed.
+5457,9,8,2,1,0,0,10,1,yes,0,0,0,magic,0,0,3,	HN_JACK_FROST_NOVA,Jack Frost Nova
+5458,0,8,4,2,0x2,1:1:1:2:2:2:3:3:3:4,10,-3,yes,0,0,0,magic,0,0,1,	HN_HELLS_DRIVE,Hells Drive
+5459,0,8,4,0,0,0,10,-2,yes,0,0,0,magic,0,0,5,	HN_GROUND_GRAVITATION,Ground Gravitation
+5460,11,8,1,8,0x2,2,10,-7,yes,0,0,0,magic,0,0,1,	HN_NAPALM_VULCAN_STRIKE,Napalm Vulcan Strike
+5461,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	HN_BREAKINGLIMIT,Breaking Limit
+5462,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	HN_RULEBREAK,Rule Break
 
 // Sky Emperor
 5463,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SKE_SKY_MASTERY,Sky Mastery

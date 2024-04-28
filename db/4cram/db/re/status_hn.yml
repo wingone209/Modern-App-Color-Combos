@@ -60,3 +60,57 @@ Body:
 #    EndOnStart:
 #      : true
 #================================
+  - Status: Shieldchainrush
+    Icon: EFST_SHIELDCHAINRUSH
+    DurationLookup: HN_SHIELD_CHAIN_RUSH
+    CalcFlags:
+      Speed: true
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+      Debuff: true
+      BossResist: true
+#================================
+  - Status: Mistyfrost
+    Icon: EFST_MISTYFROST
+    DurationLookup: HN_JACK_FROST_NOVA
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+      Debuff: true
+      BossResist: true
+#================================
+  - Status: Groundgravity
+    Icon: EFST_GROUNDGRAVITY
+    DurationLookup: HN_GROUND_GRAVITATION
+    CalcFlags:
+      Speed: true
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+      Debuff: true
+      BossResist: true
+#================================
+  - Status: Breakinglimit
+    Icon: EFST_BREAKINGLIMIT
+    DurationLookup: HN_BREAKINGLIMIT
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
+#================================
+  - Status: Rulebreak
+    Icon: EFST_RULEBREAK
+    DurationLookup: HN_RULEBREAK
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
+#================================

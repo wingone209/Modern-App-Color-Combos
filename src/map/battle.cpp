@@ -582,6 +582,12 @@ int64 battle_attr_fix(struct block_list *src, struct block_list *target, int64 d
 #else
 					damage += (int64)(damage * 50 / 100);
 #endif
+				if (tsc->getSCE(SC_MISTYFROST))
+#ifdef RENEWAL
+					ratio += 15;
+#else
+					damage += (int64)(damage * 15 / 100);
+#endif
 			case ELE_EARTH:
 				if (tsc->getSCE(SC_WIND_INSIGNIA))
 #ifdef RENEWAL
@@ -1651,6 +1657,12 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 		if (tsc->getSCE(SC_SHADOW_SCAR)) // !TODO: Need official adjustment for this too.
 			damage += damage * (3 * tsc->getSCE(SC_SHADOW_SCAR)->val1) / 100;
+
+		if (tsc->getSCE(SC_SHIELDCHAINRUSH))
+			damage += damage * 10 / 100;
+
+		if (tsc->getSCE(SC_GROUNDGRAVITY))
+			damage += damage * 10 / 100;// Need official adjustment. [Rytech]
 
 		// Damage reductions
 		// Assumptio increases DEF on RE mode, otherwise gives a reduction on the final damage. [Igniz]
@@ -6108,6 +6120,51 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 					skillratio += skillratio * 50 / 100;
 			}
 			break;
+		case HN_DOUBLEBOWLINGBASH:
+			skillratio += 200 * skill_lv;
+			skillratio += 3 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_TATICS);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			skillratio += skillratio * pc_checkskill(sd, HN_SELFSTUDY_TATICS) / 100;
+			if (sc && sc->getSCE(SC_BREAKINGLIMIT))
+				skillratio += skillratio * 50 / 100;
+			break;
+		case HN_MEGA_SONIC_BLOW:
+			skillratio += 700 + 150 * skill_lv;
+			skillratio += 5 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_TATICS);
+			skillratio += 5 * sstatus->pow;
+			if (tstatus->hp < (tstatus->max_hp / 2))
+				skillratio *= 2;
+			RE_LVL_DMOD(100);
+			skillratio += skillratio * pc_checkskill(sd, HN_SELFSTUDY_TATICS) / 100;
+			if (sc && sc->getSCE(SC_BREAKINGLIMIT))
+				skillratio *= 2;
+			break;
+		case HN_SHIELD_CHAIN_RUSH:
+			skillratio += 300 + 300 * skill_lv;
+			skillratio += 3 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_TATICS);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			skillratio += skillratio * 2 * pc_checkskill(sd, HN_SELFSTUDY_TATICS) / 100;
+			if (sc && sc->getSCE(SC_BREAKINGLIMIT))
+				skillratio += skillratio * 50 / 100;
+			break;
+		case HN_SPIRAL_PIERCE_MAX:
+			skillratio += 400 + 250 * skill_lv;
+			skillratio += 3 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_TATICS);
+			skillratio += 5 * sstatus->pow;
+			switch (tstatus->size)
+			{
+				case SZ_SMALL:  i = 20; break;
+				case SZ_MEDIUM: i = 30; break;
+				case SZ_BIG:    i = 50; break;
+			}
+			skillratio += skillratio * i / 100;
+			RE_LVL_DMOD(100);
+			skillratio += skillratio * pc_checkskill(sd, HN_SELFSTUDY_TATICS) / 100;
+			if (sc && sc->getSCE(SC_BREAKINGLIMIT))
+				skillratio *= 2;
+			break;
 		case SKE_RISING_SUN:
 			skillratio += 400 + 400 * skill_lv;
 			skillratio += 5 * skill_lv * (sd ? pc_checkskill(sd, SKE_SKY_MASTERY) : 10);
@@ -7307,6 +7364,12 @@ static struct Damage initialize_weapon_data(struct block_list *src, struct block
 				if (sc && sc->getSCE(SC_RESEARCHREPORT))
 					wd.div_ = 4;
 				break;
+			case HN_DOUBLEBOWLINGBASH:
+				if (wd.miscflag >= 4)
+					wd.div_ = 5;
+				else if (wd.miscflag >= 2)
+					wd.div_ = 4;
+				break;
 			case SKE_ALL_IN_THE_SKY:
 				if (tstatus->race == RC_DEMON || tstatus->race == RC_DEMIHUMAN)
 					wd.div_ = 3;
@@ -7900,6 +7963,15 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 				else if (sc->getSCE(SC_T_FIVETH_GOD))
 					ad.div_ = 7;
 			}
+			break;
+		case HN_METEOR_STORM_BUSTER:
+		case HN_GROUND_GRAVITATION:
+			if (mflag&SK_SECONDATK)
+				ad.div_ = 1;
+			break;
+		case HN_JACK_FROST_NOVA:
+			if (mflag&SK_SECONDATK)
+				ad.div_ = -2;
 			break;
 		case SS_ANTENPOU:
 			if (mflag&SK_SECONDATK)
@@ -8819,6 +8891,74 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						skillratio += 15 * skill_lv * (pc_checkskill(sd, SOA_TALISMAN_MASTERY) + pc_checkskill(sd, SOA_SOUL_MASTERY));
 						skillratio += 10 * sstatus->spl;
 						RE_LVL_DMOD(100);
+						break;
+					case HN_METEOR_STORM_BUSTER:
+						if (mflag&SK_SECONDATK)
+							skillratio += 350 + 150 * skill_lv;
+						else
+							skillratio += 200 + 300 * skill_lv;
+						skillratio += 5 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_SOCERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						skillratio += skillratio * pc_checkskill(sd, HN_SELFSTUDY_SOCERY) / 100;
+						if (sc && sc->getSCE(SC_RULEBREAK))
+							skillratio += skillratio * 50 / 100;
+						break;
+					case HN_JUPITEL_THUNDER_STORM:
+						skillratio += -100 + 1800 * skill_lv;
+						skillratio += 3 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_SOCERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						skillratio += skillratio * pc_checkskill(sd, HN_SELFSTUDY_SOCERY) / 100;
+						if (sc && sc->getSCE(SC_RULEBREAK))
+							skillratio += skillratio * 70 / 100;
+						break;
+					case HN_JACK_FROST_NOVA:
+						if (mflag&SK_SECONDATK)
+							skillratio += 100 + 200 * skill_lv;
+						else
+							skillratio += -100 + 200 * skill_lv;
+						skillratio += 3 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_SOCERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						skillratio += skillratio * pc_checkskill(sd, HN_SELFSTUDY_SOCERY) / 100;
+						if (sc && sc->getSCE(SC_RULEBREAK))
+							skillratio += skillratio * 70 / 100;
+						break;
+					case HN_HELLS_DRIVE:
+						skillratio += 900 + 550 * skill_lv;
+						skillratio += 4 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_SOCERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						skillratio += skillratio * pc_checkskill(sd, HN_SELFSTUDY_SOCERY) / 100;
+						if (sc && sc->getSCE(SC_RULEBREAK))
+							skillratio += skillratio * 70 / 100;
+						break;
+					case HN_GROUND_GRAVITATION:
+						if (mflag&SK_SECONDATK)
+						{
+							skillratio += 300 + 300 * skill_lv;
+							skillratio += 2 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_SOCERY);
+						}
+						else
+						{
+							skillratio += 2900 + 1500 * skill_lv;
+							skillratio += 4 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_SOCERY);
+						}
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						skillratio += skillratio * pc_checkskill(sd, HN_SELFSTUDY_SOCERY) / 100;
+						if (sc && sc->getSCE(SC_RULEBREAK))
+							skillratio += skillratio * 50 / 100;
+						break;
+					case HN_NAPALM_VULCAN_STRIKE:
+						skillratio += 150 + 250 * skill_lv;
+						skillratio += 4 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_SOCERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						skillratio += skillratio * 2 * pc_checkskill(sd, HN_SELFSTUDY_SOCERY) / 100;
+						if (sc && sc->getSCE(SC_RULEBREAK))
+							skillratio *= 2;
 						break;
 					case SS_TOKEDASU:
 						skillratio += -100 + 700 * skill_lv;
