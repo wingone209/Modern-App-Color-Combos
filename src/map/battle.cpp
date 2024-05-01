@@ -3343,12 +3343,11 @@ static bool attack_ignores_def(struct Damage* wd, struct block_list *src, struct
 /**
  * This function lists which skills are unaffected by refine bonus, masteries, Star Crumbs and Spirit Spheres
  * This function is also used to determine if atkpercent applies
- * @param src: Source of the attack
  * @param skill_id: Skill being used
  * @param chk_flag: The bonus that is currently being checked for, see e_bonus_chk_flag
  * @return true = bonus applies; false = bonus does not apply
  */
-static bool battle_skill_stacks_masteries_vvs(struct block_list &src, uint16 skill_id, e_bonus_chk_flag chk_flag)
+static bool battle_skill_stacks_masteries_vvs(uint16 skill_id, e_bonus_chk_flag chk_flag)
 {
 	switch (skill_id) {
 		// PC skills that are unaffected
@@ -3373,33 +3372,7 @@ static bool battle_skill_stacks_masteries_vvs(struct block_list &src, uint16 ski
 			break;
 		case LK_SPIRALPIERCE:
 			// Spiral Pierce is influenced only by refine bonus and Star Crumbs for players
-			if (src.type == BL_PC && chk_flag != BCHK_REFINE && chk_flag != BCHK_STAR)
-				return false;
-			break;
-	}
-
-	return true;
-}
-
-/**
- * This function lists which skills are unaffected by EDP and the elemental bonus from Magnum Break / EDP
- * Unit skills (e.g. Bomb and Freezing Trap) are never affected.
- * @param skill_id: Skill being used
- * @return true = bonus applies; false = bonus does not apply
- */
-static bool battle_skill_stacks_edp_element(uint16 skill_id)
-{
-	switch (skill_id) {
-		case TF_SPRINKLESAND:
-		case AS_SPLASHER:
-		case ASC_METEORASSAULT:
-		case ASC_BREAKER:
-		case AS_VENOMKNIFE:
-		case AM_ACIDTERROR:
-			return false;
-		default:
-			//Unit skills
-			if (skill_get_unit_id(skill_id))
+			if (chk_flag != BCHK_REFINE && chk_flag != BCHK_STAR)
 				return false;
 			break;
 	}
@@ -3778,12 +3751,12 @@ static void battle_calc_element_damage(struct Damage* wd, struct block_list *src
 	// These mastery bonuses are non-elemental and should apply even if the attack misses
 	// They are still increased by the EDP/Magnum Break bonus damage (WATK_ELEMENT)
 	// In renewal these bonuses do not apply when the attack misses
-	if (sd && battle_skill_stacks_masteries_vvs(*src, skill_id, BCHK_STAR)) {
+	if (sd && battle_skill_stacks_masteries_vvs(skill_id, BCHK_STAR)) {
 		// Star Crumb bonus damage
 		ATK_ADD2(wd->damage, wd->damage2, sd->right_weapon.star, sd->left_weapon.star);
 	}
 	// Check if general mastery bonuses apply (above check is only for Star Crumb)
-	if (battle_skill_stacks_masteries_vvs(*src, skill_id, BCHK_ALL)) {
+	if (battle_skill_stacks_masteries_vvs(skill_id, BCHK_ALL)) {
 		// Spirit Sphere bonus damage
 		ATK_ADD(wd->damage, wd->damage2, battle_get_spiritball_damage(*wd, *src, skill_id));
 
@@ -3813,10 +3786,10 @@ static void battle_calc_element_damage(struct Damage* wd, struct block_list *src
 		}
 	}
 
-	// These bonuses do not apply to skills that ignore element, unit skills and skills that have their own base damage formula
+	// These bonuses do not apply to skills that ignore +% damage cards
 	// If damage was reduced below 0 and was not increased again to a positive value through mastery bonuses, these bonuses are ignored
 	// Any of these are only applied to your right hand weapon in pre-renewal
-	if (!nk[NK_IGNOREELEMENT] && (wd->damage > 0 || wd->damage2 > 0) && sc && battle_skill_stacks_edp_element(skill_id)) {
+	if (!nk[NK_IGNOREELEMENT] && !nk[NK_IGNOREATKCARD] && (wd->damage > 0 || wd->damage2 > 0) && sc) {
 
 		// EDP bonus damage
 		// This has to be applied after mastery bonuses but still before the elemental extra damage
@@ -3862,7 +3835,7 @@ static void battle_calc_attack_masteries(struct Damage* wd, struct block_list *s
 	}
 
 	// Check if mastery damage applies to current skill
-	if (sd && battle_skill_stacks_masteries_vvs(*src, skill_id, BCHK_ALL))
+	if (sd && battle_skill_stacks_masteries_vvs(skill_id, BCHK_ALL))
 	{	//Add mastery damage
 		uint16 skill;
 
@@ -4448,7 +4421,7 @@ static void battle_calc_multi_attack(struct Damage* wd, struct block_list *src,s
  */
 static unsigned short battle_get_atkpercent(struct block_list& bl, uint16 skill_id, status_change& sc)
 {
-	if (!battle_skill_stacks_masteries_vvs(bl, skill_id, BCHK_ALL))
+	if (bl.type == BL_PC && !battle_skill_stacks_masteries_vvs(skill_id, BCHK_ALL))
 		return 100;
 
 	int atkpercent = 100;
@@ -6849,7 +6822,7 @@ static void battle_calc_attack_post_defense(struct Damage* wd, struct block_list
 #ifndef RENEWAL
 	//Refine bonus
 	if (sd) {
-		if (battle_skill_stacks_masteries_vvs(*src, skill_id, BCHK_REFINE)) {
+		if (battle_skill_stacks_masteries_vvs(skill_id, BCHK_REFINE)) {
 			ATK_ADD2(wd->damage, wd->damage2, sstatus->rhw.atk2, sstatus->lhw.atk2);
 		}
 		wd->basedamage += sstatus->rhw.atk2;
@@ -10045,7 +10018,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 			short index = sd->equip_index[EQI_AMMO];
 			if (index < 0) {
 				if (sd->weapontype1 > W_KATAR && sd->weapontype1 < W_HUUMA)
-					clif_skill_fail(sd,0,USESKILL_FAIL_NEED_MORE_BULLET,0);
+					clif_skill_fail( *sd, 0, USESKILL_FAIL_NEED_MORE_BULLET );
 				else
 					clif_arrow_fail(sd,0);
 				return ATK_NONE;
@@ -10064,7 +10037,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 					case W_GATLING:
 					case W_SHOTGUN:
 						if (sd->inventory_data[index]->subtype != AMMO_BULLET) {
-							clif_skill_fail(sd,0,USESKILL_FAIL_NEED_MORE_BULLET,0);
+							clif_skill_fail( *sd, 0, USESKILL_FAIL_NEED_MORE_BULLET );
 							return ATK_NONE;
 						}
 						break;
@@ -10076,7 +10049,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 							AMMO_GRENADE)
 #endif
 						{
-							clif_skill_fail(sd,0,USESKILL_FAIL_NEED_MORE_BULLET,0);
+							clif_skill_fail( *sd, 0, USESKILL_FAIL_NEED_MORE_BULLET );
 							return ATK_NONE;
 						}
 						break;
@@ -10411,7 +10384,7 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 					}
 
 					if( type != CAST_GROUND ){
-						clif_skill_fail(sd,r_skill,USESKILL_FAIL_LEVEL,0);
+						clif_skill_fail( *sd, r_skill );
 						map_freeblock_unlock();
 						return wd.dmg_lv;
 					}
