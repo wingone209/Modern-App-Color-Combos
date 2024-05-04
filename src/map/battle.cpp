@@ -1547,11 +1547,6 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 			return 0;
 	}
 
-	status_change* tsc = status_get_sc(bl); //check target status
-
-	if( tsc && tsc->getSCE(SC_INVINCIBLE) && !tsc->getSCE(SC_INVINCIBLEOFF) )
-		return 1;
-
 	switch (skill_id) {
 #ifndef RENEWAL
 		case PA_PRESSURE:
@@ -1564,6 +1559,8 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 
 			return damage; //These skills bypass everything else.
 	}
+
+	status_change* tsc = status_get_sc(bl); //check target status
 
 	// Nothing can reduce the damage, but Safety Wall and Millennium Shield can block it completely.
 	// So can defense sphere's but what the heck is that??? [Rytech]
@@ -1850,9 +1847,6 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 	status_change* sc = status_get_sc(src);
 
 	if (sc && sc->count) {
-
-		if( sc->getSCE(SC_INVINCIBLE) && !sc->getSCE(SC_INVINCIBLEOFF) )
-			damage += damage * 75 / 100;
 
 		if ((sce = sc->getSCE(SC_BLOODLUST)) && flag&BF_WEAPON && damage > 0 && rnd()%100 < sce->val3)
 			status_heal(src, damage * sce->val4 / 100, 0, 3);
@@ -2821,6 +2815,10 @@ bool is_infinite_defense(struct block_list *target, int flag)
 	if(status_has_mode(tstatus,MD_IGNOREMISC) && flag&(BF_MISC) )
 		return true;
 
+	status_change* tsc = status_get_sc(target);
+	if (tsc && tsc->getSCE(SC_INVINCIBLE))
+		return true;
+
 	return false;
 }
 
@@ -3364,12 +3362,6 @@ static bool battle_skill_stacks_masteries_vvs(uint16 skill_id, e_bonus_chk_flag 
 		case LG_EARTHDRIVE:
 		case NPC_DRAGONBREATH:
 			return false;
-		case CR_GRANDCROSS:
-		case NPC_GRANDDARKNESS:
-			// Grand Cross is influenced by refine bonus but not by atkpercent / masteries / Star Crumbs / Spirit Spheres
-			if (chk_flag != BCHK_REFINE)
-				return false;
-			break;
 		case LK_SPIRALPIERCE:
 			// Spiral Pierce is influenced only by refine bonus and Star Crumbs for players
 			if (chk_flag != BCHK_REFINE && chk_flag != BCHK_STAR)
@@ -3632,7 +3624,9 @@ int battle_get_misc_element(struct block_list* src, struct block_list* target, u
 static void battle_min_damage(struct Damage &wd, struct block_list &src, uint16 skill_id, int64 min) {
 	if (is_attack_right_handed(&src, skill_id)) {
 		wd.damage = cap_value(wd.damage, min, INT64_MAX);
+#ifndef RENEWAL
 		wd.basedamage = cap_value(wd.basedamage, min, INT64_MAX);
+#endif
 	}
 	// Left-hand damage is always capped to 0
 	if (is_attack_left_handed(&src, skill_id)) {
@@ -3830,9 +3824,11 @@ static void battle_calc_attack_masteries(struct Damage* wd, struct block_list *s
 	struct status_data *sstatus = status_get_status_data(src);
 	int t_class = status_get_class(target);
 
+#ifndef RENEWAL
 	if (sd) {
 		wd->basedamage = battle_addmastery(sd, target, wd->basedamage, 0);
 	}
+#endif
 
 	// Check if mastery damage applies to current skill
 	if (sd && battle_skill_stacks_masteries_vvs(skill_id, BCHK_ALL))
@@ -3934,10 +3930,10 @@ static void battle_calc_damage_parts(struct Damage* wd, struct block_list *src,s
 
 	if (sd && sd->sc.getSCE(SC_SEVENWIND)) { // Mild Wind applies element to status ATK as well as weapon ATK [helvetica]
 		wd->statusAtk = battle_attr_fix(src, target, wd->statusAtk, right_element, tstatus->def_ele, tstatus->ele_lv);
-		wd->statusAtk2 = battle_attr_fix(src, target, wd->statusAtk, left_element, tstatus->def_ele, tstatus->ele_lv);
+		wd->statusAtk2 = battle_attr_fix(src, target, wd->statusAtk2, left_element, tstatus->def_ele, tstatus->ele_lv);
 	} else { // status atk is considered neutral on normal attacks [helvetica]
 		wd->statusAtk = battle_attr_fix(src, target, wd->statusAtk, ELE_NEUTRAL, tstatus->def_ele, tstatus->ele_lv);
-		wd->statusAtk2 = battle_attr_fix(src, target, wd->statusAtk, ELE_NEUTRAL, tstatus->def_ele, tstatus->ele_lv);
+		wd->statusAtk2 = battle_attr_fix(src, target, wd->statusAtk2, ELE_NEUTRAL, tstatus->def_ele, tstatus->ele_lv);
 	}
 
 	// Check critical
@@ -4448,10 +4444,11 @@ static unsigned short battle_get_atkpercent(struct block_list& bl, uint16 skill_
 		atkpercent += sc.getSCE(SC_BLOODLUST)->val2;
 	if (sc.getSCE(SC_FLEET))
 		atkpercent += sc.getSCE(SC_FLEET)->val3;
+	if (sc.getSCE(SC_INVINCIBLE))
+		atkpercent += sc.getSCE(SC_INVINCIBLE)->val2;
 
 	/* Only few selected skills should use this function, DO NOT ADD any that are not caused by the skills listed below
 	* TODO:
-	* NPC_INVINCIBLE (+100)
 	* GD_GUARDUP (2*skLevel+8)
 	* EL_WATERBARRIER (-3)
 	* SC_ENERVATION (-30/-40/-50)
@@ -6722,7 +6719,7 @@ static void battle_calc_defense_reduction(struct Damage* wd, struct block_list *
 #ifndef RENEWAL
 		//Damage reduction: [VIT*0.3] + RND(0, [VIT^2/150] - [VIT*0.3] - 1) + [VIT*0.5]
 		vit_def = ((3 * def2) / 10);
-		vit_def += rnd_value(0, (def2 * def2) / 150 - ((3 * def2) / 10) - 1);
+		vit_def += rnd_value(0, max(0, (def2 * def2) / 150 - ((3 * def2) / 10) - 1));
 		vit_def += (def2 / 2);
 #else
 		vit_def = def2;
@@ -6764,7 +6761,9 @@ static void battle_calc_defense_reduction(struct Damage* wd, struct block_list *
 				return;
 			if (is_attack_piercing(wd, src, target, skill_id, skill_lv, EQI_HAND_R) || is_attack_piercing(wd, src, target, skill_id, skill_lv, EQI_HAND_L))
 				return;
-
+			[[fallthrough]];
+		case CR_GRANDCROSS: // Grand Cross is marked as "IgnoreDefense" in renewal as it's applied at the end after already combining ATK and MATK
+		case NPC_GRANDDARKNESS:
 			// Defense reduction by flat value.
 			// This completely bypasses the normal RE DEF Reduction formula.
 			wd->damage -= (def1 + vit_def);
@@ -6943,37 +6942,36 @@ static void battle_calc_attack_left_right_hands(struct Damage* wd, struct block_
 	if (sd) {
 		int skill;
 
-		if (!is_attack_right_handed(src, skill_id) && is_attack_left_handed(src, skill_id)) {
-			wd->damage = wd->damage2;
-			wd->damage2 = 0;
-		} else if(sd->status.weapon == W_KATAR && !skill_id) { //Katars (offhand damage only applies to normal attacks, tested on Aegis 10.2)
-			skill = pc_checkskill(sd,TF_DOUBLE);
-			wd->damage2 = (int64)wd->damage * (1 + (skill * 2))/100;
+		if (sd->status.weapon == W_KATAR && !skill_id) { //Katars (offhand damage only applies to normal attacks, tested on Aegis 10.2)
+			skill = pc_checkskill(sd, TF_DOUBLE);
+			wd->damage2 = (int64)wd->damage * (1 + (skill * 2)) / 100;
 		}
 #ifdef RENEWAL
-		else if(is_attack_right_handed(src, skill_id) && is_attack_left_handed(src, skill_id) && sd->status.weapon != W_KATAR)	//Dual-wield
+		else if(is_attack_left_handed(src, skill_id) && sd->status.weapon != W_KATAR)	//Dual-wield
 #else
-		else if(is_attack_right_handed(src, skill_id) && is_attack_left_handed(src, skill_id))	//Dual-wield
+		else if(is_attack_left_handed(src, skill_id))	//Dual-wield
 #endif
 		{
-			if (wd->damage) {
+			// If you only have a weapon in the left hand, then your main hand damage will be identical to an unarmed attack
+			if (is_attack_right_handed(src, skill_id) && wd->damage) {
 				if((sd->class_&MAPID_UPPERMASK) == MAPID_ASSASSIN) {
 					skill = pc_checkskill(sd,AS_RIGHT);
 					ATK_RATER(wd->damage, 50 + (skill * 10))
 				}
-				else if((sd->class_ & MAPID_UPPERMASK) == MAPID_KAGEROUOBORO) {
+				else if((sd->class_&MAPID_UPPERMASK) == MAPID_KAGEROUOBORO) {
 					skill = pc_checkskill(sd,KO_RIGHT);
 					ATK_RATER(wd->damage, 70 + (skill * 10))
 				}
 				if(wd->damage < 1)
 					wd->damage = 1;
 			}
+			// Left hand damage will always be adjusted, even if you don't have a weapon in the main hand
 			if (wd->damage2) {
-				if((sd->class_ & MAPID_UPPERMASK) == MAPID_ASSASSIN) {
+				if((sd->class_&MAPID_UPPERMASK) == MAPID_ASSASSIN) {
 					skill = pc_checkskill(sd,AS_LEFT);
 					ATK_RATEL(wd->damage2, 30 + (skill * 10))
 				}
-				else if((sd->class_ & MAPID_UPPERMASK) == MAPID_KAGEROUOBORO) {
+				else if((sd->class_&MAPID_UPPERMASK) == MAPID_KAGEROUOBORO) {
 					skill = pc_checkskill(sd,KO_LEFT);
 					ATK_RATEL(wd->damage2, 50 + (skill * 10))
 				}
@@ -7197,10 +7195,12 @@ static struct Damage initialize_weapon_data(struct block_list *src, struct block
 	wd.flag = BF_WEAPON; //Initial Flag
 	wd.flag |= (skill_id||wd.miscflag)?BF_SKILL:BF_NORMAL; // Baphomet card's splash damage is counted as a skill. [Inkfish]
 	wd.isspdamage = false;
-	wd.damage = wd.damage2 = wd.basedamage =
+	wd.damage = wd.damage2 =
 #ifdef RENEWAL
 	wd.statusAtk = wd.statusAtk2 = wd.equipAtk = wd.equipAtk2 = wd.weaponAtk = wd.weaponAtk2 = wd.masteryAtk = wd.masteryAtk2 =
 	wd.percentAtk = wd.percentAtk2 =
+#else
+	wd.basedamage =
 #endif
 	0;
 
@@ -7500,11 +7500,13 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 		wd.dmg_lv = ATK_FLEE;
 	else if(!(infdef = is_infinite_defense(target, wd.flag))) { //no need for math against plants
 
+#ifndef RENEWAL
 		// First call function with skill_id 0 to get base damage of a normal attack
 		battle_calc_skill_base_damage(&wd, src, target, 0, 0); // base damage
 		wd.basedamage = wd.damage;
 		// Now get actual skill damage
 		if (skill_id != 0)
+#endif
 			battle_calc_skill_base_damage(&wd, src, target, skill_id, skill_lv); // base skill damage
 
 		int64 ratio = 0;
@@ -7694,9 +7696,6 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 
 	battle_calc_element_damage(&wd, src, target, skill_id, skill_lv);
 
-	if(skill_id == CR_GRANDCROSS || skill_id == NPC_GRANDDARKNESS)
-		return wd; //Enough, rest is not needed.
-
 #ifdef RENEWAL
 	if (is_attack_critical(&wd, src, target, skill_id, skill_lv, false)) {
 		if (sd) { //Check for player so we don't crash out, monsters don't have bonus crit rates [helvetica]
@@ -7868,7 +7867,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 		return ad;
 	}
 	//Initial Values
-	ad.damage = 1;
+	ad.damage = 0;
 	ad.div_ = skill_get_num(skill_id,skill_lv);
 	ad.amotion = (skill_get_inf(skill_id)&INF_GROUND_SKILL ? 0 : sstatus->amotion); //Amotion should be 0 for ground skills.
 	ad.dmotion = tstatus->dmotion;
@@ -9123,6 +9122,46 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 				ad.damage = ad.damage * (100-mdef)/100 - mdef2;
 #endif
 		}
+
+		//Apply the physical part of the skill's damage. [Skotlex]
+		switch (skill_id) {
+			case CR_GRANDCROSS:
+			case NPC_GRANDDARKNESS: {
+				// Pre-re ATK = Take atk, apply def reduction and add refine bonus
+				// Final Damage = (ATK+MATK)*RATIO
+				// Renewal ATK = Take total atk
+				// Final Damage = ((ATK+MATK)/2)*RATIO - (tDEF + tMDEF)
+				// No need to go through the whole physical damage code
+				struct Damage wd = initialize_weapon_data(src, target, skill_id, skill_lv, mflag);
+				battle_calc_skill_base_damage(&wd, src, target, skill_id, skill_lv);
+				// Calculate ATK
+#ifdef RENEWAL
+				if (sd)
+					wd.damage = wd.statusAtk + wd.weaponAtk + wd.equipAtk + wd.percentAtk;
+#else
+				battle_calc_defense_reduction(&wd, src, target, skill_id, skill_lv);
+				if (sd) {
+					wd.damage += sstatus->rhw.atk2;
+				}
+#endif
+				// Combine ATK and MATK
+#ifdef RENEWAL
+				ad.damage = (wd.damage + ad.damage) / 2;
+#else
+				ad.damage = std::max((int64)1, wd.damage + ad.damage);
+#endif
+				// Ratio
+				skillratio += 40 * skill_lv;
+				MATK_RATE(skillratio);
+#ifdef RENEWAL
+				// Total defense reduction (renewal only)
+				battle_calc_defense_reduction(&ad, src, target, skill_id, skill_lv);
+				ad.damage -= (tstatus->mdef + tstatus->mdef2);
+#endif
+			}
+			break;
+		}
+
 		if(ad.damage<1)
 			ad.damage=1;
 		else if(sc) { //only applies when hit
@@ -9153,26 +9192,26 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 		if (!nk[NK_IGNOREELEMENT])
 			ad.damage = battle_attr_fix(src, target, ad.damage, s_ele, tstatus->def_ele, tstatus->ele_lv);
 
-		//Apply the physical part of the skill's damage. [Skotlex]
-		switch(skill_id) {
-			case CR_GRANDCROSS:
-			case NPC_GRANDDARKNESS: {
-					struct Damage wd = battle_calc_weapon_attack(src,target,skill_id,skill_lv,mflag);
-
-					ad.damage = battle_attr_fix(src, target, wd.damage + ad.damage, s_ele, tstatus->def_ele, tstatus->ele_lv) * (100 + 40 * skill_lv) / 100;
-					if(src == target) {
-						if(src->type == BL_PC)
-							ad.damage = ad.damage / 2;
-						else
-							ad.damage = 0;
-					}
-				}
-				break;
-		}
-
 #ifndef RENEWAL
 		ad.damage += battle_calc_cardfix(BF_MAGIC, src, target, nk, s_ele, 0, ad.damage, 0, ad.flag);
 #endif
+
+		switch (skill_id) {
+			case CR_GRANDCROSS:
+			case NPC_GRANDDARKNESS:
+				if (src == target) {
+					// Grand Cross on self first applies attr_fix, then cardfix and finally halves the damage
+					if (src->type == BL_PC)
+						ad.damage = ad.damage / 2;
+					else
+						ad.damage = 0;
+				}
+				else
+					// Grand Cross on target applies attr_fix, then cardfix and then attr_fix a second time
+					ad.damage = battle_attr_fix(src, target, ad.damage, s_ele, tstatus->def_ele, tstatus->ele_lv);
+				break;
+		}
+
 	} //Hint: Against plants damage will still be 1 at this point
 
 	//Apply DAMAGE_DIV_FIX and check for min damage
@@ -9251,7 +9290,10 @@ struct Damage battle_calc_misc_attack(struct block_list *src,struct block_list *
 
 	switch (skill_id) {
 		case TF_THROWSTONE:
-			md.damage = 50;
+			if (sd)
+				md.damage = 50;
+			else
+				md.damage = 30;
 			md.flag |= BF_WEAPON;
 			break;
 		case NPC_KILLING_AURA:
@@ -11438,8 +11480,8 @@ static const struct _battle_data {
 	{ "day_duration",                       &battle_config.day_duration,                    0,      0,      INT_MAX,        },
 	{ "night_duration",                     &battle_config.night_duration,                  0,      0,      INT_MAX,        },
 	{ "mob_remove_delay",                   &battle_config.mob_remove_delay,                60000,  1000,   INT_MAX,        },
-	{ "mob_active_time",                    &battle_config.mob_active_time,                 0,      0,      INT_MAX,        },
-	{ "boss_active_time",                   &battle_config.boss_active_time,                0,      0,      INT_MAX,        },
+	{ "mob_active_time",                    &battle_config.mob_active_time,                 5000,   0,      INT_MAX,        },
+	{ "boss_active_time",                   &battle_config.boss_active_time,                5000,   0,      INT_MAX,        },
 	{ "sg_miracle_skill_duration",          &battle_config.sg_miracle_skill_duration,       3600000, 0,     INT_MAX,        },
 	{ "hvan_explosion_intimate",            &battle_config.hvan_explosion_intimate,         45000,  0,      100000,         },
 	{ "quest_exp_rate",                     &battle_config.quest_exp_rate,                  100,    0,      INT_MAX,        },
@@ -11690,6 +11732,7 @@ static const struct _battle_data {
 	{ "feature.dynamicnpc_direction",       &battle_config.feature_dynamicnpc_direction,    0,      0,      1,              },
 
 	{ "mob_respawn_time",                   &battle_config.mob_respawn_time,                1000,   1000,   INT_MAX,        },
+	{ "mob_unlock_time",                    &battle_config.mob_unlock_time,                 2000,   0,      INT_MAX,        },
 
 	{ "feature.stylist",                    &battle_config.feature_stylist,                 1,      0,      1,              },
 	{ "feature.banking_state_enforce",      &battle_config.feature_banking_state_enforce,   0,      0,      1,              },
