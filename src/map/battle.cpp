@@ -588,6 +588,7 @@ int64 battle_attr_fix(struct block_list *src, struct block_list *target, int64 d
 #else
 					damage += (int64)(damage * 15 / 100);
 #endif
+				break;
 			case ELE_EARTH:
 				if (tsc->getSCE(SC_WIND_INSIGNIA))
 #ifdef RENEWAL
@@ -3573,7 +3574,7 @@ int battle_get_magic_element(struct block_list* src, struct block_list* target, 
 				element = sd->bonus.arrow_ele;
 			break;
 		case SS_ANKOKURYUUAKUMU:
-			// Fire element for 2nd hit on targets with nightmare status. (Rytech)
+			// Fire element for 2nd hit on targets with nightmare status. [Rytech]
 			if (mflag&SK_SECONDATK)
 				element = ELE_FIRE;
 			break;
@@ -7947,7 +7948,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 			break;
 		case SS_ANTENPOU:
 			if (mflag&SK_SECONDATK)
-				ad.div_ = -4;// Number of hits from a clone unconfirmed. (Rytech)
+				ad.div_ = -4;// Number of hits from a clone unconfirmed. [Rytech]
 			break;
 	}
 
@@ -8813,7 +8814,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 					{
 						int baseratio = 150 * skill_lv + 2 * pc_checkskill(sd, SOA_SOUL_MASTERY);
 						if ((tsc && tsc->getSCE(SC_SOULCURSE)) ||
-							map_find_skill_unit_oncell(&sd->bl, sd->bl.x, sd->bl.y, SOA_TOTEM_OF_TUTELARY, NULL, 0) != NULL)
+							map_foreachinrange(skill_unit_rangecheck, &sd->bl, MUR_TOTEM_OF_TUTELARY, BL_SKILL, &sd->bl, UNT_TOTEM_OF_TUTELARY, 0))
 							baseratio += 100 * skill_lv;
 						skillratio += -100 + baseratio * sd->soulball_old;
 						skillratio += 5 * sstatus->spl;

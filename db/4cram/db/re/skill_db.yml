@@ -473,7 +473,7 @@ Body:
           Amount: 10
     Unit:
       Id: Totem_Of_Tutelary
-      Layout:
+      Range:
         - Level: 1
           Size: 2
         - Level: 2
@@ -489,7 +489,6 @@ Body:
       Flag:
         NoOverlap: true
         PathCheck: true
-        RangedSingleUnit: true
   - Id: 5423
     Name: SOA_TALISMAN_OF_FIVE_ELEMENTS
     Description: Talisman Of Five Elements
@@ -1275,7 +1274,7 @@ Body:
     GiveAp: 1
     CastCancel: true
     AfterCastActDelay: 500
-    Duration2: 5000
+    Duration2: 4500
     Cooldown: 300
     Requires:
       SpCost:
@@ -1418,7 +1417,7 @@ Body:
         Time: 2500
       - Level: 10
         Time: 3000
-    Duration2: 5000
+    Duration2: 4500
     Cooldown:
       - Level: 1
         Time: 2100
@@ -1884,7 +1883,7 @@ Body:
     CastCancel: true
     CastTime: 500
     AfterCastActDelay: 500
-    Duration2: 20000
+    Duration2: 18000
     Cooldown: 300
     FixedCastTime: 1000
     Requires:
@@ -2201,12 +2200,21 @@ Body:
     Unit:
       Id: Twinkling_Galaxy
       AlternateId: Dummyskill
-      Range: 2
+      Range:
+        - Level: 1
+          Size: 6
+        - Level: 2
+          Size: 6
+        - Level: 3
+          Size: 5
+        - Level: 4
+          Size: 5
+        - Level: 5
+          Size: 4
       Interval: 300
       Target: Enemy
       Flag:
         PathCheck: true
-        RangedSingleUnit: true
   - Id: 5472
     Name: SKE_STAR_BURST
     Description: Star Burst
@@ -2284,12 +2292,21 @@ Body:
     Unit:
       Id: Star_Cannon
       AlternateId: Dummyskill
-      Range: 3
+      Range:
+        - Level: 1
+          Size: 6
+        - Level: 2
+          Size: 6
+        - Level: 3
+          Size: 5
+        - Level: 4
+          Size: 5
+        - Level: 5
+          Size: 4
       Interval: 300
       Target: Enemy
       Flag:
         PathCheck: true
-        RangedSingleUnit: true
   - Id: 5474
     Name: SKE_ALL_IN_THE_SKY
     Description: All In The Sky

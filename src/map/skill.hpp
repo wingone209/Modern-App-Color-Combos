@@ -36,6 +36,13 @@ class status_change;
 #define SKILL_NAME_LENGTH 40 /// Max Skill Name length
 #define SKILL_DESC_LENGTH 40 /// Max Skill Desc length
 
+/// Max Unit Range - Max known possible range for certain skill unit's.
+/// Some skills when casted checks if the caster is standing in range of a certain skill unit.
+/// These are used to set the range for skill_unit_rangecheck so it won't check beyond what is possible.
+/// Searching beyond the max possible range just wastes cpu cycles.
+#define MUR_TOTEM_OF_TUTELARY 4 /// Ranges 5x5 Lv1 to 9x9 Lv5
+#define MUR_TWINKLING_GALAXY 6 /// Ranges 13x13 Lv1 to 9x9 Lv5
+
 /// Flag to trigger a skills 2nd attack if the skill supports it.
 /// Note: A example is a skill that deals 2 different attacks through a single skill ID
 /// using different damage formulas, elements, number of hits, etc.
@@ -608,6 +615,7 @@ void skill_consume_requirement(map_session_data *sd, uint16 skill_id, uint16 ski
 struct s_skill_condition skill_get_requirement(map_session_data *sd, uint16 skill_id, uint16 skill_lv);
 bool skill_disable_check(status_change &sc, uint16 skill_id);
 bool skill_pos_maxcount_check(struct block_list *src, int16 x, int16 y, uint16 skill_id, uint16 skill_lv, enum bl_type type, bool display_failure);
+int skill_unit_rangecheck(struct block_list* bl, va_list ap);
 
 int skill_check_pc_partner(map_session_data *sd, uint16 skill_id, uint16 *skill_lv, int range, int cast_flag);
 int skill_unit_move(struct block_list *bl,t_tick tick,int flag);

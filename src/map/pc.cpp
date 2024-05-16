@@ -11033,7 +11033,7 @@ void pc_setoption(map_session_data *sd,int type, int subtype)
 		status_change_end(&sd->bl, SC_MADOGEAR);
 	}
 
-	if (type&OPTION_FLYING && !(p_type&OPTION_FLYING))// Come back to this later? (Rytech)
+	if (type&OPTION_FLYING && !(p_type&OPTION_FLYING))// Come back to this later? [Rytech]
 		new_look = JOB_STAR_GLADIATOR2;
 	else if (!(type&OPTION_FLYING) && p_type&OPTION_FLYING)
 		new_look = -1;
@@ -13567,7 +13567,7 @@ static unsigned int pc_calc_basesp(uint16 level, uint16 job_id) {
 			break;
 		case JOB_SUMMONER:// 8, 10, 13, 15, 18
 		//case JOB_SPIRIT_HANDLER:// 12, 15, 17, 20, 22
-			base_sp -= 4;// Temp. Needs more work. (Rytech)
+			base_sp -= 4;// Temp. Needs more work. [Rytech]
 			break;
 	}
 

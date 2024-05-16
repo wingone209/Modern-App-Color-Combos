@@ -2224,7 +2224,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl, uint
 		sc_start( src, bl, SC_RUSH_QUAKE1, 100, skill_lv, skill_get_time( skill_id, skill_lv ) );
 		break;
 	case SOA_TALISMAN_OF_SOUL_STEALING:
-	{// Im guessing the SP recovery only happens when you hit your target since it wouldn't makes since if you didn't. Need confirm. (Rytech)
+	{// Im guessing the SP recovery only happens when you hit your target since it wouldn't makes since if you didn't. Need confirm. [Rytech]
 		short sp_recover = 50 * skill_lv * status_get_lv(src) / 100;
 		clif_skill_nodamage(NULL, src, skill_id, sp_recover, 1);
 		status_heal(src, 0, sp_recover, 0);
@@ -2233,7 +2233,7 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl, uint
 	case HN_SHIELD_CHAIN_RUSH:
 		sc_start(src, bl, SC_SHIELDCHAINRUSH, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		break;
-	case HN_METEOR_STORM_BUSTER:// Fix Me - Is being applied to impact and both explosion attacks. Chance reduced for now. (Rytech)
+	case HN_METEOR_STORM_BUSTER:// Fix Me - Is being applied to impact and both explosion attacks. Chance reduced for now. [Rytech]
 		sc_start(src, bl, SC_STUN, 2 * skill_lv, skill_lv, skill_get_time2(skill_id, skill_lv));
 		break;
 	case HN_JACK_FROST_NOVA:
@@ -3859,7 +3859,7 @@ int64 skill_attack (int attack_type, struct block_list* src, struct block_list *
 			break;
 		case HN_DOUBLEBOWLINGBASH:
 			// Removes the player count after use to avoid interfearing with other things like knockback.
-			// This works for up to 4095 enemies. We should be good with this. (Rytech)
+			// This works for up to 4095 enemies. We should be good with this. [Rytech]
 			flag &= ~(0xFFF);
 			break;
 	}
@@ -5383,7 +5383,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 		// Enemy players have their AP reduced down to 0.
 		// Reduce by set max_ap battle config to ensure its always reduced to 0
 		// since some server's may allow player's to have more then 200 AP.
-		// Note: Does it reduce the enemy players AP reguardless if the caster hits or not? (Rytech)
+		// Note: Does it reduce the enemy players AP reguardless if the caster hits or not? [Rytech]
 		if (bl->type == BL_PC)
 			status_fix_apdamage(src, bl, battle_config.max_ap, 0, skill_id);
 	}
@@ -5395,7 +5395,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 		sc_start(src, src, SC_SHADOW_CLOCK, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 
 		// Supposed to dash me to the opposite side of the target.
-		// Need to figure out how to get that accurate with that. (Rytech)
+		// Need to figure out how to get that accurate with that. [Rytech]
 		map_search_freecell(bl, 0, &x, &y, 1, 1, 0);
 		// Jump to the enemy before attacking but only if not in GvG area's.
 		if (skill_check_unit_movepos(5, src, x, y, 1, 1))
@@ -9105,17 +9105,23 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		break;
 
 	case SOA_SOUL_OF_HEAVEN_AND_EARTH:
-		if (sd == NULL || sd->status.party_id == 0 || (flag & 1))
+		if (sd == NULL || sd->status.party_id == 0 || (flag&1))
 		{
+			if (src == bl)
+			{
+				clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+				if (sd->status.party_id == 0 &&// Totem of tutelary check for if the caster is not in a party.
+					map_foreachinrange(skill_unit_rangecheck, src, MUR_TOTEM_OF_TUTELARY, BL_SKILL, src, UNT_TOTEM_OF_TUTELARY, 0))
+					flag |= 2;
+			}
 			status_heal(bl, 0, tstatus->max_sp, 0);
-			if (flag & 2)
+			if (flag&2)
 				status_heal(bl, 0, 0, 3 * skill_lv, 0);
 			sc_start(src, bl, type, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		}
 		else if (sd)
-		{// Fix me. The animation and AP parts don't work on the caster when not in a party. (Rytech)
-			clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
-			if (map_find_skill_unit_oncell(&sd->bl, sd->bl.x, sd->bl.y, SOA_TOTEM_OF_TUTELARY, NULL, 0) != NULL)
+		{// Caster and party members recover AP if caster is standing in totem of tutelary AoE.
+			if (map_foreachinrange(skill_unit_rangecheck, src, MUR_TOTEM_OF_TUTELARY, BL_SKILL, src, UNT_TOTEM_OF_TUTELARY, 0))
 				flag |= 2;
 			party_foreachsamemap(skill_area_sub, sd, skill_get_splash(skill_id, skill_lv), src, skill_id, skill_lv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
 		}
@@ -9125,7 +9131,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		if (flag&1)
 			status_change_end(bl, SC_NIGHTMARE);
 		else
-		{// Desc says it removes nightmare effect given to the targets. What targets? Friendly, enemy, all? I assume friendly only. (Rytech)
+		{// Desc says it removes nightmare effect given to the targets. What targets? Friendly, enemy, all? I assume friendly only. [Rytech]
 			clif_skill_nodamage(bl, bl, skill_id, skill_lv, 1);
 			map_foreachinrange(skill_area_sub, bl, skill_get_splash(skill_id, skill_lv), BL_CHAR, src, skill_id, skill_lv, tick, flag|BCT_NOENEMY|SD_SPLASH|1, skill_castend_nodamage_id);
 		}
@@ -14013,7 +14019,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 			PR_LEXAETERNA, 1, tick, flag|BCT_ENEMY|1, skill_castend_nodamage_id);
 		break;
 
-	case SS_TOKEDASU:// Don't ask me why. Ask Gravity why they did the behavior like this. (Rytech)
+	case SS_TOKEDASU:// Don't ask me why. Ask Gravity why they did the behavior like this. [Rytech]
 		skill_area_temp[1] = 0;
 		clif_skill_poseffect(src, skill_id, skill_lv, src->x, src->y, tick);
 		map_foreachinrange(skill_area_sub, src, skill_get_splash(skill_id, skill_lv), BL_CHAR|BL_SKILL,
@@ -14329,7 +14335,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 			skill_unitsetting(src, skill_id, skill_lv, tmpx, tmpy, flag + i * skill_get_unit_interval(skill_id));
 
 			if (skill_id == HN_METEOR_STORM_BUSTER)
-			{// Explosion Damage - Data shows it deals this damage twice in 2 seprate attacks. (Rytech)
+			{// Explosion Damage - Data shows it deals this damage twice in 2 seprate attacks. [Rytech]
 				skill_unitsetting(src, skill_id, skill_lv, tmpx, tmpy, flag|1 + 300 + i * skill_get_unit_interval(skill_id));
 				skill_unitsetting(src, skill_id, skill_lv, tmpx, tmpy, flag|1 + 600 + i * skill_get_unit_interval(skill_id));
 			}
@@ -14935,7 +14941,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 
 			// Sets up multi-star dropping for Star Cannon and clears Twinking Galaxy AoE.
 			// Note: skill_clear_unitgroup clears all skill units placed by the caster.
-			// Need to find a way to clear only the Twinkling Galaxy units. Will do this later. (Rytech)
+			// Need to find a way to clear only the Twinkling Galaxy units. Will do this later. [Rytech]
 			if (skill_id == SKE_STAR_CANNON)
 			{
 				star_group_max = (3 + skill_lv) / 2;
@@ -15734,13 +15740,12 @@ std::shared_ptr<s_skill_unit_group> skill_unitsetting(struct block_list *src, ui
 		// Flag > 0 = Star Impacts.
 		if (flag > 0)
 		{
+			if (skill_id == SKE_TWINKLING_GALAXY)
+				range = 2;
+			else
+				range = 3;
 			limit = flag;
 			flag = 1;
-		}
-		else
-		{// Sets the unit layout size for the star field. Needed for Star Burst/Star Cannon checks.
-			range = 0;// Force to 0 since this is only used for where the actual stars impact.
-			layout = &skill_unit_layout[skill_get_splash(skill_id, skill_lv)];
 		}
 		break;
 	case SS_FUUMAKOUCHIKU:
@@ -16540,7 +16545,7 @@ int skill_unit_onplace_timer(struct skill_unit *unit, struct block_list *bl, t_t
 				struct mob_data* md = BL_CAST(BL_MOB, bl);
 
 				// Skill only checks for party members but since this is a healing skill its best
-				// to have this here to avoid healing certain types of mobs if allowed to affect them. (Rytech)
+				// to have this here to avoid healing certain types of mobs if allowed to affect them. [Rytech]
 				if (md && (md->mob_id == MOBID_EMPERIUM || status_get_class_(bl) == CLASS_BATTLEFIELD))
 					break;
 
@@ -18589,7 +18594,7 @@ bool skill_check_condition_castbegin(map_session_data* sd, uint16 skill_id, uint
 			break;
 		case SKE_STAR_BURST:
 		case SKE_STAR_CANNON:
-			if (map_find_skill_unit_oncell(&sd->bl, sd->bl.x, sd->bl.y, SKE_TWINKLING_GALAXY, NULL, 0) == NULL)
+			if (map_foreachinrange(skill_unit_rangecheck, &sd->bl, MUR_TWINKLING_GALAXY, BL_SKILL, &sd->bl, UNT_TWINKLING_GALAXY, 0) == NULL)
 			{
 				clif_skill_fail( *sd, skill_id, USESKILL_FAIL_TWINKLING_GALAXY );
 				return false;
@@ -20632,6 +20637,34 @@ int skill_graffitiremover(struct block_list *bl, va_list ap)
 	return 0;
 }
 
+/// Checks if the player is standing in a unit's range.
+/// bl = The unit.
+/// src = The caster.
+/// unit_id = Unit ID to check for.
+/// remove = Removes the unit if its yours and is the same unit ID.
+int skill_unit_rangecheck(struct block_list* bl, va_list ap)
+{
+	struct skill_unit* unit = NULL;
+	struct block_list* src = va_arg(ap, struct block_list*);
+	uint16 unit_id = va_arg(ap, int);
+	int remove = va_arg(ap, int);
+
+	nullpo_retr(0, bl);
+	nullpo_retr(0, src);
+
+	if (bl->type != BL_SKILL || (unit = (struct skill_unit*)bl) == NULL)
+		return 0;
+
+	if ((unit->group) && (unit->group->unit_id == unit_id) && (unit->group->src_id == src->id) && distance_bl(src, bl) <= unit->range)
+	{
+		if (remove == 1)
+			skill_delunit(unit);
+		return 1;
+	}
+
+	return 0;
+}
+
 /// Huuma Shuriken - Construct Blasting
 int skill_fuumakouchiku_blasting(struct block_list* bl, va_list ap)
 {
@@ -20714,7 +20747,7 @@ int skill_shinkirou(struct block_list* bl, va_list ap)
 			case SS_SHIMIRU:
 				// This code is enough to move the clones to where your standing.
 				// But it doesn't check if their being moved into each other or the target.
-				// Will need to fix this issue in the future. (Rytech)
+				// Will need to fix this issue in the future. [Rytech]
 				map_search_freecell(src, 0, &x, &y, 1, 1, 0);
 				skill_unit_move_unit(bl, x, y);
 				break;
@@ -20726,7 +20759,7 @@ int skill_shinkirou(struct block_list* bl, va_list ap)
 					src, skill_id, skill_lv, tick, BCT_ENEMY|SD_SPLASH|SK_SECONDATK|1, skill_castend_damage_id);
 				break;
 
-			case SS_KAGEGISSEN:// Will be disabled in a future balance update. (Rytech)
+			case SS_KAGEGISSEN:// Will be disabled in a future balance update. [Rytech]
 				sd->shinkirou_clone_id = bl->id;
 				clif_skill_nodamage(bl, target, skill_id, skill_lv, tick);
 				map_foreachinrange(skill_area_sub, target, skill_get_splash(skill_id, skill_lv), BL_CHAR|BL_SKILL,
