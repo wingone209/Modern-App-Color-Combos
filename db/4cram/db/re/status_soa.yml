@@ -93,6 +93,8 @@ Body:
   - Status: Talisman_Of_Five_Elements
     Icon: EFST_TALISMAN_OF_FIVE_ELEMENTS
     DurationLookup: SOA_TALISMAN_OF_FIVE_ELEMENTS
+    CalcFlags:
+      All: true
     Flags:
       NoDispell: true
       NoClearance: true

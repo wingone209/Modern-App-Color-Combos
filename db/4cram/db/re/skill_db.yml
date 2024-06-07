@@ -21,7 +21,7 @@ Body:
     Hit: Single
     HitCount: 1
     CastCancel: true
-    Duration1: 9999
+    Duration1: 500
     Cooldown: 500
     Requires:
       SpCost: 10
@@ -63,9 +63,9 @@ Body:
         Area: 6
     GiveAp: 1
     CastCancel: true
-    CastTime: 2000
     AfterCastActDelay: 1000
     Cooldown: 500
+    FixedCastTime: 1500
     Requires:
       SpCost:
         - Level: 1
@@ -90,6 +90,8 @@ Body:
     MaxLevel: 5
     Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Critical: true
     Range: 9
     Hit: Single
     HitCount: 1
@@ -125,6 +127,7 @@ Body:
     TargetType: Attack
     DamageFlags:
       Splash: true
+      Critical: true
     Range: 9
     Hit: Multi_Hit
     HitCount: 1
@@ -142,9 +145,9 @@ Body:
         Area: 3
     GiveAp: 1
     CastCancel: true
-    CastTime: 2000
     AfterCastActDelay: 1000
     Cooldown: 500
+    FixedCastTime: 1500
     Requires:
       SpCost:
         - Level: 1
@@ -169,6 +172,8 @@ Body:
     MaxLevel: 5
     Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Critical: true
     Range: 9
     Hit: Multi_Hit
     HitCount: 6
@@ -209,6 +214,7 @@ Body:
     GiveAp: 1
     CastCancel: true
     AfterCastActDelay: 1000
+    Duration1: 100
     Cooldown: 500
     FixedCastTime: 1000
     Requires:
@@ -257,6 +263,7 @@ Body:
     HitCount: -2
     GiveAp: 1
     CastCancel: true
+    Duration1: 100
     Cooldown: 300
     FixedCastTime: 1000
     Requires:
@@ -384,7 +391,6 @@ Body:
       Interval: 250
       Target: Enemy
       Flag:
-        NoOverlap: true
         PathCheck: true
   - Id: 5413
     Name: NW_AUTO_FIRING_LAUNCHER
@@ -445,7 +451,7 @@ Body:
     TargetType: Ground
     Range: 9
     Hit: Multi_Hit
-    HitCount: -3
+    HitCount: -5
     SplashArea: 4
     CastCancel: true
     Duration1: 10000
@@ -461,7 +467,6 @@ Body:
       Interval: 250
       Target: Enemy
       Flag:
-        NoOverlap: true
         PathCheck: true
   - Id: 5416
     Name: SOA_TALISMAN_MASTERY

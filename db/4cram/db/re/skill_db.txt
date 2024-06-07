@@ -84,19 +84,19 @@
 // Night Watch
 5401,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_P_F_I,P.F.I
 5402,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_GRENADE_MASTERY,Grenade Mastery
-5403,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	NW_INTENSIVE_AIM,Intensive Aim// 1346 is status, 1345 is aim count.
+5403,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	NW_INTENSIVE_AIM,Intensive Aim
 5404,0,6,4,0,0x1,0,7,1,yes,0,0,0,none,0,0,0,	NW_GRENADE_FRAGMENT,Grenade Fragment
-5405,0,8,4,-1,0x2,5:5:5:6:6,5,7,yes,0,0,0,weapon,0,0,1,	NW_THE_VIGILANTE_AT_NIGHT,The Vigilante At Night// 4 hits with shotgun. Set as ranged damage in source.
-5406,9,6,1,-1,0,0,5,1,yes,0,0,0,weapon,0,0,1,	NW_ONLY_ONE_BULLET,Only One Bullet
-5407,9,8,1,-1,0x2,2:2:2:3:3,5,1,yes,0,0,0,weapon,0,0,1,	NW_SPIRAL_SHOOTING,Spiral Shooting// 2 hits with grenade launcher.
-5408,9,8,1,-1,0,0,5,6,yes,0,0,0,weapon,0,0,1,	NW_MAGAZINE_FOR_ONE,Magazine For One// Add 4 bullets on gatling use. 10 hits with gatling.
+5405,0,8,4,-1,0x2,5:5:5:6:6,5,7,yes,0,0,0,weapon,0,0,1,	NW_THE_VIGILANTE_AT_NIGHT,The Vigilante At Night
+5406,9,6,1,-1,0x100,0,5,1,yes,0,0,0,weapon,0,0,1,	NW_ONLY_ONE_BULLET,Only One Bullet
+5407,9,8,1,-1,0x102,2:2:2:3:3,5,1,yes,0,0,0,weapon,0,0,1,	NW_SPIRAL_SHOOTING,Spiral Shooting
+5408,9,8,1,-1,0x100,0,5,6,yes,0,0,0,weapon,0,0,1,	NW_MAGAZINE_FOR_ONE,Magazine For One
 5409,9,8,2,-1,0,0,5,-3,yes,0,0,0,weapon,0,0,1,	NW_WILD_FIRE,Wild Fire
 5410,9,8,2,0,0,0,5,-2,yes,0,0,0,weapon,0,0,1,	NW_BASIC_GRENADE,Basic Grenade
 5411,9,8,2,0,0,0,5,-2,yes,0,0,0,weapon,0,0,1,	NW_HASTY_FIRE_IN_THE_HOLE,Hasty Fire In The Hole// Triggers status 1410 for 1500ms.
 5412,9,8,2,0,0,5:5:5:4:4,5,-3,yes,0,0,0,weapon,0,0,1,	NW_GRENADES_DROPPING,Grenades Dropping
 5413,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	NW_AUTO_FIRING_LAUNCHER,Auto Firing Launcher
 5414,0,6,4,0,0x1,0,10,1,yes,0,0,0,none,0,0,0,	NW_HIDDEN_CARD,Hidden Card
-5415,9,8,2,0,0,4,10,-3,yes,0,0,0,weapon,0,0,0,	NW_MISSION_BOMBARD,Mission Bombard
+5415,9,8,2,0,0,4,10,-5,yes,0,0,0,weapon,0,0,0,	NW_MISSION_BOMBARD,Mission Bombard// Need official hit count for the main attack.
 
 // Soul Ascetic
 5416,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SOA_TALISMAN_MASTERY,Talisman Mastery
@@ -115,7 +115,7 @@
 5429,9,8,2,-2,0,0,5,-3,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_BLACK_TORTOISE,Talisman Of Black Tortoise
 5430,9,8,1,-2,0x2,3:3:4:4:5,5,1,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_FOUR_BEARING_GOD,Talisman Of Four Bearing God
 5431,9,8,1,-2,0x2,3:3:4:4:5,5,5,yes,0,0,0,magic,0,0,0,	SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS,Circle Of Directions And Elementals
-5432,0,6,4,0,0x3,11,10,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_OF_HEAVEN_AND_EARTH,Soul Of Heaven And Earth// Fix Me. Animation issues when not in party.
+5432,0,6,4,0,0x3,11,10,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_OF_HEAVEN_AND_EARTH,Soul Of Heaven And Earth
 
 // Spirit Handler
 5433,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SH_MYSTICAL_CREATURE_MASTERY,Mystical Creature Mastery

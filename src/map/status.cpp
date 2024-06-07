@@ -4126,6 +4126,8 @@ int status_calc_pc_sub(map_session_data* sd, uint8 opt)
 		base_status->int_ += skill;
 	if (pc_checkskill(sd, SU_POWEROFLAND) > 0)
 		base_status->int_ += 20;
+	if ((skill = pc_checkskill(sd, NW_GRENADE_MASTERY)) > 0)
+		base_status->con += skill;
 	if ((skill = pc_checkskill(sd, SOA_SOUL_MASTERY)) > 0)
 		base_status->spl += skill;
 
@@ -4377,6 +4379,8 @@ int status_calc_pc_sub(map_session_data* sd, uint8 opt)
 		base_status->patk += skill * 3;
 		base_status->smatk += skill * 3;
 	}
+	if ((skill = pc_checkskill(sd, NW_P_F_I)) > 0 && sd->status.weapon >= W_REVOLVER && sd->status.weapon <= W_GRENADE)
+		base_status->patk += 2 + skill;
 	if ((skill = pc_checkskill(sd, SOA_TALISMAN_MASTERY)) > 0)
 		base_status->smatk += skill;
 	if ((skill = pc_checkskill(sd, HN_SELFSTUDY_TATICS)) > 0)
@@ -4780,6 +4784,8 @@ int status_calc_pc_sub(map_session_data* sd, uint8 opt)
 			sd->indexed_bonus.subele[ELE_UNDEAD] += sc->getSCE(SC_HOLY_S)->val2;
 			sd->indexed_bonus.magic_atk_ele[ELE_HOLY] += sc->getSCE(SC_HOLY_S)->val2;
 		}
+		if (sc->getSCE(SC_HIDDEN_CARD))
+			sd->bonus.long_attack_atk_rate += sc->getSCE(SC_HIDDEN_CARD)->val3;
 		if (sc->getSCE(SC_TALISMAN_OF_FIVE_ELEMENTS))
 		{
 			i = sc->getSCE(SC_TALISMAN_OF_FIVE_ELEMENTS)->val2;
@@ -7170,6 +7176,8 @@ static unsigned short status_calc_watk(struct block_list *bl, status_change *sc,
 		watk += sc->getSCE(SC_POWERFUL_FAITH)->val2;
 	if (sc->getSCE(SC_GUARD_STANCE))
 		watk -= sc->getSCE(SC_GUARD_STANCE)->val3;
+	if (sc->getSCE(SC_INTENSIVE_AIM))
+		watk += 150;
 
 	return (unsigned short)cap_value(watk,0,USHRT_MAX);
 }
@@ -7378,6 +7386,8 @@ static signed short status_calc_critical(struct block_list *bl, status_change *s
 		critical += sc->getSCE(SC_MTF_HITFLEE)->val1;
 	if (sc->getSCE(SC_PACKING_ENVELOPE9))
 		critical += sc->getSCE(SC_PACKING_ENVELOPE9)->val1 * 10;
+	if (sc->getSCE(SC_INTENSIVE_AIM))
+		critical += 300;
 
 	return (short)cap_value(critical,10,SHRT_MAX);
 }
@@ -7456,6 +7466,8 @@ static signed short status_calc_hit(struct block_list *bl, status_change *sc, in
 		hit += sc->getSCE(SC_LIMIT_POWER_BOOSTER)->val1;
 	if (sc->getSCE(SC_ACARAJE))
 		hit += 5;
+	if (sc->getSCE(SC_INTENSIVE_AIM))
+		hit += 250;
 
 	return (short)cap_value(hit,1,SHRT_MAX);
 }
@@ -8522,6 +8534,8 @@ static signed short status_calc_patk(struct block_list *bl, status_change *sc, i
 	if( sc->getSCE( SC_ATTACK_STANCE ) ){
 		patk += sc->getSCE( SC_ATTACK_STANCE )->val3;
 	}
+	if (sc->getSCE(SC_HIDDEN_CARD))
+		patk += sc->getSCE(SC_HIDDEN_CARD)->val2;
 	if (sc->getSCE(SC_TALISMAN_OF_WARRIOR))
 		patk += sc->getSCE(SC_TALISMAN_OF_WARRIOR)->val2;
 
@@ -12717,6 +12731,15 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 		case SC_SPELL_ENCHANTING:
 			val2 = 4 * val1;// SMatk Increase
 			break;
+		case SC_INTENSIVE_AIM:
+			tick_time = val4 = tick;
+			tick = INFINITE_TICK;
+			sc_start(src, bl, SC_INTENSIVE_AIM_COUNT, 100, 0, INFINITE_TICK);
+			break;
+		case SC_HIDDEN_CARD:
+			val2 = 3 * val1;// PAtk Increase
+			val3 = 10 * val1;// Long Range Damage Increase
+			break;
 		case SC_TALISMAN_OF_PROTECTION:
 			val4 = tick / 3000;
 			tick_time = 3000;
@@ -13764,6 +13787,9 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 			if( sd ){
 				pc_delabyssball( *sd, sd->abyssball );
 			}
+			break;
+		case SC_INTENSIVE_AIM:
+			status_change_end(bl, SC_INTENSIVE_AIM_COUNT);
 			break;
 	}
 
@@ -14877,6 +14903,13 @@ TIMER_FUNC(status_change_timer){
 			sc_timer_next(2000 + tick);
 			return 0;
 		}
+		break;
+
+	case SC_INTENSIVE_AIM:
+		if (sc->getSCE(SC_INTENSIVE_AIM_COUNT) && sc->getSCE(SC_INTENSIVE_AIM_COUNT)->val1 < 10)
+			sc_start(bl, bl, SC_INTENSIVE_AIM_COUNT, 100, sc->getSCE(SC_INTENSIVE_AIM_COUNT)->val1 + 1, INFINITE_TICK);
+		sc_timer_next(sce->val4+tick);
+		return 0;
 		break;
 
 	case SC_TALISMAN_OF_PROTECTION:

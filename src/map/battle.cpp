@@ -2558,15 +2558,14 @@ void battle_consume_ammo(map_session_data*sd, int skill, int lv)
 {
 	int qty = 1;
 
-	if( sd == nullptr ){
-		return;
-	}
-
 	if (!battle_config.arrow_decrement)
 		return;
 
 	if (skill) {
-		qty = skill_get_ammo_qty(skill, lv);
+		if (skill == NW_MAGAZINE_FOR_ONE && sd->status.weapon == W_GATLING)
+			qty = 10;
+		else
+			qty = skill_get_ammo_qty(skill, lv);
 		if (!qty) qty = 1;
 	}
 
@@ -2598,6 +2597,7 @@ static int battle_range_type(struct block_list *src, struct block_list *target, 
 		case BO_ACIDIFIED_ZONE_FIRE_ATK:
 		case BO_ACIDIFIED_ZONE_GROUND_ATK:
 		case BO_ACIDIFIED_ZONE_WIND_ATK:
+		case NW_THE_VIGILANTE_AT_NIGHT: // Self casted.
 		case SS_KUNAIKAITEN: // Self casted.
 		case SS_KUNAIKUSSETSU: // Self casted.
 		case SS_HITOUAKUMU: // Self casted.
@@ -2907,6 +2907,19 @@ static bool is_attack_critical(struct Damage* wd, struct block_list *src, struct
 
 	if( skill_id && !skill_get_nk(skill_id,NK_CRITICAL) )
 		return false;
+
+	switch (skill_id)
+	{
+		case NW_ONLY_ONE_BULLET:// Revolver Main / Rifle Second (Crit)
+			if (!(wd->miscflag&SK_SECONDATK))
+				return false;
+			break;
+		case NW_SPIRAL_SHOOTING:// Rifle Main (Crit) / Grenade Launcher Second
+		case NW_MAGAZINE_FOR_ONE:// Revolver Main (Crit) / Gatling Second
+			if (wd->miscflag&SK_SECONDATK)
+				return false;
+			break;
+	}
 
 	struct status_data *sstatus = status_get_status_data(src);
 
@@ -3280,14 +3293,17 @@ static bool attack_ignores_def(struct Damage* wd, struct block_list *src, struct
 	if (sc && sc->getSCE(SC_FUSION))
 		return true;
 
-	if( sd != nullptr ){
-		switch( skill_id ){
-			case RK_WINDCUTTER:
-				if( sd->status.weapon == W_2HSWORD ){
-					return true;
-				}
-				break;
-		}
+	switch (skill_id)
+	{
+		case RK_WINDCUTTER:
+			if (sd && sd->status.weapon == W_2HSWORD)
+				return true;
+			break;
+		case NW_THE_VIGILANTE_AT_NIGHT:
+		case NW_ONLY_ONE_BULLET:
+			if (!(wd->miscflag&SK_SECONDATK))
+				return true;
+			break;
 	}
 
 	if (skill_id != CR_GRANDCROSS && skill_id != NPC_GRANDDARKNESS)
@@ -3444,6 +3460,26 @@ int battle_get_weapon_element(struct Damage* wd, struct block_list *src, struct 
 		case RL_H_MINE:
 			if (sd && sd->flicker) //Force RL_H_MINE deals fire damage if activated by RL_FLICKER
 				element = ELE_FIRE;
+			break;
+		case NW_BASIC_GRENADE:
+		case NW_HASTY_FIRE_IN_THE_HOLE:
+		case NW_GRENADES_DROPPING:
+		case NW_MISSION_BOMBARD:// Info doesn't say if this is affected. Doesn't require grenades but is affected by grenade mastery. [Rytech]
+			if (sc)
+			{
+				if (sc->getSCE(SC_GRENADE_FRAGMENT_1))
+					element = ELE_WATER;
+				else if (sc->getSCE(SC_GRENADE_FRAGMENT_2))
+					element = ELE_WIND;
+				else if (sc->getSCE(SC_GRENADE_FRAGMENT_3))
+					element = ELE_EARTH;
+				else if (sc->getSCE(SC_GRENADE_FRAGMENT_4))
+					element = ELE_FIRE;
+				else if (sc->getSCE(SC_GRENADE_FRAGMENT_5))
+					element = ELE_DARK;
+				else if (sc->getSCE(SC_GRENADE_FRAGMENT_6))
+					element = ELE_HOLY;
+			}
 			break;
 	}
 
@@ -6032,6 +6068,94 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 					skillratio += skillratio * 50 / 100;
 			}
 			break;
+		case NW_THE_VIGILANTE_AT_NIGHT:
+			if (wd->miscflag & SK_SECONDATK)
+			{// Shotgun
+				skillratio += 700 + 700 * skill_lv;
+				if (sd && sd->intensive_aim_count)
+					skillratio += 200 * skill_lv * sd->intensive_aim_count;
+			}
+			else
+			{// Gatling
+				skillratio += -100 + 300 * skill_lv;
+				if (sd && sd->intensive_aim_count)
+					skillratio += 100 * skill_lv * sd->intensive_aim_count;
+			}
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case NW_ONLY_ONE_BULLET:
+			if (wd->miscflag&SK_SECONDATK)// Rifle
+				skillratio += 400 + 850 * skill_lv;
+			else// Revolver
+				skillratio += 1400 + 1000 * skill_lv;
+			if (sd && sd->intensive_aim_count)
+				skillratio += 250 * skill_lv * sd->intensive_aim_count;
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case NW_SPIRAL_SHOOTING:
+			if (wd->miscflag&SK_SECONDATK)// Grenade
+				skillratio += 900 + 1000 * skill_lv;
+			else// Rifle
+				skillratio += 300 + 900 * skill_lv;
+			if (sd && sd->intensive_aim_count)
+				skillratio += 150 * skill_lv * sd->intensive_aim_count;
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case NW_MAGAZINE_FOR_ONE:
+			if (wd->miscflag&SK_SECONDATK)// Gatling
+				skillratio += 100 + 300 * skill_lv;
+			else// Revolver
+				skillratio += 400 * skill_lv;
+			if (sd && sd->intensive_aim_count)
+				skillratio += 50 * skill_lv * sd->intensive_aim_count;
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case NW_WILD_FIRE:
+			if (wd->miscflag&SK_SECONDATK)// Grenade
+				skillratio += 400 + 1300 * skill_lv;
+			else// Shotgun
+				skillratio += 400 + 1500 * skill_lv;
+			if (sd && sd->intensive_aim_count)
+				skillratio += 500 * skill_lv * sd->intensive_aim_count;
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case NW_BASIC_GRENADE:
+			skillratio += 900 + 900 * skill_lv;
+			skillratio += 50 * pc_checkskill(sd, NW_GRENADE_MASTERY);
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case NW_HASTY_FIRE_IN_THE_HOLE:
+			skillratio += 1400 + 900 * skill_lv;
+			skillratio += 20 * pc_checkskill(sd, NW_GRENADE_MASTERY);
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case NW_GRENADES_DROPPING:
+			skillratio += 150 + 500 * skill_lv;
+			skillratio += 30 * pc_checkskill(sd, NW_GRENADE_MASTERY);
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case NW_MISSION_BOMBARD:
+			if (wd->miscflag&SK_SECONDATK)
+			{// Explosion
+				skillratio += 700 + 200 * skill_lv;
+				skillratio += 30 * pc_checkskill(sd, NW_GRENADE_MASTERY);
+			}
+			else
+			{// Main
+				skillratio += 4900 + 1000 * skill_lv;
+				skillratio += 100 * pc_checkskill(sd, NW_GRENADE_MASTERY);
+			}
+			skillratio += 10 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
 		case HN_DOUBLEBOWLINGBASH:
 			skillratio += 200 * skill_lv;
 			skillratio += 3 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_TATICS);
@@ -7197,6 +7321,22 @@ static struct Damage initialize_weapon_data(struct block_list *src, struct block
 			case BO_MAYHEMIC_THORNS:
 				if (sc && sc->getSCE(SC_RESEARCHREPORT))
 					wd.div_ = 4;
+				break;
+			case NW_THE_VIGILANTE_AT_NIGHT:
+				if (wd.miscflag&SK_SECONDATK)
+					wd.div_ = 4;
+				break;
+			case NW_SPIRAL_SHOOTING:
+				if (wd.miscflag&SK_SECONDATK)
+					wd.div_ = 2;
+				break;
+			case NW_MAGAZINE_FOR_ONE:
+				if (wd.miscflag&SK_SECONDATK)
+					wd.div_ = 10;
+				break;
+			case NW_MISSION_BOMBARD:// Need official hit count for the main attack. [Rytech]
+				if (wd.miscflag&SK_SECONDATK)
+					wd.div_ = -3;
 				break;
 			case HN_DOUBLEBOWLINGBASH:
 				if (wd.miscflag >= 4)
@@ -10367,6 +10507,27 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 				skill_castend_pos2( src, target->x, target->y, skill_id, skill_lv, tick, flag );
 				battle_autocast_aftercast( src, skill_id, skill_lv, tick );
 				sd->state.autocast = 0;
+			}
+
+			if (sc->getSCE(SC_AUTO_FIRING_LAUNCHEREFST))
+			{
+				int i, j = sc->getSCE(SC_AUTO_FIRING_LAUNCHEREFST)->val1 - 1;
+				const short skill_id[3] = { NW_BASIC_GRENADE, NW_HASTY_FIRE_IN_THE_HOLE, NW_GRENADES_DROPPING };
+				const short auto_fire_1[5] = { 6, 7, 8, 9, 10 };// NW_BASIC_GRENADE
+				const short auto_fire_2[5] = { 0, 0, 3, 5, 7 };//  NW_HASTY_FIRE_IN_THE_HOLE
+				const short auto_fire_3[5] = { 0, 0, 0, 0, 3 };//  NW_GRENADES_DROPPING
+				int auto_chance[3] = { auto_fire_1[j], auto_fire_2[j], auto_fire_3[j] };
+
+				for (i = 0; i <= 2; i++)
+				{
+					if (rnd_chance(auto_chance[i], 100))
+					{
+						sd->state.autocast = 1;
+						skill_castend_pos2(src, target->x, target->y, skill_id[i], pc_checkskill(sd, skill_id[i]), tick, flag);
+						battle_autocast_aftercast(src, skill_id[i], pc_checkskill(sd, skill_id[i]), tick);
+						sd->state.autocast = 0;
+					}
+				}
 			}
 
 			// Autocasted skills from super elemental supportive buffs.

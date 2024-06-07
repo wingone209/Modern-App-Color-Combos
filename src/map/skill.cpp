@@ -5322,6 +5322,19 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 			sc_start(src, src, SC_DRAGONIC_AURA, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		break;
 
+	case NW_ONLY_ONE_BULLET:
+		if (sd && sd->status.weapon == W_RIFLE)
+			flag |= SK_SECONDATK;
+		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
+		break;
+
+	case NW_MAGAZINE_FOR_ONE:
+		if (sd && sd->status.weapon == W_GATLING)
+			flag |= SK_SECONDATK;
+		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
+		break;
+
 	case SKE_RISING_SUN:
 		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
 
@@ -5827,6 +5840,8 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case IG_SHIELD_SHOOTING:
 	case TR_METALIC_FURY:
 	case IG_GRAND_JUDGEMENT:
+	case NW_THE_VIGILANTE_AT_NIGHT:
+	case NW_SPIRAL_SHOOTING:
 	case SOA_EXORCISM_OF_MALICIOUS_SOUL:
 	case SOA_TALISMAN_OF_WHITE_TIGER:
 	case SOA_TALISMAN_OF_RED_PHOENIX:
@@ -6061,6 +6076,14 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 				case IG_GRAND_JUDGEMENT:
 					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 					sc_start(src, src, skill_get_sc(skill_id), 100, skill_lv, skill_get_time(skill_id, skill_lv));
+					break;
+				case NW_SPIRAL_SHOOTING:
+					if (sd && sd->status.weapon == W_GRENADE)
+					{
+						splash_size += 2;
+						flag |= SK_SECONDATK;
+					}
+					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 					break;
 				case SOA_TALISMAN_OF_RED_PHOENIX:
 					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
@@ -7259,8 +7282,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 		}
 
 		// perform skill requirement consumption
-		if (!(flag&SKILL_NOCONSUME_REQ))
-			skill_consume_requirement(sd,skill_id,skill_lv,2);
+		skill_consume_requirement(sd,skill_id,skill_lv,2);
 	}
 
 	return 0;
@@ -8121,6 +8143,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case TR_MYSTIC_SYMPHONY:
 	case TR_KVASIR_SONATA:
 	case EM_SPELL_ENCHANTING:
+	case NW_AUTO_FIRING_LAUNCHER:
+	case NW_HIDDEN_CARD:
 	case HN_BREAKINGLIMIT:
 	case HN_RULEBREAK:
 	case SKE_ENCHANTING_SKY:
@@ -8129,6 +8153,19 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case NPC_RELIEVE_OFF:
 		clif_skill_nodamage(src,bl,skill_id,skill_lv,
 			sc_start(src,bl,type,100,skill_lv,skill_get_time(skill_id,skill_lv)));
+		break;
+
+	case NW_GRENADE_FRAGMENT:
+	{
+		const enum sc_type grenade_fragment[6] = { SC_GRENADE_FRAGMENT_1, SC_GRENADE_FRAGMENT_2, SC_GRENADE_FRAGMENT_3, SC_GRENADE_FRAGMENT_4, SC_GRENADE_FRAGMENT_5, SC_GRENADE_FRAGMENT_6 };
+
+		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+
+		if (skill_lv < 7)// Level 1 to 6 selects the element.
+			sc_start(src, bl, grenade_fragment[skill_lv - 1], 100, 1, skill_get_time(skill_id, skill_lv));
+		else for (i = 0; i <= 5; i++)// Level 7 removes the element.
+			status_change_end(bl, grenade_fragment[i]);
+	}
 		break;
 
 	case SOA_TALISMAN_OF_WARRIOR:
@@ -8834,6 +8871,25 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	}
 		break;
 
+	case NW_THE_VIGILANTE_AT_NIGHT:
+	{
+		short splash_size = skill_get_splash(skill_id, skill_lv);
+
+		skill_area_temp[1] = 0;
+
+		if (sd && sd->status.weapon == W_SHOTGUN)
+		{
+			splash_size -= 3;
+			flag |= SK_SECONDATK;
+			clif_skill_nodamage(src, bl, NW_THE_VIGILANTE_AT_NIGHT_GUN_SHOTGUN, skill_lv, 1);
+		}
+		else
+			clif_skill_nodamage(src, bl, NW_THE_VIGILANTE_AT_NIGHT_GUN_GATLING, skill_lv, 1);
+
+		map_foreachinrange(skill_area_sub, bl, splash_size, BL_CHAR|BL_SKILL, src, skill_id, skill_lv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
+	}
+		break;
+
 	case SHC_DANCING_KNIFE:
 		if (flag & 1) {
 			skill_area_temp[1] = 0;
@@ -9135,6 +9191,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case SP_SOULCOLLECT:
 	case IG_GUARD_STANCE:
 	case IG_ATTACK_STANCE:
+	case NW_INTENSIVE_AIM:
 		if( tsce )
 		{
 			clif_skill_nodamage(src,bl,skill_id,skill_lv,status_change_end(bl, type));
@@ -13154,8 +13211,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		}
 		skill_onskillusage(sd, bl, skill_id, tick);
 		// perform skill requirement consumption
-		if (!(flag&SKILL_NOCONSUME_REQ))
-			skill_consume_requirement(sd,skill_id,skill_lv,2);
+		skill_consume_requirement(sd,skill_id,skill_lv,2);
 	}
 
 	map_freeblock_unlock();
@@ -14090,6 +14146,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 	case EM_VENOM_SWAMP:
 	case EM_CONFLAGRATION:
 	case EM_TERRA_DRIVE:
+	case NW_BASIC_GRENADE:
 	case SOA_TOTEM_OF_TUTELARY:
 	case SS_KAGEGARI:
 	case SS_FUUMASHOUAKU:
@@ -14099,6 +14156,14 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 	case GN_WALLOFTHORN:
 	case GN_DEMONIC_FIRE:
 		skill_unitsetting(src,skill_id,skill_lv,x,y,0);
+		break;
+
+	case NW_WILD_FIRE:
+		flag |= 1;
+		if (sd && sd->status.weapon == W_GRENADE)
+			skill_unitsetting(src, skill_id, skill_lv, x, y, SK_SECONDATK);
+		else
+			skill_unitsetting(src, skill_id, skill_lv, x, y, 0);
 		break;
 
 	case HN_JACK_FROST_NOVA:
@@ -14221,6 +14286,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 		}
 		[[fallthrough]];
 	case WZ_METEOR:
+	case NW_HASTY_FIRE_IN_THE_HOLE:
 	case HN_METEOR_STORM_BUSTER:
 	{
 		int area = skill_get_splash(skill_id, skill_lv);
@@ -14831,25 +14897,36 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 		}
 		break;
 
+	case NW_GRENADES_DROPPING:
+	case NW_MISSION_BOMBARD:
 	case SKE_TWINKLING_GALAXY:
 	case SKE_STAR_CANNON:
 		{
 			int area = skill_get_splash(skill_id, skill_lv);
-			short tmpx = 0, tmpy = 0, star_group_max = 1, star_group_num;
+			short tmpx = 0, tmpy = 0, drop_group_max = 1, drop_group_num;
 
-			// Sets up multi-star dropping for Star Cannon and clears Twinking Galaxy AoE.
+			// Sets the drop_group_max which is how many impacts will happen on each interval.
 			// Note: skill_clear_unitgroup clears all skill units placed by the caster.
 			// Need to find a way to clear only the Twinkling Galaxy units. Will do this later. [Rytech]
-			if (skill_id == SKE_STAR_CANNON)
+			switch (skill_id)
 			{
-				star_group_max = (3 + skill_lv) / 2;
-				skill_clear_unitgroup(src);
+				case NW_GRENADES_DROPPING:
+					drop_group_max = (1 + skill_lv) / 2;
+					break;
+				case NW_MISSION_BOMBARD:
+					drop_group_max = 3;
+					skill_unitsetting(src, skill_id, skill_lv, x, y, 1);
+					break;
+				case SKE_STAR_CANNON:
+					drop_group_max = (3 + skill_lv) / 2;
+					skill_clear_unitgroup(src);
+					break;
 			}
 
-			// Display star field.
+			// Display AoE animation.
 			skill_unitsetting(src, skill_id, skill_lv, x, y, 0);
 
-			for (star_group_num = 1; star_group_num <= star_group_max; star_group_num++)
+			for (drop_group_num = 1; drop_group_num <= drop_group_max; drop_group_num++)
 			{
 				for (i = 1; i <= skill_get_time(skill_id, skill_lv) / skill_get_unit_interval(skill_id); i++)
 				{
@@ -14912,8 +14989,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 		}
 		skill_onskillusage(sd, NULL, skill_id, tick);
 		// perform skill requirement consumption
-		if (!(flag&SKILL_NOCONSUME_REQ))
-			skill_consume_requirement(sd,skill_id,skill_lv,2);
+		skill_consume_requirement(sd,skill_id,skill_lv,2);
 	}
 
 	return 0;
@@ -15560,6 +15636,21 @@ std::shared_ptr<s_skill_unit_group> skill_unitsetting(struct block_list *src, ui
 	case WH_FLAMETRAP:
 		limit += 3000 * (sd ? pc_checkskill(sd, WH_ADVANCED_TRAP) : 5);
 		break;
+	case NW_WILD_FIRE:
+		if (flag&SK_SECONDATK)
+		{
+			range += 2;
+			target |= SK_SECONDATK;
+		}
+		break;
+	case NW_HASTY_FIRE_IN_THE_HOLE:
+		if (flag >= 900)
+			range += 2;// 3rd grenade - 9x9
+		else if (flag >= 600)
+			range += 1;// 2nd grenade - 7x7
+		limit = flag;
+		flag = 0;
+		break;
 	case HN_METEOR_STORM_BUSTER:
 		if (flag&1)
 		{// Explosion Damage AoE
@@ -15581,17 +15672,43 @@ std::shared_ptr<s_skill_unit_group> skill_unitsetting(struct block_list *src, ui
 		else
 			limit = 100;
 		break;
+	case NW_GRENADES_DROPPING:
+	case NW_MISSION_BOMBARD:
 	case SKE_TWINKLING_GALAXY:
 	case SKE_STAR_CANNON:
-		// Flag 0 = Star Field.
-		// Flag > 0 = Star Impacts.
+		// Flag 0 = AoE Animation.
+		// Flag > 0 = Impacts.
 		if (flag > 0)
 		{
-			if (skill_id == SKE_TWINKLING_GALAXY)
-				range = 2;
-			else
-				range = 3;
-			limit = flag;
+			switch (skill_id)
+			{
+				case NW_GRENADES_DROPPING:
+					if (skill_lv > 3)
+						range = 2;
+					else
+						range = 1;
+					limit = flag;
+					break;
+				case NW_MISSION_BOMBARD:
+					if (flag > 1)
+					{// Small Bombs
+						range = 2;
+						limit = flag;
+						target |= SK_SECONDATK;
+					}
+					else// Main Bomb
+						limit = 100;
+					break;
+				case SKE_TWINKLING_GALAXY:
+					range = 2;
+					limit = flag;
+					break;
+				case SKE_STAR_CANNON:
+					range = 3;
+					limit = flag;
+					break;
+			}
+
 			flag = 1;
 		}
 		break;
@@ -16329,12 +16446,14 @@ int skill_unit_onplace_timer(struct skill_unit *unit, struct block_list *bl, t_t
 						unit->val1--;
 					skill_attack(skill_get_type(sg->skill_id),ss,&unit->bl,bl,sg->skill_id,sg->skill_lv,tick,0);
 					break;
+				case NW_WILD_FIRE:
+				case NW_MISSION_BOMBARD:
 				case HN_METEOR_STORM_BUSTER:
 				case SS_FUUMAKOUCHIKU:
 				case SS_KUNAIWAIKYOKU:
-					if (sg->target_flag&SK_SECONDATK)// Clone
+					if (sg->target_flag&SK_SECONDATK)// Secondary
 						skill_attack(skill_get_type(sg->skill_id), ss, &unit->bl, bl, sg->skill_id, sg->skill_lv, tick, SK_SECONDATK);
-					else// Caster
+					else// Main
 						skill_attack(skill_get_type(sg->skill_id), ss, &unit->bl, bl, sg->skill_id, sg->skill_lv, tick, 0);
 					break;
 				default:
@@ -18745,6 +18864,7 @@ bool skill_check_condition_castend(map_session_data* sd, uint16 skill_id, uint16
 {
 	struct s_skill_condition require;
 	struct status_data *status;
+	status_change *sc;
 	int i;
 	short index[MAX_SKILL_ITEM_REQUIRE];
 
@@ -18788,6 +18908,10 @@ bool skill_check_condition_castend(map_session_data* sd, uint16 skill_id, uint16
 				return false;
 			break;
 	}
+
+	sc = &sd->sc;
+	if (!sc->count)
+		sc = NULL;
 
 	if( sd->skillitem == skill_id && !sd->skillitem_keep_requirement ) // Casting finished (Item skill or Hocus-Pocus)
 		return true;
@@ -18881,6 +19005,19 @@ bool skill_check_condition_castend(map_session_data* sd, uint16 skill_id, uint16
 			}
 			break;
 		}
+		case NW_THE_VIGILANTE_AT_NIGHT:
+		case NW_ONLY_ONE_BULLET:
+		case NW_SPIRAL_SHOOTING:
+		case NW_MAGAZINE_FOR_ONE:
+		case NW_WILD_FIRE:
+			if (sc && sc->getSCE(SC_INTENSIVE_AIM_COUNT))
+			{
+				sd->intensive_aim_count = sc->getSCE(SC_INTENSIVE_AIM_COUNT)->val1;
+				sc_start(&sd->bl, &sd->bl, SC_INTENSIVE_AIM_COUNT, 100, 0, INFINITE_TICK);
+			}
+			else
+				sd->intensive_aim_count = 0;
+			break;
 #ifdef RENEWAL
 		case ASC_EDP:
 			int16 item_edp = itemdb_group.item_exists_pc(sd, IG_EDP);
@@ -19229,7 +19366,11 @@ struct s_skill_condition skill_get_requirement(map_session_data* sd, uint16 skil
 
 	req.mhp = skill->require.mhp[skill_lv-1];
 	req.weapon = skill->require.weapon;
-	req.ammo_qty = skill->require.ammo_qty[skill_lv-1];
+
+	if (skill_id == NW_MAGAZINE_FOR_ONE && sd->status.weapon == W_GATLING)
+		req.ammo_qty = 10;
+	else
+		req.ammo_qty = skill->require.ammo_qty[skill_lv-1];
 
 	if (req.ammo_qty)
 		req.ammo = skill->require.ammo;
@@ -21912,6 +22053,7 @@ static int skill_unit_timer_sub(DBKey key, DBData *data, va_list ap)
 			default:
 				if (group->val2 == 1 && (group->skill_id == WZ_METEOR || group->skill_id == SU_CN_METEOR || group->skill_id == SU_CN_METEOR2 || 
 					group->skill_id == AG_VIOLENT_QUAKE_ATK || group->skill_id == AG_ALL_BLOOM_ATK || group->skill_id == AG_ALL_BLOOM_ATK2 || group->skill_id == NPC_RAINOFMETEOR ||
+					group->skill_id == NW_HASTY_FIRE_IN_THE_HOLE || group->skill_id == NW_GRENADES_DROPPING || group->skill_id == NW_MISSION_BOMBARD ||
 					group->skill_id == HN_METEOR_STORM_BUSTER || group->skill_id == SKE_TWINKLING_GALAXY || group->skill_id == SKE_STAR_CANNON)) {
 					// Deal damage before expiration
 					break;
@@ -21969,6 +22111,7 @@ static int skill_unit_timer_sub(DBKey key, DBData *data, va_list ap)
 			default:
 				if (group->skill_id == WZ_METEOR || group->skill_id == SU_CN_METEOR || group->skill_id == SU_CN_METEOR2 || 
 					group->skill_id == AG_VIOLENT_QUAKE_ATK || group->skill_id == AG_ALL_BLOOM_ATK || group->skill_id == AG_ALL_BLOOM_ATK2 || group->skill_id == NPC_RAINOFMETEOR ||
+					group->skill_id == NW_HASTY_FIRE_IN_THE_HOLE || group->skill_id == NW_GRENADES_DROPPING || group->skill_id == NW_MISSION_BOMBARD ||
 					group->skill_id == HN_METEOR_STORM_BUSTER || group->skill_id == SKE_TWINKLING_GALAXY || group->skill_id == SKE_STAR_CANNON) {
 					if (group->val2 == 0 && (DIFF_TICK(tick, group->tick) >= group->limit - group->interval || DIFF_TICK(tick, group->tick) >= unit->limit - group->interval)) {
 						// Unit will expire the next interval, start dropping Meteor
@@ -21978,6 +22121,7 @@ static int skill_unit_timer_sub(DBKey key, DBData *data, va_list ap)
 							if (group->skill_id == AG_VIOLENT_QUAKE_ATK || group->skill_id == AG_ALL_BLOOM_ATK || group->skill_id == AG_ALL_BLOOM_ATK2)
 								clif_skill_poseffect(src, group->skill_id, -1, bl->x, bl->y, tick); // Don't yell a blank skill name.
 							else if ((group->target_flag&SK_SECONDATK && group->skill_id == HN_METEOR_STORM_BUSTER) ||// Stops meteors from appearing on explosion AoE's.
+								group->skill_id == NW_HASTY_FIRE_IN_THE_HOLE || group->skill_id == NW_GRENADES_DROPPING || group->skill_id == NW_MISSION_BOMBARD ||
 								group->skill_id == SKE_TWINKLING_GALAXY || group->skill_id == SKE_STAR_CANNON)
 							{
 								// Do no clif_skill_poseffect.
@@ -22016,6 +22160,7 @@ static int skill_unit_timer_sub(DBKey key, DBData *data, va_list ap)
 		}
 		else if (group->skill_id == WZ_METEOR || group->skill_id == SU_CN_METEOR || group->skill_id == SU_CN_METEOR2 || 
 			group->skill_id == AG_VIOLENT_QUAKE_ATK || group->skill_id == AG_ALL_BLOOM_ATK || group->skill_id == AG_ALL_BLOOM_ATK2 || group->skill_id == NPC_RAINOFMETEOR ||
+			group->skill_id == NW_HASTY_FIRE_IN_THE_HOLE || group->skill_id == NW_GRENADES_DROPPING || group->skill_id == NW_MISSION_BOMBARD ||
 			group->skill_id == HN_METEOR_STORM_BUSTER || group->skill_id == SKE_TWINKLING_GALAXY || group->skill_id == SKE_STAR_CANNON ||
 			((group->skill_id == CR_GRANDCROSS || group->skill_id == NPC_GRANDDARKNESS) && unit->val1 <= 0)) {
 			skill_delunit(unit);

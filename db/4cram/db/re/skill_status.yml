@@ -33,6 +33,18 @@ Body:
 #  - Id: 
 #    Status: 
 #================================
+# NW_INTENSIVE_AIM
+  - Id: 5403
+    Status: Intensive_Aim
+
+# NW_AUTO_FIRING_LAUNCHER
+  - Id: 5413
+    Status: Auto_Firing_Launcherefst
+
+# NW_HIDDEN_CARD
+  - Id: 5414
+    Status: Hidden_Card
+#================================
 # HN_MEGA_SONIC_BLOW
   - Id: 5452
     Status: Stun
