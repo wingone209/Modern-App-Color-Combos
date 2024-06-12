@@ -9511,6 +9511,8 @@ Body:
       NoGuildStorage: true
       NoMail: true
       NoAuction: true
+    Script: |
+      callfunc "F_CashSiegeTele2";
   - Id: 12416
     AegisName: Lucky_Egg_C3
     Name: Lucky Egg C3
@@ -14443,14 +14445,15 @@ Body:
   - Id: 12858
     AegisName: Golden_Potion_RG
     Name: RG Golden Potion
-    Type: Delayconsume
+    Type: Usable
     Weight: 30
     Delay:
       Duration: 1000
       Status: Reuse_Limit_F
     Script: |
       percentheal 100,100;
-      itemskill "PR_KYRIE",10;
+      sc_start SC_KYRIE,100000,10;
+      skilleffect "PR_KYRIE",0;
   - Id: 12860
     AegisName: Mommy_Day_Cake
     Name: Mommy Day Cake
@@ -51454,7 +51457,6 @@ Body:
     Type: Usable
     Buy: 10
     Weight: 10
-    Defense: 4
     Trade:
       NoDrop: true
       NoTrade: true
@@ -60448,7 +60450,7 @@ Body:
       getitem 526,100; /* Royal Jelly */
   - Id: 23042
     AegisName: Seed_Of_Yggdrasil_
-    Name: "[Not For Sale]Yggdrasil Seed"
+    Name: "[Not For Sale] Yggdrasil Seed"
     Type: Healing
     Weight: 300
     Delay:
@@ -78644,6 +78646,10 @@ Body:
     Name: Costume Enchant Stone Box 35
     Type: Usable
     Weight: 10
+    Flags:
+      Container: true
+    Script: |
+      getgroupitem(IG_ENCHANT_STONE_BOX35);
   - Id: 103095
     AegisName: Kr_B_Special10
     Name: Love Cake
