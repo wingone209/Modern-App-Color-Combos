@@ -466,6 +466,8 @@ int map_moveblock(struct block_list *bl, int x1, int y1, t_tick tick)
 			status_change_end(bl, SC_TATAMIGAESHI);
 			status_change_end(bl, SC_MAGICROD);
 			status_change_end(bl, SC_SU_STOOP);
+			status_change_end(bl, SC_INTENSIVE_AIM);
+			status_change_end(bl, SC_KI_SUL_RAMPAGE);
 			if (sc->getSCE(SC_PROPERTYWALK) &&
 				sc->getSCE(SC_PROPERTYWALK)->val3 >= skill_get_maxcount(sc->getSCE(SC_PROPERTYWALK)->val1,sc->getSCE(SC_PROPERTYWALK)->val2) )
 				status_change_end(bl,SC_PROPERTYWALK);

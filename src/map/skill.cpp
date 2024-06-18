@@ -584,6 +584,24 @@ int skill_calc_heal(struct block_list *src, struct block_list *target, uint16 sk
 			hp += 3 * status_get_crt(src);
 			hp = hp * status_get_lv(src) / 100;
 			break;
+		// Even tho the formula's are correct, something is off.
+		// In the replay it shows   Lv 1 heals 7611 and Lv 7 heals 18861
+		// With the same build here Lv 1 heals 6620 and Lv 7 heals 19490
+		// Same stats and skills, yet 1 is lower and 7 is higher. Why? [Rytech]
+		case SH_KI_SUL_WATER_SPRAYING:
+			if (pc_checkskill(sd, SH_COMMUNE_WITH_KI_SUL))
+			{
+				hp = 750 * skill_lv;
+				hp += 150 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+			}
+			else
+			{
+				hp = 500 * skill_lv;
+				hp += 100 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+			}
+			hp += 3 * status_get_crt(src);
+			hp = hp * status_get_lv(src) / 100;
+			break;
 		default:
 			if (skill_lv >= battle_config.max_heal_lv)
 				return battle_config.max_heal;
@@ -2221,6 +2239,14 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl, uint
 		status_heal(src, 0, sp_recover, 0);
 	}
 		break;
+	case SH_HOWLING_OF_CHUL_HO:
+		sc_start(src, bl, SC_HOGOGONG, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+		break;
+	// Officially Hogogong Strike doesn't end hogogong status.
+	// Enable this if it gets changed in the future to do so.
+	//case SH_HOGOGONG_STRIKE:
+	//	status_change_end(bl, SC_HOGOGONG);
+	//	break;
 	case HN_SHIELD_CHAIN_RUSH:
 		sc_start(src, bl, SC_SHIELDCHAINRUSH, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		break;
@@ -3149,6 +3175,10 @@ short skill_blown(struct block_list* src, struct block_list* target, char count,
 			status_change_end(target, SC_CRESCIVEBOLT);
 		if (tsc->getSCE(SC_SV_ROOTTWIST)) // Shouldn't move.
 			return 0;
+		if (tsc->getSCE(SC_INTENSIVE_AIM))
+			status_change_end(target, SC_INTENSIVE_AIM);
+		if (tsc->getSCE(SC_KI_SUL_RAMPAGE))
+			status_change_end(target, SC_KI_SUL_RAMPAGE);
 	}
 
 	return unit_blown(target, dx, dy, count, flag);	// Send over the proper flag
@@ -5309,6 +5339,13 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
 		break;
 
+	case SH_CHUL_HO_SONIC_CLAW:
+		if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_CHUL_HO))
+			flag |= SK_SECONDATK;
+		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
+		break;
+
 	case SKE_RISING_SUN:
 		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
 
@@ -5341,11 +5378,9 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
 
 		// Enemy players have their AP reduced down to 0.
-		// Reduce by set max_ap battle config to ensure its always reduced to 0
-		// since some server's may allow player's to have more then 200 AP.
 		// Note: Does it reduce the enemy players AP reguardless if the caster hits or not? [Rytech]
 		if (bl->type == BL_PC)
-			status_fix_apdamage(src, bl, battle_config.max_ap, 0, skill_id);
+			status_fix_apdamage(src, bl, tstatus->max_ap, 0, skill_id);
 	}
 		break;
 
@@ -5824,6 +5859,8 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case SOA_TALISMAN_OF_RED_PHOENIX:
 	case SOA_TALISMAN_OF_FOUR_BEARING_GOD:
 	case SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS:
+	case SH_HOWLING_OF_CHUL_HO:
+	case SH_HOGOGONG_STRIKE:
 	case HN_DOUBLEBOWLINGBASH:
 	case HN_SHIELD_CHAIN_RUSH:
 	case HN_JUPITEL_THUNDER_STORM:
@@ -5857,6 +5894,10 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 			// Deft Stab - Make sure the flag of 2 is passed on when the skill is double casted.
 			if (skill_id == ABC_DEFT_STAB && flag&2)
 				sflag |= 2;
+
+			// Hogogong Strike only hits those with the Hogogong status.
+			if (skill_id == SH_HOGOGONG_STRIKE && !(tsc && tsc->getSCE(SC_HOGOGONG)))
+				break;
 
 			// Secondary attack.
 			if (flag&SK_SECONDATK)
@@ -6312,6 +6353,16 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 		skill_attack(BF_MAGIC, src, src, bl, skill_id, skill_lv, tick, flag);
 		sc_start(src, src, SC_T_FIRST_GOD, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+		break;
+
+	case SH_HYUN_ROK_CANNON:
+		if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_HYUN_ROK))
+		{
+			status_heal(src, 0, 0, 1, 0);// +1 AP
+			flag |= SK_SECONDATK;
+		}
+		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+		skill_attack(BF_MAGIC, src, src, bl, skill_id, skill_lv, tick, flag);
 		break;
 
 	case IG_JUDGEMENT_CROSS:
@@ -8122,6 +8173,8 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case EM_SPELL_ENCHANTING:
 	case NW_AUTO_FIRING_LAUNCHER:
 	case NW_HIDDEN_CARD:
+	case SH_TEMPORARY_COMMUNION:
+	case SH_BLESSING_OF_MYSTICAL_CREATURES:
 	case HN_BREAKINGLIMIT:
 	case HN_RULEBREAK:
 	case SKE_ENCHANTING_SKY:
@@ -8144,6 +8197,24 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			status_change_end(bl, grenade_fragment[i]);
 	}
 		break;
+
+	case SH_COLORS_OF_HYUN_ROK:
+	{
+		const enum sc_type hyun_rok_color[7] = { SC_COLORS_OF_HYUN_ROK_1, SC_COLORS_OF_HYUN_ROK_2, SC_COLORS_OF_HYUN_ROK_3, SC_COLORS_OF_HYUN_ROK_4, SC_COLORS_OF_HYUN_ROK_5, SC_COLORS_OF_HYUN_ROK_6, SC_COLORS_OF_HYUN_ROK_BUFF };
+
+		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+
+		if (skill_lv < 7)// Level 1 to 6 selects the element.
+		{
+			sc_start(src, bl, hyun_rok_color[skill_lv - 1], 100, 1, skill_get_time(skill_id, skill_lv));
+
+			if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_HYUN_ROK))// Catnip Meteor damage bonus.
+				sc_start(src, bl, hyun_rok_color[6], 100, 1, skill_get_time(skill_id, skill_lv));
+		}
+		else for (i = 0; i <= 6; i++)// Level 7 removes the element and damage bonus.
+			status_change_end(bl, hyun_rok_color[i]);
+	}
+	break;
 
 	case SOA_TALISMAN_OF_WARRIOR:
 	case SOA_TALISMAN_OF_MAGICIAN:
@@ -8870,6 +8941,36 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	}
 		break;
 
+	case SH_HOWLING_OF_CHUL_HO:
+	{
+		short splash_size = skill_get_splash(skill_id, skill_lv);
+
+		skill_area_temp[1] = 0;
+
+		if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_CHUL_HO))
+		{
+			splash_size += 1;
+			flag |= SK_SECONDATK;
+		}
+
+		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+		map_foreachinrange(skill_area_sub, bl, splash_size, BL_CHAR|BL_SKILL, src, skill_id, skill_lv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
+	}
+		break;
+
+	case SH_HOGOGONG_STRIKE:
+		skill_area_temp[1] = 0;
+
+		if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_CHUL_HO))
+		{
+			status_heal(src, 0, 0, 1, 0);// +1 AP
+			flag |= SK_SECONDATK;
+		}
+
+		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+		map_foreachinrange(skill_area_sub, bl, skill_get_splash(skill_id, skill_lv), BL_CHAR|BL_SKILL, src, skill_id, skill_lv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
+		break;
+
 	case SHC_DANCING_KNIFE:
 		if (flag & 1) {
 			skill_area_temp[1] = 0;
@@ -9093,7 +9194,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			if (src == bl)
 			{
 				clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
-				if (sd->status.party_id == 0 &&// Totem of tutelary check for if the caster is not in a party.
+				if (sd && sd->status.party_id == 0 &&// Totem of tutelary check for if the caster is not in a party.
 					map_foreachinrange(skill_unit_rangecheck, src, MUR_TOTEM_OF_TUTELARY, BL_SKILL, src, UNT_TOTEM_OF_TUTELARY, 0))
 					flag |= 2;
 			}
@@ -9108,6 +9209,92 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 				flag |= 2;
 			party_foreachsamemap(skill_area_sub, sd, skill_get_splash(skill_id, skill_lv), src, skill_id, skill_lv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
 		}
+		break;
+
+	case SH_MARINE_FESTIVAL_OF_KI_SUL:
+	case SH_SANDY_FESTIVAL_OF_KI_SUL:
+		if (sd == nullptr || sd->status.party_id == 0 || (flag&1))
+		{
+			int duration = skill_get_time(skill_id, skill_lv);
+
+			if (src == bl)
+			{// Display animation only on caster. Also check for commune skill if not in party.
+				clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+				if (sd && sd->status.party_id == 0 && pc_checkskill(sd, SH_COMMUNE_WITH_KI_SUL))
+					flag |= SK_SECONDATK;
+			}
+			if (flag&SK_SECONDATK)
+				duration *= 2;
+			sc_start(src, bl, type, 100, skill_lv, duration);
+		}
+		else if (sd)
+		{
+			short splash_size = skill_get_splash(skill_id, skill_lv);
+
+			if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_KI_SUL))// Commune check for if in a party.
+			{// Increase AoE size and sets flag to double status duration.
+				splash_size += 2;
+				flag |= SK_SECONDATK;
+			}
+			party_foreachsamemap(skill_area_sub, sd, splash_size, src, skill_id, skill_lv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
+		}
+		break;
+
+	case SH_KI_SUL_WATER_SPRAYING:
+		if (sd == nullptr || sd->status.party_id == 0 || (flag&1))
+		{
+			int heal = skill_calc_heal(src, bl, skill_id, skill_lv, true);
+
+			if (src == bl)// Display animation only on caster.
+				clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+
+			clif_skill_nodamage(src, bl, AL_HEAL, heal, 1);
+			status_heal(bl, heal, 0, 0, 0);
+		}
+		else if (sd)
+		{
+			short splash_size = skill_get_splash(skill_id, skill_lv);
+
+			if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_KI_SUL))// Commune check for if in a party.
+			{// Increase AoE size and sets flag to increase healing.
+				splash_size += 2;
+				flag |= SK_SECONDATK;
+			}
+			party_foreachsamemap(skill_area_sub, sd, splash_size, src, skill_id, skill_lv, tick, flag|BCT_PARTY|1, skill_castend_nodamage_id);
+		}
+		break;
+
+	case SH_KI_SUL_RAMPAGE:
+		if (sd == nullptr || sd->status.party_id == 0 || (flag&2))
+		{
+			short ap_heal = 3;
+
+			if (src == bl)
+			{// Display animation only on caster. Also check for commune skill if not in party.
+				clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+				if (sd && sd->status.party_id == 0 && pc_checkskill(sd, SH_COMMUNE_WITH_KI_SUL))
+					flag |= SK_SECONDATK;
+			}
+
+			if (flag&SK_SECONDATK)
+				ap_heal *= 2;
+
+			if (src != bl)// Doesn't recover any of the caster's AP.
+				status_heal(bl, 0, 0, ap_heal, 0);
+		}
+		else if (sd && flag&1)// Skill triggered by status.
+		{
+			short splash_size = skill_get_splash(skill_id, skill_lv);
+
+			if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_KI_SUL))// Commune check for if in a party.
+			{// Increase AoE size and sets flag to increase AP recovery.
+				splash_size += 2;
+				flag |= SK_SECONDATK;
+			}
+			party_foreachsamemap(skill_area_sub, sd, splash_size, src, skill_id, skill_lv, tick, flag|BCT_PARTY|2, skill_castend_nodamage_id);
+		}
+		else// Skill triggered by casting it.
+			sc_start(src, bl, type, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		break;
 
 	case SS_AKUMUKESU:
@@ -13324,6 +13511,16 @@ static int8 skill_castend_id_check(struct block_list *src, struct block_list *ta
 			if (target->type == BL_MOB && ((TBL_MOB*)target)->mob_id == MOBID_EMPERIUM)
 				return USESKILL_FAIL_MAX;
 			break;
+		case SH_BLESSING_OF_MYSTICAL_CREATURES:
+		{
+			map_session_data *tsd;
+			tsd = BL_CAST(BL_PC, target);
+
+			// Can't use on Dorams. Also fails if the 1 minute after effect is active.
+			if ((tsd && (tsd->class_&MAPID_BASEMASK) == MAPID_SUMMONER) || (tsc && tsc->getSCE(SC_BLESSING_OF_M_C_DEBUFF)))
+				return USESKILL_FAIL_TOTARGET;
+		}
+			break;
 	}
 
 	if (inf && battle_check_target(src, target, inf) <= 0) {
@@ -14160,6 +14357,14 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 	case NW_WILD_FIRE:
 		flag |= 1;
 		if (sd && sd->status.weapon == W_GRENADE)
+			skill_unitsetting(src, skill_id, skill_lv, x, y, SK_SECONDATK);
+		else
+			skill_unitsetting(src, skill_id, skill_lv, x, y, 0);
+		break;
+
+	case SH_HYUN_ROKS_BREEZE:
+		flag |= 1;
+		if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_HYUN_ROK))
 			skill_unitsetting(src, skill_id, skill_lv, x, y, SK_SECONDATK);
 		else
 			skill_unitsetting(src, skill_id, skill_lv, x, y, 0);
@@ -15711,6 +15916,7 @@ std::shared_ptr<s_skill_unit_group> skill_unitsetting(struct block_list *src, ui
 			flag = 1;
 		}
 		break;
+	case SH_HYUN_ROKS_BREEZE:
 	case SS_FUUMAKOUCHIKU:
 		// Check for the second attack flag.
 		// Note: Since group->target_flag is only used for BCT's, this can be used to pass other flags.
@@ -16380,6 +16586,7 @@ int skill_unit_onplace_timer(struct skill_unit *unit, struct block_list *bl, t_t
 			skill_attack(skill_get_type(sg->skill_id),ss,&unit->bl,bl,sg->skill_id,sg->skill_lv,tick,0);
 			break;
 
+		case UNT_HYUN_ROKS_BREEZE:
 		case UNT_JACK_FROST_NOVA:
 		case UNT_GROUND_GRAVITATION:
 			if (sg->target_flag&SK_SECONDATK)
@@ -18521,6 +18728,12 @@ bool skill_check_condition_castbegin( map_session_data& sd, uint16 skill_id, uin
 				sd.soulball_old = require.spiritball = sd.soulball;
 			else
 				sd.soulball_old = require.spiritball;
+			break;
+		case SH_TEMPORARY_COMMUNION:
+			if (!(pc_checkskill(&sd, SH_COMMUNE_WITH_CHUL_HO) + pc_checkskill(&sd, SH_COMMUNE_WITH_KI_SUL) + pc_checkskill(&sd, SH_COMMUNE_WITH_HYUN_ROK))) {
+				clif_skill_fail(sd, skill_id);
+				return false;
+			}
 			break;
 		case SKE_NOON_BLAST:
 			if (!(sc && (sc->getSCE(SC_RISING_SUN) || sc->getSCE(SC_NOON_SUN) || sc->getSCE(SC_SKY_ENCHANT)))) {

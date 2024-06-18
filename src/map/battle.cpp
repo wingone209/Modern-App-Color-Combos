@@ -2612,6 +2612,8 @@ static int battle_range_type(struct block_list *src, struct block_list *target, 
 		case BO_ACIDIFIED_ZONE_GROUND_ATK:
 		case BO_ACIDIFIED_ZONE_WIND_ATK:
 		case NW_THE_VIGILANTE_AT_NIGHT: // Self casted.
+		case SH_HOWLING_OF_CHUL_HO: // Self casted.
+		case SH_HOGOGONG_STRIKE: // Self casted.
 		case SS_KUNAIKAITEN: // Self casted.
 		case SS_KUNAIKUSSETSU: // Self casted.
 		case SS_HITOUAKUMU: // Self casted.
@@ -2925,6 +2927,7 @@ static bool is_attack_critical(struct Damage* wd, struct block_list *src, struct
 	switch (skill_id)
 	{
 		case NW_ONLY_ONE_BULLET:// Revolver Main / Rifle Second (Crit)
+		case SH_CHUL_HO_SONIC_CLAW:
 			if (!(wd->miscflag&SK_SECONDATK))
 				return false;
 			break;
@@ -3577,6 +3580,26 @@ int battle_get_magic_element(struct block_list* src, struct block_list* target, 
 		case TR_SOUNDBLEND:
 			if (sd)
 				element = sd->bonus.arrow_ele;
+			break;
+		case SU_CN_METEOR:
+		case SU_CN_METEOR2:
+		case SH_HYUN_ROKS_BREEZE:
+		case SH_HYUN_ROK_CANNON:
+			if (sc)
+			{
+				if (sc->getSCE(SC_COLORS_OF_HYUN_ROK_1))
+					element = ELE_WATER;
+				else if (sc->getSCE(SC_COLORS_OF_HYUN_ROK_2))
+					element = ELE_WIND;
+				else if (sc->getSCE(SC_COLORS_OF_HYUN_ROK_3))
+					element = ELE_EARTH;
+				else if (sc->getSCE(SC_COLORS_OF_HYUN_ROK_4))
+					element = ELE_FIRE;
+				else if (sc->getSCE(SC_COLORS_OF_HYUN_ROK_5))
+					element = ELE_DARK;
+				else if (sc->getSCE(SC_COLORS_OF_HYUN_ROK_6))
+					element = ELE_HOLY;
+			}
 			break;
 		case SS_ANKOKURYUUAKUMU:
 			// Fire element for 2nd hit on targets with nightmare status. [Rytech]
@@ -6190,6 +6213,48 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			skillratio += 10 * sstatus->con;
 			RE_LVL_DMOD(100);
 			break;
+		case SH_CHUL_HO_SONIC_CLAW:
+			if (wd->miscflag&SK_SECONDATK)
+			{
+				skillratio += -100 + 450 * skill_lv;
+				skillratio += 50 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+			}
+			else
+			{
+				skillratio += -100 + 400 * skill_lv;
+				skillratio += 30 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+			}
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SH_HOWLING_OF_CHUL_HO:
+			if (wd->miscflag&SK_SECONDATK)
+			{
+				skillratio += 500 + 950 * skill_lv;
+				skillratio += 50 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+			}
+			else
+			{
+				skillratio += 400 + 750 * skill_lv;
+				skillratio += 30 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+			}
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SH_HOGOGONG_STRIKE:
+			if (wd->miscflag&SK_SECONDATK)
+			{
+				skillratio += 200 * skill_lv;
+				skillratio += 20 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+			}
+			else
+			{
+				skillratio += 100 + 100 * skill_lv;
+				skillratio += 10 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+			}
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
 		case HN_DOUBLEBOWLINGBASH:
 			skillratio += 200 * skill_lv;
 			skillratio += 3 * skill_lv * pc_checkskill(sd, HN_SELFSTUDY_TATICS);
@@ -8525,6 +8590,8 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 					case SU_CN_METEOR2:
 						skillratio += 100 + 100 * skill_lv + sstatus->int_ * 5; // !TODO: Confirm INT bonus
 						RE_LVL_DMOD(100);
+						if (sc && sc->getSCE(SC_COLORS_OF_HYUN_ROK_BUFF))
+							skillratio += skillratio * 50 / 100;
 						break;
 					case NPC_VENOMFOG:
 						skillratio += 600 + 100 * skill_lv;
@@ -8897,6 +8964,34 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						skillratio += -100 + 1500 * skill_lv;
 						skillratio += 15 * skill_lv * (pc_checkskill(sd, SOA_TALISMAN_MASTERY) + pc_checkskill(sd, SOA_SOUL_MASTERY));
 						skillratio += 10 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SH_HYUN_ROKS_BREEZE:
+						if (mflag&SK_SECONDATK)
+						{
+							skillratio += 400 + 500 * skill_lv;
+							skillratio += 40 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+						}
+						else
+						{
+							skillratio += 400 + 250 * skill_lv;
+							skillratio += 20 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+						}
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case SH_HYUN_ROK_CANNON:
+						if (mflag&SK_SECONDATK)
+						{
+							skillratio += 450 + 550 * skill_lv;
+							skillratio += 75 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+						}
+						else
+						{
+							skillratio += 500 + 400 * skill_lv;
+							skillratio += 50 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+						}
+						skillratio += 5 * sstatus->spl;
 						RE_LVL_DMOD(100);
 						break;
 					case HN_METEOR_STORM_BUSTER:

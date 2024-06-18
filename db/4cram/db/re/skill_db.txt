@@ -81,6 +81,8 @@
 // 18 Name
 // 19 Description
 
+// Note: Recheck all AoE durations.
+
 // Night Watch
 5401,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_P_F_I,P.F.I
 5402,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_GRENADE_MASTERY,Grenade Mastery
@@ -103,7 +105,7 @@
 5417,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SOA_SOUL_MASTERY,Soul Mastery
 5418,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_PROTECTION,Talisman Of Protection// Might need to redo code to use skill_calc_heal.
 5419,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_WARRIOR,Talisman Of Warrior// Is the buff removed if player removes or switches weapons?
-5420,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_MAGICIAN,Talisman Of Magician
+5420,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_MAGICIAN,Talisman Of Magician// Need to fix equip check on casting.
 5421,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_GATHERING,Soul Gathering// Skill fail 103
 5422,9,6,2,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SOA_TOTEM_OF_TUTELARY,Totem Of Tutelary
 5423,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,0,	SOA_TALISMAN_OF_FIVE_ELEMENTS,Talisman Of Five Elements
@@ -120,20 +122,20 @@
 // Spirit Handler
 5433,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SH_MYSTICAL_CREATURE_MASTERY,Mystical Creature Mastery
 5434,0,0,0,0,0,0,1,0,no,0,0,0,none,0,0,0,	SH_COMMUNE_WITH_CHUL_HO,Commune With Chul Ho
-5435,9,6,1,0,0,0,7,1,yes,0,0,0,none,0,0,1,	SH_CHUL_HO_SONIC_CLAW,Chul Ho Sonic Claw
-5436,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,2,	SH_HOWLING_OF_CHUL_HO,Howling Of Chul Ho// Self cast but range of 9?
-5437,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,1,	SH_HOGOGONG_STRIKE,Hogogong Strike// 2 AP for what?
+5435,9,8,1,-1,0x100,0,7,-2,yes,0,0,0,weapon,0,0,1,	SH_CHUL_HO_SONIC_CLAW,Chul Ho Sonic Claw
+5436,0,8,4,-1,0x2,2:2:2:3:3:3:4,7,-3,yes,0,0,0,weapon,0,0,2,	SH_HOWLING_OF_CHUL_HO,Howling Of Chul Ho
+5437,0,8,4,-1,0x102,3:3:3:4:4:4:5,7,3,yes,0,0,0,weapon,0,0,1,	SH_HOGOGONG_STRIKE,Hogogong Strike
 5438,0,0,0,0,0,0,1,0,no,0,0,0,none,0,0,0,	SH_COMMUNE_WITH_KI_SUL,Commune With Ki Sul
-5439,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,1,	SH_KI_SUL_WATER_SPRAYING,Ki Sul Water Spraying
-5440,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SH_MARINE_FESTIVAL_OF_KI_SUL,Marine Festival Of Ki Sul
-5441,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,2,	SH_SANDY_FESTIVAL_OF_KI_SUL,Sandy Festival Of Ki Sul
-5442,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,0,	SH_KI_SUL_RAMPAGE,Ki Sul Rampage
+5439,0,6,4,0,0x3,3:3:4:4:5:5:6,7,1,yes,0,0,0,none,0,0,1,	SH_KI_SUL_WATER_SPRAYING,Ki Sul Water Spraying// Skill ID 28 for heal animation.
+5440,0,6,4,0,0x3,2:3:4:5:6,5,1,yes,0,0,0,none,0,0,2,	SH_MARINE_FESTIVAL_OF_KI_SUL,Marine Festival Of Ki Sul
+5441,0,6,4,0,0x3,2:3:4:5:6,5,1,yes,0,0,0,none,0,0,2,	SH_SANDY_FESTIVAL_OF_KI_SUL,Sandy Festival Of Ki Sul
+5442,0,6,4,0,0x3,3,7,1,yes,0,0,0,none,0,0,0,	SH_KI_SUL_RAMPAGE,Ki Sul Rampage// val1 is AP, val2 is AoE range. Can't use skills while active.
 5443,0,0,0,0,0,0,1,0,no,0,0,0,none,0,0,0,	SH_COMMUNE_WITH_HYUN_ROK,Commune With Hyun Rok
-5444,0,6,4,0,0,0,7,1,yes,0,0,0,none,0,0,0,	SH_COLORS_OF_HYUN_ROK,Colors Of Hyun Rok
-5445,9,6,2,0,0,0,7,1,yes,0,0,0,none,0,0,3,	SH_HYUN_ROKS_BREEZE,Hyun Roks Breeze
-5446,9,6,1,0,0,0,7,1,yes,0,0,0,none,0,0,1,	SH_HYUN_ROK_CANNON,Hyun Rok Cannon// 2 AP for what?
-5447,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SH_TEMPORARY_COMMUNION,Temporary Communion
-5448,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SH_BLESSING_OF_MYSTICAL_CREATURES,Blessing Of Mystical Creatures
+5444,0,6,4,0,0x1,0,7,1,yes,0,0,0,none,0,0,0,	SH_COLORS_OF_HYUN_ROK,Colors Of Hyun Rok
+5445,9,6,2,0,0,0,7,1,yes,0,0,0,magic,0,0,3,	SH_HYUN_ROKS_BREEZE,Hyun Roks Breeze
+5446,9,6,1,0,0,0,7,1,yes,0,0,0,magic,0,0,1,	SH_HYUN_ROK_CANNON,Hyun Rok Cannon
+5447,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SH_TEMPORARY_COMMUNION,Temporary Communion
+5448,9,6,16,0,0x1,0,5,1,yes,0,0x600,0,none,0,0,0,	SH_BLESSING_OF_MYSTICAL_CREATURES,Blessing Of Mystical Creatures// Officialy target type 1. Using 16 for proper function.
 
 // Hyper Novice
 5449,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	HN_SELFSTUDY_TATICS,Self Study Tatics

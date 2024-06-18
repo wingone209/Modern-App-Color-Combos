@@ -4401,6 +4401,11 @@ int status_calc_pc_sub(map_session_data* sd, uint8 opt)
 		base_status->patk += 2 + skill;
 	if ((skill = pc_checkskill(sd, SOA_TALISMAN_MASTERY)) > 0)
 		base_status->smatk += skill;
+	if ((skill = pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY)) > 0)
+	{
+		base_status->patk += skill + skill / 2;
+		base_status->smatk += skill + skill / 2;
+	}
 	if ((skill = pc_checkskill(sd, HN_SELFSTUDY_TATICS)) > 0)
 		base_status->patk += skill;
 	if ((skill = pc_checkskill(sd, HN_SELFSTUDY_SOCERY)) > 0)
@@ -6942,6 +6947,8 @@ static unsigned short status_calc_pow(struct block_list *bl, status_change *sc, 
 
 	if (sc->getSCE(SC_BENEDICTUM))
 		pow += sc->getSCE(SC_BENEDICTUM)->val2;
+	if (sc->getSCE(SC_MARINE_FESTIVAL))
+		pow += sc->getSCE(SC_MARINE_FESTIVAL)->val2;
 
 	return (unsigned short)cap_value(pow, 0, USHRT_MAX);
 }
@@ -6960,6 +6967,8 @@ static unsigned short status_calc_sta(struct block_list *bl, status_change *sc, 
 
 	if (sc->getSCE(SC_RELIGIO))
 		sta += sc->getSCE(SC_RELIGIO)->val2;
+	if (sc->getSCE(SC_SANDY_FESTIVAL))
+		sta += sc->getSCE(SC_SANDY_FESTIVAL)->val2;
 
 	return (unsigned short)cap_value(sta, 0, USHRT_MAX);
 }
@@ -6978,6 +6987,8 @@ static unsigned short status_calc_wis(struct block_list *bl, status_change *sc, 
 
 	if (sc->getSCE(SC_RELIGIO))
 		wis += sc->getSCE(SC_RELIGIO)->val2;
+	if (sc->getSCE(SC_SANDY_FESTIVAL))
+		wis += sc->getSCE(SC_SANDY_FESTIVAL)->val2;
 
 	return (unsigned short)cap_value(wis, 0, USHRT_MAX);
 }
@@ -6996,6 +7007,8 @@ static unsigned short status_calc_spl(struct block_list *bl, status_change *sc, 
 
 	if (sc->getSCE(SC_RELIGIO))
 		spl += sc->getSCE(SC_RELIGIO)->val2;
+	if (sc->getSCE(SC_SANDY_FESTIVAL))
+		spl += sc->getSCE(SC_SANDY_FESTIVAL)->val2;
 
 	return (unsigned short)cap_value(spl, 0, USHRT_MAX);
 }
@@ -7014,6 +7027,8 @@ static unsigned short status_calc_con(struct block_list *bl, status_change *sc, 
 
 	if (sc->getSCE(SC_BENEDICTUM))
 		con += sc->getSCE(SC_BENEDICTUM)->val2;
+	if (sc->getSCE(SC_MARINE_FESTIVAL))
+		con += sc->getSCE(SC_MARINE_FESTIVAL)->val2;
 
 	return (unsigned short)cap_value(con, 0, USHRT_MAX);
 }
@@ -7032,6 +7047,8 @@ static unsigned short status_calc_crt(struct block_list *bl, status_change *sc, 
 
 	if (sc->getSCE(SC_BENEDICTUM))
 		crt += sc->getSCE(SC_BENEDICTUM)->val2;
+	if (sc->getSCE(SC_MARINE_FESTIVAL))
+		crt += sc->getSCE(SC_MARINE_FESTIVAL)->val2;
 
 	return (unsigned short)cap_value(crt, 0, USHRT_MAX);
 }
@@ -8556,6 +8573,10 @@ static signed short status_calc_patk(struct block_list *bl, status_change *sc, i
 		patk += sc->getSCE(SC_HIDDEN_CARD)->val2;
 	if (sc->getSCE(SC_TALISMAN_OF_WARRIOR))
 		patk += sc->getSCE(SC_TALISMAN_OF_WARRIOR)->val2;
+	if (sc->getSCE(SC_TEMPORARY_COMMUNION))
+		patk += sc->getSCE(SC_TEMPORARY_COMMUNION)->val2;
+	if (sc->getSCE(SC_BLESSING_OF_M_CREATURES))
+		patk += sc->getSCE(SC_BLESSING_OF_M_CREATURES)->val2;
 
 	return (short)cap_value(patk, 0, SHRT_MAX);
 }
@@ -8587,6 +8608,10 @@ static signed short status_calc_smatk(struct block_list *bl, status_change *sc, 
 		smatk += sc->getSCE(SC_TALISMAN_OF_MAGICIAN)->val2;
 	if (sc->getSCE(SC_T_FIVETH_GOD))
 		smatk += sc->getSCE(SC_T_FIVETH_GOD)->val2;
+	if (sc->getSCE(SC_TEMPORARY_COMMUNION))
+		smatk += sc->getSCE(SC_TEMPORARY_COMMUNION)->val2;
+	if (sc->getSCE(SC_BLESSING_OF_M_CREATURES))
+		smatk += sc->getSCE(SC_BLESSING_OF_M_CREATURES)->val2;
 
 	return (short)cap_value(smatk, 0, SHRT_MAX);
 }
@@ -8654,6 +8679,9 @@ static signed short status_calc_hplus(struct block_list *bl, status_change *sc, 
 {
 	if (!sc || !sc->count)
 		return cap_value(hplus, 0, SHRT_MAX);
+
+	if (sc->getSCE(SC_TEMPORARY_COMMUNION))
+		hplus += sc->getSCE(SC_TEMPORARY_COMMUNION)->val2;
 
 	return (short)cap_value(hplus, 0, SHRT_MAX);
 }
@@ -12777,6 +12805,21 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 		case SC_HEAVEN_AND_EARTH:
 			val2 = 5 + 2 * val1;// Damage Increase
 			break;
+		case SC_MARINE_FESTIVAL:// POW, CON, CRT
+		case SC_SANDY_FESTIVAL:// STA, WIS, SPL
+			val2 = 2 * val1;// Trait Stat Increase
+			break;
+		case SC_KI_SUL_RAMPAGE:
+			val4 = tick / 1000;
+			tick_time = 100;// Set lower to allow AP recovery to start faster.
+			break;
+		case SC_TEMPORARY_COMMUNION:
+			val2 = 3 * val1;// Patk, SMatk, HPlus Increase
+			break;
+		case SC_BLESSING_OF_M_CREATURES:
+			status_heal(bl, 0, 0, status->max_ap, 0);
+			val2 = 10 * val1;// Patk, SMatk Increase
+			break;
 		case SC_FLAMETECHNIC:
 		case SC_FLAMEARMOR:
 		case SC_COLD_FORCE:
@@ -13810,6 +13853,10 @@ int status_change_end(struct block_list* bl, enum sc_type type, int tid)
 			break;
 		case SC_INTENSIVE_AIM:
 			status_change_end(bl, SC_INTENSIVE_AIM_COUNT);
+			break;
+		case SC_BLESSING_OF_M_CREATURES:
+			status_zap(bl, 0, 0, status->max_ap);
+			sc_start(bl, bl, SC_BLESSING_OF_M_C_DEBUFF, 100, 1, skill_get_time2(SH_BLESSING_OF_MYSTICAL_CREATURES, sce->val1));
 			break;
 	}
 
@@ -14937,6 +14984,14 @@ TIMER_FUNC(status_change_timer){
 			clif_skill_nodamage(nullptr, bl, AL_HEAL, sce->val2, 1);
 			status_heal(bl, sce->val2, 0, 0);
 			sc_timer_next(3000 + tick);
+			return 0;
+		}
+		break;
+
+	case SC_KI_SUL_RAMPAGE:
+		if (--(sce->val4) >= 0) {
+			skill_castend_nodamage_id(bl, bl, SH_KI_SUL_RAMPAGE, sce->val1, tick, 1);
+			sc_timer_next(1000 + tick);
 			return 0;
 		}
 		break;

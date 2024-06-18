@@ -7825,6 +7825,10 @@ Body:
     Flags:
       BlEffect: true
       DisplayPc: true
+#    Fail:
+#      Sandy_Festival: true
+    EndOnStart:
+      Sandy_Festival: true
   - Status: Benedictum
     Icon: EFST_BENEDICTUM
     DurationLookup: CD_BENEDICTUM
@@ -7835,6 +7839,10 @@ Body:
     Flags:
       BlEffect: true
       DisplayPc: true
+#    Fail:
+#      Marine_Festival: true
+    EndOnStart:
+      Marine_Festival: true
   - Status: Axe_Stomp
     Icon: EFST_AXE_STOMP
     DurationLookup: MT_AXE_STOMP
