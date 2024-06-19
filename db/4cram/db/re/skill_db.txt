@@ -88,14 +88,14 @@
 5402,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_GRENADE_MASTERY,Grenade Mastery
 5403,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	NW_INTENSIVE_AIM,Intensive Aim
 5404,0,6,4,0,0x1,0,7,1,yes,0,0,0,none,0,0,0,	NW_GRENADE_FRAGMENT,Grenade Fragment
-5405,0,8,4,-1,0x2,5:5:5:6:6,5,7,yes,0,0,0,weapon,0,0,1,	NW_THE_VIGILANTE_AT_NIGHT,The Vigilante At Night
-5406,9,6,1,-1,0x100,0,5,1,yes,0,0,0,weapon,0,0,1,	NW_ONLY_ONE_BULLET,Only One Bullet
-5407,9,8,1,-1,0x102,2:2:2:3:3,5,1,yes,0,0,0,weapon,0,0,1,	NW_SPIRAL_SHOOTING,Spiral Shooting
-5408,9,8,1,-1,0x100,0,5,6,yes,0,0,0,weapon,0,0,1,	NW_MAGAZINE_FOR_ONE,Magazine For One
-5409,9,8,2,-1,0,0,5,-3,yes,0,0,0,weapon,0,0,1,	NW_WILD_FIRE,Wild Fire
-5410,9,8,2,0,0,0,5,-2,yes,0,0,0,weapon,0,0,1,	NW_BASIC_GRENADE,Basic Grenade
-5411,9,8,2,0,0,0,5,-2,yes,0,0,0,weapon,0,0,1,	NW_HASTY_FIRE_IN_THE_HOLE,Hasty Fire In The Hole// Triggers status 1410 for 1500ms.
-5412,9,8,2,0,0,5:5:5:4:4,5,-3,yes,0,0,0,weapon,0,0,1,	NW_GRENADES_DROPPING,Grenades Dropping
+5405,0,8,4,-1,0x2,5:5:5:6:6,5,7,yes,0,0,0,weapon,0,0,2,	NW_THE_VIGILANTE_AT_NIGHT,The Vigilante At Night
+5406,9,6,1,-1,0x100,0,5,1,yes,0,0,0,weapon,0,0,2,	NW_ONLY_ONE_BULLET,Only One Bullet
+5407,9,8,1,-1,0x102,2:2:2:3:3,5,1,yes,0,0,0,weapon,0,0,2,	NW_SPIRAL_SHOOTING,Spiral Shooting
+5408,9,8,1,-1,0x100,0,5,6,yes,0,0,0,weapon,0,0,2,	NW_MAGAZINE_FOR_ONE,Magazine For One
+5409,9,8,2,-1,0,0,5,-3,yes,0,0,0,weapon,0,0,2,	NW_WILD_FIRE,Wild Fire
+5410,9,8,2,0,0,0,5,-2,yes,0,0,0,weapon,0,0,2,	NW_BASIC_GRENADE,Basic Grenade
+5411,9,8,2,0,0,0,5,-2,yes,0,0,0,weapon,0,0,3,	NW_HASTY_FIRE_IN_THE_HOLE,Hasty Fire In The Hole// Triggers status 1410 for 1500ms.
+5412,9,8,2,0,0,5:5:5:4:4,5,-3,yes,0,0,0,weapon,0,0,5,	NW_GRENADES_DROPPING,Grenades Dropping
 5413,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	NW_AUTO_FIRING_LAUNCHER,Auto Firing Launcher
 5414,0,6,4,0,0x1,0,10,1,yes,0,0,0,none,0,0,0,	NW_HIDDEN_CARD,Hidden Card
 5415,9,8,2,0,0,4,10,-5,yes,0,0,0,weapon,0,0,0,	NW_MISSION_BOMBARD,Mission Bombard// Need official hit count for the main attack.
@@ -111,45 +111,45 @@
 5423,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,0,	SOA_TALISMAN_OF_FIVE_ELEMENTS,Talisman Of Five Elements
 5424,9,6,1,-2,0,0,5,1,yes,0,0,0,magic,0,0,0,	SOA_TALISMAN_OF_SOUL_STEALING,Talisman Of Soul Stealing// Does it recover SP even if the attack misses?
 5425,0,8,4,-2,0x2,5:5:5:6:6,5,-5,yes,0,0,0,magic,0,0,2,	SOA_EXORCISM_OF_MALICIOUS_SOUL,Exorcism Of Malicious Soul// Does 1 hit if no soul energy.
-5426,9,6,1,-2,0,0,5,1,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_BLUE_DRAGON,Talisman Of Blue Dragon
-5427,0,8,4,-2,0x2,5:5:5:6:6,5,-2,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_WHITE_TIGER,Talisman Of White Tiger
-5428,9,8,1,-2,0x2,1:1:2:2:3,5,-3,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_RED_PHOENIX,Talisman Of Red Phoenix
-5429,9,8,2,-2,0,0,5,-3,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_BLACK_TORTOISE,Talisman Of Black Tortoise
-5430,9,8,1,-2,0x2,3:3:4:4:5,5,1,yes,0,0,0,magic,0,0,1,	SOA_TALISMAN_OF_FOUR_BEARING_GOD,Talisman Of Four Bearing God
+5426,11,6,1,-2,0,0,5,1,yes,0,0,0,magic,0,0,2,	SOA_TALISMAN_OF_BLUE_DRAGON,Talisman Of Blue Dragon
+5427,0,8,4,-2,0x2,5:5:5:6:6,5,-2,yes,0,0,0,magic,0,0,2,	SOA_TALISMAN_OF_WHITE_TIGER,Talisman Of White Tiger
+5428,9,8,1,-2,0x2,1:1:2:2:3,5,-3,yes,0,0,0,magic,0,0,3,	SOA_TALISMAN_OF_RED_PHOENIX,Talisman Of Red Phoenix
+5429,9,8,2,-2,0,0,5,-3,yes,0,0,0,magic,0,0,3,	SOA_TALISMAN_OF_BLACK_TORTOISE,Talisman Of Black Tortoise
+5430,9,8,1,-2,0x2,3:3:4:4:5,5,1,yes,0,0,0,magic,0,0,3,	SOA_TALISMAN_OF_FOUR_BEARING_GOD,Talisman Of Four Bearing God
 5431,9,8,1,-2,0x2,3:3:4:4:5,5,5,yes,0,0,0,magic,0,0,0,	SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS,Circle Of Directions And Elementals
 5432,0,6,4,0,0x3,11,10,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_OF_HEAVEN_AND_EARTH,Soul Of Heaven And Earth
 
 // Spirit Handler
 5433,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SH_MYSTICAL_CREATURE_MASTERY,Mystical Creature Mastery
 5434,0,0,0,0,0,0,1,0,no,0,0,0,none,0,0,0,	SH_COMMUNE_WITH_CHUL_HO,Commune With Chul Ho
-5435,9,8,1,-1,0x100,0,7,-2,yes,0,0,0,weapon,0,0,1,	SH_CHUL_HO_SONIC_CLAW,Chul Ho Sonic Claw
+5435,11,8,1,-1,0x100,0,7,-2,yes,0,0,0,weapon,0,0,1,	SH_CHUL_HO_SONIC_CLAW,Chul Ho Sonic Claw
 5436,0,8,4,-1,0x2,2:2:2:3:3:3:4,7,-3,yes,0,0,0,weapon,0,0,2,	SH_HOWLING_OF_CHUL_HO,Howling Of Chul Ho
 5437,0,8,4,-1,0x102,3:3:3:4:4:4:5,7,3,yes,0,0,0,weapon,0,0,1,	SH_HOGOGONG_STRIKE,Hogogong Strike
 5438,0,0,0,0,0,0,1,0,no,0,0,0,none,0,0,0,	SH_COMMUNE_WITH_KI_SUL,Commune With Ki Sul
-5439,0,6,4,0,0x3,3:3:4:4:5:5:6,7,1,yes,0,0,0,none,0,0,1,	SH_KI_SUL_WATER_SPRAYING,Ki Sul Water Spraying// Skill ID 28 for heal animation.
-5440,0,6,4,0,0x3,2:3:4:5:6,5,1,yes,0,0,0,none,0,0,2,	SH_MARINE_FESTIVAL_OF_KI_SUL,Marine Festival Of Ki Sul
-5441,0,6,4,0,0x3,2:3:4:5:6,5,1,yes,0,0,0,none,0,0,2,	SH_SANDY_FESTIVAL_OF_KI_SUL,Sandy Festival Of Ki Sul
-5442,0,6,4,0,0x3,3,7,1,yes,0,0,0,none,0,0,0,	SH_KI_SUL_RAMPAGE,Ki Sul Rampage// val1 is AP, val2 is AoE range. Can't use skills while active.
+5439,0,6,4,0,0x3,3:3:4:4:5:5:6,7,1,yes,0,0,0,none,0,0,1,	SH_KI_SUL_WATER_SPRAYING,Ki Sul Water Spraying
+5440,0,6,4,0,0x3,2:3:4:5:6,5,1,yes,0,0,0,none,0,0,4,	SH_MARINE_FESTIVAL_OF_KI_SUL,Marine Festival Of Ki Sul
+5441,0,6,4,0,0x3,2:3:4:5:6,5,1,yes,0,0,0,none,0,0,4,	SH_SANDY_FESTIVAL_OF_KI_SUL,Sandy Festival Of Ki Sul
+5442,0,6,4,0,0x3,3,7,1,yes,0,0,0,none,0,0,0,	SH_KI_SUL_RAMPAGE,Ki Sul Rampage// val1 is AP, val2 is AoE range.
 5443,0,0,0,0,0,0,1,0,no,0,0,0,none,0,0,0,	SH_COMMUNE_WITH_HYUN_ROK,Commune With Hyun Rok
 5444,0,6,4,0,0x1,0,7,1,yes,0,0,0,none,0,0,0,	SH_COLORS_OF_HYUN_ROK,Colors Of Hyun Rok
-5445,9,6,2,0,0,0,7,1,yes,0,0,0,magic,0,0,3,	SH_HYUN_ROKS_BREEZE,Hyun Roks Breeze
-5446,9,6,1,0,0,0,7,1,yes,0,0,0,magic,0,0,1,	SH_HYUN_ROK_CANNON,Hyun Rok Cannon
+5445,9,6,2,0,0,0,7,1,yes,0,0,0,magic,0,0,4,	SH_HYUN_ROKS_BREEZE,Hyun Roks Breeze
+5446,11,6,1,0,0,0,7,1,yes,0,0,0,magic,0,0,1,	SH_HYUN_ROK_CANNON,Hyun Rok Cannon
 5447,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SH_TEMPORARY_COMMUNION,Temporary Communion
 5448,9,6,16,0,0x1,0,5,1,yes,0,0x600,0,none,0,0,0,	SH_BLESSING_OF_MYSTICAL_CREATURES,Blessing Of Mystical Creatures// Officialy target type 1. Using 16 for proper function.
 
 // Hyper Novice
 5449,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	HN_SELFSTUDY_TATICS,Self Study Tatics
 5450,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	HN_SELFSTUDY_SOCERY,Self Study Socery
-5451,2,8,1,-1,0x2,3,10,3,no,0,0,0,weapon,5,0,2,	HN_DOUBLEBOWLINGBASH,Double Bowling Bash
-5452,2,8,1,-1,0x100,0,10,-8,yes,0,0,0,weapon,0,0,1,	HN_MEGA_SONIC_BLOW,Mega Sonic Blow
-5453,7,8,1,-1,0x2,3,10,-5,yes,0,0,0,weapon,0,0,1,	HN_SHIELD_CHAIN_RUSH,Shield Chain Rush
-5454,7,8,1,-1,0,0,10,-5,yes,0,0,0,weapon,0,0,1,	HN_SPIRAL_PIERCE_MAX,Spiral Pierce Max
+5451,2,8,1,-1,0x2,3,10,3,no,0,0,0,weapon,5,0,3,	HN_DOUBLEBOWLINGBASH,Double Bowling Bash
+5452,2,8,1,-1,0x100,0,10,-8,yes,0,0,0,weapon,0,0,2,	HN_MEGA_SONIC_BLOW,Mega Sonic Blow
+5453,7,8,1,-1,0x2,3,10,-5,yes,0,0,0,weapon,0,0,2,	HN_SHIELD_CHAIN_RUSH,Shield Chain Rush
+5454,7,8,1,-1,0,0,10,-5,yes,0,0,0,weapon,0,0,2,	HN_SPIRAL_PIERCE_MAX,Spiral Pierce Max
 5455,9,8,2,3,0,4,10,-3,yes,0,0,0,magic,0,0,3,	HN_METEOR_STORM_BUSTER,Meteor Storm Buster// Fix Me - Applying stun chance on impact and explosion.
 5456,11,8,1,4,0x2,2:2:2:2:3:3:3:3:4:4,10,-6:-6:-7:-7:-8:-8:-9:-9:-9:-9,yes,0,0,0,magic,0,0,2,	HN_JUPITEL_THUNDER_STORM,Jupitel Thunder Storm// Hit count on levels 9-10 unconfirmed.
 5457,9,8,2,1,0,0,10,1,yes,0,0,0,magic,0,0,3,	HN_JACK_FROST_NOVA,Jack Frost Nova
-5458,0,8,4,2,0x2,1:1:1:2:2:2:3:3:3:4,10,-3,yes,0,0,0,magic,0,0,1,	HN_HELLS_DRIVE,Hells Drive
+5458,0,8,4,2,0x2,1:1:1:2:2:2:3:3:3:4,10,-3,yes,0,0,0,magic,0,0,2,	HN_HELLS_DRIVE,Hells Drive
 5459,0,8,4,0,0,0,10,-2,yes,0,0,0,magic,0,0,5,	HN_GROUND_GRAVITATION,Ground Gravitation
-5460,11,8,1,8,0x2,2,10,-7,yes,0,0,0,magic,0,0,1,	HN_NAPALM_VULCAN_STRIKE,Napalm Vulcan Strike
+5460,11,8,1,8,0x2,2,10,-7,yes,0,0,0,magic,0,0,2,	HN_NAPALM_VULCAN_STRIKE,Napalm Vulcan Strike
 5461,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	HN_BREAKINGLIMIT,Breaking Limit
 5462,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	HN_RULEBREAK,Rule Break
 
@@ -157,11 +157,11 @@
 5463,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SKE_SKY_MASTERY,Sky Mastery
 5464,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SKE_WAR_BOOK_MASTERY,War Book Mastery
 5465,2,8,1,-1,0,0,5,-2,yes,0,0,0,weapon,0,0,0,	SKE_RISING_SUN,Rising Sun
-5466,2,8,1,-1,0x102,1:1:2:2:3,5,-2,yes,0,0,0,weapon,0,0,2,	SKE_NOON_BLAST,Noon Blast
-5467,2,8,1,-1,0x102,1:1:2:2:3,5,-2,yes,0,0,0,weapon,0,0,2,	SKE_SUNSET_BLAST,Sunset Blast
+5466,2,8,1,-1,0x102,1:1:2:2:3,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_NOON_BLAST,Noon Blast
+5467,2,8,1,-1,0x102,1:1:2:2:3,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_SUNSET_BLAST,Sunset Blast
 5468,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,0,	SKE_RISING_MOON,Rising Moon
-5469,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,2,	SKE_MIDNIGHT_KICK,Midnight Kick
-5470,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,2,	SKE_DAWN_BREAK,Dawn Break
+5469,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_MIDNIGHT_KICK,Midnight Kick
+5470,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_DAWN_BREAK,Dawn Break
 5471,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,0,	SKE_TWINKLING_GALAXY,Twinkling Galaxy// Status ID 1404 triggers.
 5472,1,8,1,-1,0x3,2,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_STAR_BURST,Star Burst// Unit ID 2409 appears? This can't be right.
 5473,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,3,	SKE_STAR_CANNON,Star Cannon// Status ID 1406 triggers.
@@ -173,12 +173,12 @@
 5477,11,8,1,-1,0,15,5,-2,yes,0,0,0,weapon,0,0,0,	SS_SHIMIRU,Infiltrate// Fix clone move code later.
 5478,0,6,4,0,0x3,7,1,1,yes,0,0,0,none,0,0,0,	SS_AKUMUKESU,Nightmare Erasion
 5479,5,6,2,0,0x1,0,1,1,yes,0,0,3,none,0,0,0,	SS_SHINKIROU,Mirage
-5480,2,6,2,-1,0,0,10,1,yes,0,0,0,weapon,0,0,1,	SS_KAGEGARI,Shadow Hunting
-5481,0,8,4,-1,0x2,2:2:2:2:3:3:3:3:4:4,10,-5,yes,0,0,0,weapon,0,0,1,	SS_KAGENOMAI,Shadow Dance
+5480,2,6,2,-1,0,0,10,1,yes,0,0,0,weapon,0,0,2,	SS_KAGEGARI,Shadow Hunting
+5481,0,8,4,-1,0x2,2:2:2:2:3:3:3:3:4:4,10,-5,yes,0,0,0,weapon,0,0,2,	SS_KAGENOMAI,Shadow Dance
 5482,2,8,1,-1,0x2,2:2:2:2:2:3:3:3:3:3,10,-4,yes,0,0,0,weapon,0,0,0,	SS_KAGEGISSEN,Shadow Flash
-5483,9,6,2,-1,0,0,10,1,yes,0,0,2,weapon,0,0,2,	SS_FUUMASHOUAKU,Huuma Shuriken - Grasp
+5483,9,6,2,-1,0,0,10,1,yes,0,0,2,weapon,0,0,3,	SS_FUUMASHOUAKU,Huuma Shuriken - Grasp
 5484,9,8,2,-1,0,4,10,-3,yes,0,0,0,weapon,0,0,0,	SS_FUUMAKOUCHIKU,Huuma Shuriken - Construct
-5485,9,8,2,-1,0,0,10,-2,yes,0,0,0,weapon,0,0,1,	SS_KUNAIWAIKYOKU,Kunai - Distortion
+5485,9,8,2,-1,0,0,10,-2,yes,0,0,0,weapon,0,0,2,	SS_KUNAIWAIKYOKU,Kunai - Distortion
 5486,0,8,4,-1,0,0,5,-3,yes,0,0,0,weapon,0,0,0,	SS_KUNAIKAITEN,Kunai - Rotation
 5487,0,6,4,-1,0,7,10,1,yes,0,0,0,weapon,0,0,0,	SS_KUNAIKUSSETSU,Kunai - Refraction
 5488,9,8,1,3,0x2,2:2:2:2:2:3:3:3:3:3,10,-3,yes,0,0,0,magic,0,0,0,	SS_SEKIENHOU,Red Flame Cannon
