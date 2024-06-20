@@ -4013,7 +4013,7 @@ int64 skill_attack (int attack_type, struct block_list* src, struct block_list *
 				dmg.dmotion = clif_skill_damage(dsrc, bl, tick, dmg.amotion, dmg.dmotion, damage, dmg.div_, skill_id, skill_lv, dmg_type);
 			break;
 		case SS_KAGENOMAI:
-		case SS_KAGEGISSEN:
+		//case SS_KAGEGISSEN:
 		case SS_ANTENPOU:
 			if (flag&SK_SECONDATK && sd->shinkirou_clone_id > 0)// Clones casting the skills.
 				dmg.dmotion = clif_skill_damage(map_id2bl(sd->shinkirou_clone_id), bl, tick, dmg.amotion, dmg.dmotion, damage, dmg.div_, skill_id, skill_lv, dmg_type);
@@ -6032,6 +6032,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 				case HN_JUPITEL_THUNDER_STORM:
 				case SKE_NOON_BLAST:
 				case SKE_SUNSET_BLAST:
+				case SS_KAGEGISSEN:
 				case EM_EL_FLAMEROCK:
 				case EM_EL_AGE_OF_ICE:
 				case EM_EL_STORM_WIND:
@@ -6120,7 +6121,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 						skill_area_temp[0] = map_foreachinallrange(skill_area_sub, bl, skill_get_splash(skill_id, skill_lv), BL_CHAR, src, skill_id, skill_lv, tick, BCT_ENEMY, skill_area_sub_count);
 					sc_start2(src, src, SC_STRIPWEAPON, 100, skill_lv, 1, skill_get_time2(skill_id, skill_lv));
 					break;
-				case SS_KAGEGISSEN:
+				//case SS_KAGEGISSEN:
 				case SS_SEKIENHOU:
 				case SS_RAIDENPOU:
 				case SS_KINRYUUHOU:
@@ -9267,7 +9268,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case SH_KI_SUL_RAMPAGE:
 		if (sd == nullptr || sd->status.party_id == 0 || (flag&2))
 		{
-			short ap_heal = 3;
+			short ap_heal = 2;
 
 			if (src == bl)
 			{// Display animation only on caster. Also check for commune skill if not in party.
@@ -9277,7 +9278,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			}
 
 			if (flag&SK_SECONDATK)
-				ap_heal *= 2;
+				ap_heal = 4;
 
 			if (src != bl)// Doesn't recover any of the caster's AP.
 				status_heal(bl, 0, 0, ap_heal, 0);
@@ -15122,7 +15123,7 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 					skill_unitsetting(src, skill_id, skill_lv, x, y, 1);
 					break;
 				case SKE_STAR_CANNON:
-					drop_group_max = (3 + skill_lv) / 2;
+					drop_group_max = (2 + skill_lv) / 3;
 					skill_clear_unitgroup(src);
 					break;
 			}
@@ -15908,7 +15909,7 @@ std::shared_ptr<s_skill_unit_group> skill_unitsetting(struct block_list *src, ui
 					limit = flag;
 					break;
 				case SKE_STAR_CANNON:
-					range = 3;
+					range = 2;
 					limit = flag;
 					break;
 			}
@@ -20929,12 +20930,12 @@ int skill_shinkirou(struct block_list* bl, va_list ap)
 					src, skill_id, skill_lv, tick, BCT_ENEMY|SD_SPLASH|SK_SECONDATK|1, skill_castend_damage_id);
 				break;
 
-			case SS_KAGEGISSEN:// Will be disabled in a future balance update. [Rytech]
-				sd->shinkirou_clone_id = bl->id;
-				clif_skill_nodamage(bl, target, skill_id, skill_lv, tick);
-				map_foreachinrange(skill_area_sub, target, skill_get_splash(skill_id, skill_lv), BL_CHAR|BL_SKILL,
-					src, skill_id, skill_lv, tick, BCT_ENEMY|SD_SPLASH|SK_SECONDATK|1, skill_castend_damage_id);
-				break;
+			//case SS_KAGEGISSEN:// Will be disabled in a future balance update. [Rytech]
+			//	sd->shinkirou_clone_id = bl->id;
+			//	clif_skill_nodamage(bl, target, skill_id, skill_lv, tick);
+			//	map_foreachinrange(skill_area_sub, target, skill_get_splash(skill_id, skill_lv), BL_CHAR|BL_SKILL,
+			//		src, skill_id, skill_lv, tick, BCT_ENEMY|SD_SPLASH|SK_SECONDATK|1, skill_castend_damage_id);
+			//	break;
 
 			case SS_KUNAIWAIKYOKU:
 				// Note: Damage AoE is placed but not the kunai one

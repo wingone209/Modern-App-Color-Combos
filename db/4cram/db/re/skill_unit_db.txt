@@ -49,9 +49,9 @@
 5457,0x86,0x127,  0, 3:3:3:3:3:4:4:4:4:4, 300,enemy, 0x018	//HN_JACK_FROST_NOVA
 5459,0x86,0x128,  0, 2:2:2:3:3:3:4:4:4:4, 500,enemy, 0x018	//HN_GROUND_GRAVITATION
 
-5471,0x11e,0x86, 0, 6:6:5:5:4, 300,enemy, 0x010//SKE_TWINKLING_GALAXY
+5471,0x11e,0x86, 0, 6:6:5:5:4, 500,enemy, 0x010//SKE_TWINKLING_GALAXY
 5472,0x86,    ,  0, 2, 300,enemy, 0x000	//SKE_STAR_BURST
-5473,0x11f,0x86, 0, 6:6:5:5:4, 300,enemy, 0x010//SKE_STAR_CANNON
+5473,0x11f,0x86, 0, 6:6:5:5:4, 500,enemy, 0x010//SKE_STAR_CANNON
 
 //5476,0x86,    ,  0, 2,1000,enemy, 0x010	//SS_TOKEDASU - AoE appears where character stands. Splash AoE right?
 5479,0x126,   ,  0, 0,1000,enemy, 0x018	//SS_SHINKIROU
@@ -62,4 +62,4 @@
 5486,0x129,   ,  0, 2:2:3:3:4,500,enemy, 0x018	//SS_KUNAIKAITEN
 5487,0x12b,   ,  0, 2,250,enemy, 0x018	//SS_KUNAIKUSSETSU
 //5488,0x12c,   ,  0, 0,1000,enemy, 0x010	//SS_SEKIENHOU - Special AoE Shape. Radius of 4? No longer used.
-5489,0x86,    ,  0, 2:2:2:2:2:3:3:3:3:3,1000,enemy, 0x010	//SS_REIKETSUHOU
+5489,0x86,    ,  0, 2:2:2:2:2:3:3:3:3:3,1000,enemy, 0x010	//SS_REIKETSUHOU - Says last level is 9x9? Sounds like a typo.

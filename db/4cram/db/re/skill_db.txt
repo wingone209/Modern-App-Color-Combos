@@ -83,12 +83,12 @@
 
 // Note: Recheck all AoE durations.
 
-// Night Watch
+// Night Watch - Recheck gun skills damage.
 5401,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_P_F_I,P.F.I
 5402,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_GRENADE_MASTERY,Grenade Mastery
 5403,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	NW_INTENSIVE_AIM,Intensive Aim
 5404,0,6,4,0,0x1,0,7,1,yes,0,0,0,none,0,0,0,	NW_GRENADE_FRAGMENT,Grenade Fragment
-5405,0,8,4,-1,0x2,5:5:5:6:6,5,7,yes,0,0,0,weapon,0,0,2,	NW_THE_VIGILANTE_AT_NIGHT,The Vigilante At Night
+5405,0,8,4,-1,0x2,4:4:4:5:5,5,7,yes,0,0,0,weapon,0,0,2,	NW_THE_VIGILANTE_AT_NIGHT,The Vigilante At Night
 5406,9,6,1,-1,0x100,0,5,1,yes,0,0,0,weapon,0,0,2,	NW_ONLY_ONE_BULLET,Only One Bullet
 5407,9,8,1,-1,0x102,2:2:2:3:3,5,1,yes,0,0,0,weapon,0,0,2,	NW_SPIRAL_SHOOTING,Spiral Shooting
 5408,9,8,1,-1,0x100,0,5,6,yes,0,0,0,weapon,0,0,2,	NW_MAGAZINE_FOR_ONE,Magazine For One
@@ -116,7 +116,7 @@
 5428,9,8,1,-2,0x2,1:1:2:2:3,5,-3,yes,0,0,0,magic,0,0,3,	SOA_TALISMAN_OF_RED_PHOENIX,Talisman Of Red Phoenix
 5429,9,8,2,-2,0,0,5,-3,yes,0,0,0,magic,0,0,3,	SOA_TALISMAN_OF_BLACK_TORTOISE,Talisman Of Black Tortoise
 5430,9,8,1,-2,0x2,3:3:4:4:5,5,1,yes,0,0,0,magic,0,0,3,	SOA_TALISMAN_OF_FOUR_BEARING_GOD,Talisman Of Four Bearing God
-5431,9,8,1,-2,0x2,3:3:4:4:5,5,5,yes,0,0,0,magic,0,0,0,	SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS,Circle Of Directions And Elementals
+5431,9,8,1,-2,0x2,3:3:4:4:5,5,5,yes,0,0,0,magic,0,0,0,	SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS,Circle Of Directions And Elementals// Can be used with four dir and five elem buff.
 5432,0,6,4,0,0x3,11,10,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_OF_HEAVEN_AND_EARTH,Soul Of Heaven And Earth
 
 // Spirit Handler
@@ -140,16 +140,16 @@
 // Hyper Novice
 5449,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	HN_SELFSTUDY_TATICS,Self Study Tatics
 5450,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	HN_SELFSTUDY_SOCERY,Self Study Socery
-5451,2,8,1,-1,0x2,3,10,3,no,0,0,0,weapon,5,0,3,	HN_DOUBLEBOWLINGBASH,Double Bowling Bash
+5451,2,8,1,-1,0x2,4,10,3,no,0,0,0,weapon,1,0,3,	HN_DOUBLEBOWLINGBASH,Double Bowling Bash
 5452,2,8,1,-1,0x100,0,10,-8,yes,0,0,0,weapon,0,0,2,	HN_MEGA_SONIC_BLOW,Mega Sonic Blow
-5453,7,8,1,-1,0x2,3,10,-5,yes,0,0,0,weapon,0,0,2,	HN_SHIELD_CHAIN_RUSH,Shield Chain Rush
+5453,7,8,1,-1,0x2,4,10,-5,yes,0,0,0,weapon,0,0,2,	HN_SHIELD_CHAIN_RUSH,Shield Chain Rush
 5454,7,8,1,-1,0,0,10,-5,yes,0,0,0,weapon,0,0,2,	HN_SPIRAL_PIERCE_MAX,Spiral Pierce Max
 5455,9,8,2,3,0,4,10,-3,yes,0,0,0,magic,0,0,3,	HN_METEOR_STORM_BUSTER,Meteor Storm Buster// Fix Me - Applying stun chance on impact and explosion.
 5456,11,8,1,4,0x2,2:2:2:2:3:3:3:3:4:4,10,-6:-6:-7:-7:-8:-8:-9:-9:-9:-9,yes,0,0,0,magic,0,0,2,	HN_JUPITEL_THUNDER_STORM,Jupitel Thunder Storm// Hit count on levels 9-10 unconfirmed.
 5457,9,8,2,1,0,0,10,1,yes,0,0,0,magic,0,0,3,	HN_JACK_FROST_NOVA,Jack Frost Nova
 5458,0,8,4,2,0x2,1:1:1:2:2:2:3:3:3:4,10,-3,yes,0,0,0,magic,0,0,2,	HN_HELLS_DRIVE,Hells Drive
 5459,0,8,4,0,0,0,10,-2,yes,0,0,0,magic,0,0,5,	HN_GROUND_GRAVITATION,Ground Gravitation
-5460,11,8,1,8,0x2,2,10,-7,yes,0,0,0,magic,0,0,2,	HN_NAPALM_VULCAN_STRIKE,Napalm Vulcan Strike
+5460,11,8,1,8,0x2,3,10,-7,yes,0,0,0,magic,0,0,2,	HN_NAPALM_VULCAN_STRIKE,Napalm Vulcan Strike
 5461,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	HN_BREAKINGLIMIT,Breaking Limit
 5462,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	HN_RULEBREAK,Rule Break
 
@@ -164,7 +164,7 @@
 5470,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_DAWN_BREAK,Dawn Break
 5471,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,0,	SKE_TWINKLING_GALAXY,Twinkling Galaxy// Status ID 1404 triggers.
 5472,1,8,1,-1,0x3,2,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_STAR_BURST,Star Burst// Unit ID 2409 appears? This can't be right.
-5473,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,3,	SKE_STAR_CANNON,Star Cannon// Status ID 1406 triggers.
+5473,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,3,	SKE_STAR_CANNON,Star Cannon// Status ID 1406 triggers. Update star impact AoE size and star count.
 5474,9,8,1,-1,0x100,0,10,1,yes,0,0,0,weapon,0,0,0,	SKE_ALL_IN_THE_SKY,All In The Sky// High jump packet used for jump.
 5475,0,6,4,0,0x1,0,10,1,yes,0,0,0,none,0,0,0,	SKE_ENCHANTING_SKY,Enchanting Sky
 
@@ -174,8 +174,8 @@
 5478,0,6,4,0,0x3,7,1,1,yes,0,0,0,none,0,0,0,	SS_AKUMUKESU,Nightmare Erasion
 5479,5,6,2,0,0x1,0,1,1,yes,0,0,3,none,0,0,0,	SS_SHINKIROU,Mirage
 5480,2,6,2,-1,0,0,10,1,yes,0,0,0,weapon,0,0,2,	SS_KAGEGARI,Shadow Hunting
-5481,0,8,4,-1,0x2,2:2:2:2:3:3:3:3:4:4,10,-5,yes,0,0,0,weapon,0,0,2,	SS_KAGENOMAI,Shadow Dance
-5482,2,8,1,-1,0x2,2:2:2:2:2:3:3:3:3:3,10,-4,yes,0,0,0,weapon,0,0,0,	SS_KAGEGISSEN,Shadow Flash
+5481,0,8,4,-1,0x2,2:2:2:2:2:3:3:3:3:3,10,-5,yes,0,0,0,weapon,0,0,2,	SS_KAGENOMAI,Shadow Dance
+5482,2,8,1,-1,0x102,2:2:2:2:2:3:3:3:3:3,10,-4,yes,0,0,0,weapon,0,0,0,	SS_KAGEGISSEN,Shadow Flash
 5483,9,6,2,-1,0,0,10,1,yes,0,0,2,weapon,0,0,3,	SS_FUUMASHOUAKU,Huuma Shuriken - Grasp
 5484,9,8,2,-1,0,4,10,-3,yes,0,0,0,weapon,0,0,0,	SS_FUUMAKOUCHIKU,Huuma Shuriken - Construct
 5485,9,8,2,-1,0,0,10,-2,yes,0,0,0,weapon,0,0,2,	SS_KUNAIWAIKYOKU,Kunai - Distortion
