@@ -1739,6 +1739,12 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		if (tsc->getSCE(SC_SU_STOOP))
 			damage -= damage * 90 / 100;
 
+		// Official damage reduction unknown.
+		// Official speed increase is 60% and it has a duration of 2 seconds.
+		// So ill use 60% here for now.[Rytech]
+		if (tsc->getSCE(SC_SHADOW_CLOCK))
+			damage -= damage * 60 / 100;
+
 		// Compressed code, fixed by map.hpp [Epoque]
 		if (src->type == BL_MOB) {
 			std::vector<e_race2> race2 = status_get_race2(src);

@@ -2250,8 +2250,9 @@ int skill_additional_effect( struct block_list* src, struct block_list *bl, uint
 	case HN_SHIELD_CHAIN_RUSH:
 		sc_start(src, bl, SC_SHIELDCHAINRUSH, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		break;
-	case HN_METEOR_STORM_BUSTER:// Fix Me - Is being applied to impact and both explosion attacks. Chance reduced for now. [Rytech]
-		sc_start(src, bl, SC_STUN, 2 * skill_lv, skill_lv, skill_get_time2(skill_id, skill_lv));
+	case HN_METEOR_STORM_BUSTER:
+		if (!(skill_area_temp[3]&SK_SECONDATK))// Only attempt to stun on fall damage.
+			sc_start(src, bl, SC_STUN, 3 * skill_lv, skill_lv, skill_get_time2(skill_id, skill_lv));
 		break;
 	case HN_JACK_FROST_NOVA:
 		sc_start(src, bl, SC_MISTYFROST, 100, skill_lv, skill_get_time2(skill_id, skill_lv));
@@ -3864,6 +3865,9 @@ int64 skill_attack (int attack_type, struct block_list* src, struct block_list *
 			// Removes the player count after use to avoid interfearing with other things like knockback.
 			// This works for up to 4095 enemies. We should be good with this. [Rytech]
 			flag &= ~(0xFFF);
+			break;
+		case HN_METEOR_STORM_BUSTER:
+			skill_area_temp[3] = flag;// Send flag to skill_additional_effect.
 			break;
 	}
 
@@ -6111,7 +6115,7 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 					break;
 				case SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS:
 					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
-					if (sc && sc->getSCE(SC_T_FOURTH_GOD))
+					if (sc && (sc->getSCE(SC_T_FOURTH_GOD) || sc->getSCE(SC_T_FIVETH_GOD)))
 						sc_start(src, src, SC_T_FIVETH_GOD, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 					break;
 				case HN_DOUBLEBOWLINGBASH:
@@ -8174,6 +8178,9 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case EM_SPELL_ENCHANTING:
 	case NW_AUTO_FIRING_LAUNCHER:
 	case NW_HIDDEN_CARD:
+	case SOA_TALISMAN_OF_WARRIOR:
+	case SOA_TALISMAN_OF_MAGICIAN:
+	case SOA_TALISMAN_OF_FIVE_ELEMENTS:
 	case SH_TEMPORARY_COMMUNION:
 	case SH_BLESSING_OF_MYSTICAL_CREATURES:
 	case HN_BREAKINGLIMIT:
@@ -8216,23 +8223,6 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			status_change_end(bl, hyun_rok_color[i]);
 	}
 	break;
-
-	case SOA_TALISMAN_OF_WARRIOR:
-	case SOA_TALISMAN_OF_MAGICIAN:
-	case SOA_TALISMAN_OF_FIVE_ELEMENTS:
-		if (dstsd)
-		{
-			short index = dstsd->equip_index[EQI_HAND_R];
-
-			if (index >= 0 && dstsd->inventory_data[index] && dstsd->inventory_data[index]->type == IT_WEAPON)
-			{// Requires targeted player to have a weapon equipped for the buff to be applied.
-				clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
-				sc_start(src, bl, type, 100, skill_lv, skill_get_time(skill_id, skill_lv));
-			}
-			else
-				clif_skill_fail( *sd, skill_id );
-		}
-		break;
 
 	case NPC_GRADUAL_GRAVITY:
 		status_change_start(src, bl, type, 10000, skill_lv, 0, 0, 0, skill_get_time(skill_id, skill_lv), SCSTART_NOAVOID|SCSTART_NOTICKDEF|SCSTART_NORATEDEF);
@@ -13483,6 +13473,21 @@ static int8 skill_castend_id_check(struct block_list *src, struct block_list *ta
 			if (!tsc || !tsc->getSCE(SC_SECOND_BRAND))
 				return USESKILL_FAIL_LEVEL;
 			break;
+		case SOA_TALISMAN_OF_WARRIOR:
+		case SOA_TALISMAN_OF_MAGICIAN:
+		case SOA_TALISMAN_OF_FIVE_ELEMENTS:
+		{
+			map_session_data* tsd;
+			short index;
+
+			tsd = BL_CAST(BL_PC, target);
+			index = tsd->equip_index[EQI_HAND_R];
+
+			// Requires targeted player to have a weapon equipped for the buff to be applied.
+			if (!(index >= 0 && tsd->inventory_data[index] && tsd->inventory_data[index]->type == IT_WEAPON))
+				return USESKILL_FAIL_LEVEL;
+		}
+			break;
 	}
 
 	if (inf&INF_ATTACK_SKILL ||
@@ -18732,6 +18737,12 @@ bool skill_check_condition_castbegin( map_session_data& sd, uint16 skill_id, uin
 			break;
 		case SH_TEMPORARY_COMMUNION:
 			if (!(pc_checkskill(&sd, SH_COMMUNE_WITH_CHUL_HO) + pc_checkskill(&sd, SH_COMMUNE_WITH_KI_SUL) + pc_checkskill(&sd, SH_COMMUNE_WITH_HYUN_ROK))) {
+				clif_skill_fail(sd, skill_id);
+				return false;
+			}
+			break;
+		case SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS:
+			if (!(sc && (sc->getSCE(SC_T_FOURTH_GOD) || sc->getSCE(SC_T_FIVETH_GOD)))) {
 				clif_skill_fail(sd, skill_id);
 				return false;
 			}

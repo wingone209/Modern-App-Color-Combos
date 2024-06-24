@@ -1093,8 +1093,6 @@ Body:
         - Level: 5
           Amount: 200
       ApCost: 35
-      Status:
-        T_Fourth_God: true
   - Id: 5432
     Name: SOA_SOUL_OF_HEAVEN_AND_EARTH
     Description: Soul Of Heaven And Earth

@@ -81,9 +81,7 @@
 // 18 Name
 // 19 Description
 
-// Note: Recheck all AoE durations.
-
-// Night Watch - Recheck gun skills damage.
+// Night Watch
 5401,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_P_F_I,P.F.I
 5402,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_GRENADE_MASTERY,Grenade Mastery
 5403,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	NW_INTENSIVE_AIM,Intensive Aim
@@ -94,7 +92,7 @@
 5408,9,8,1,-1,0x100,0,5,6,yes,0,0,0,weapon,0,0,2,	NW_MAGAZINE_FOR_ONE,Magazine For One
 5409,9,8,2,-1,0,0,5,-3,yes,0,0,0,weapon,0,0,2,	NW_WILD_FIRE,Wild Fire
 5410,9,8,2,0,0,0,5,-2,yes,0,0,0,weapon,0,0,2,	NW_BASIC_GRENADE,Basic Grenade
-5411,9,8,2,0,0,0,5,-2,yes,0,0,0,weapon,0,0,3,	NW_HASTY_FIRE_IN_THE_HOLE,Hasty Fire In The Hole// Triggers status 1410 for 1500ms.
+5411,9,8,2,0,0,0,5,-2,yes,0,0,0,weapon,0,0,3,	NW_HASTY_FIRE_IN_THE_HOLE,Hasty Fire In The Hole// Triggers status 1410 for 1500ms. What does it do?
 5412,9,8,2,0,0,5:5:5:4:4,5,-3,yes,0,0,0,weapon,0,0,5,	NW_GRENADES_DROPPING,Grenades Dropping
 5413,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	NW_AUTO_FIRING_LAUNCHER,Auto Firing Launcher
 5414,0,6,4,0,0x1,0,10,1,yes,0,0,0,none,0,0,0,	NW_HIDDEN_CARD,Hidden Card
@@ -105,7 +103,7 @@
 5417,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SOA_SOUL_MASTERY,Soul Mastery
 5418,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_PROTECTION,Talisman Of Protection// Might need to redo code to use skill_calc_heal.
 5419,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_WARRIOR,Talisman Of Warrior// Is the buff removed if player removes or switches weapons?
-5420,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_MAGICIAN,Talisman Of Magician// Need to fix equip check on casting.
+5420,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,2,	SOA_TALISMAN_OF_MAGICIAN,Talisman Of Magician
 5421,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_GATHERING,Soul Gathering// Skill fail 103
 5422,9,6,2,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SOA_TOTEM_OF_TUTELARY,Totem Of Tutelary
 5423,9,6,16,0,0x1,0,5,1,yes,0,0x400,0,none,0,0,0,	SOA_TALISMAN_OF_FIVE_ELEMENTS,Talisman Of Five Elements
@@ -116,7 +114,7 @@
 5428,9,8,1,-2,0x2,1:1:2:2:3,5,-3,yes,0,0,0,magic,0,0,3,	SOA_TALISMAN_OF_RED_PHOENIX,Talisman Of Red Phoenix
 5429,9,8,2,-2,0,0,5,-3,yes,0,0,0,magic,0,0,3,	SOA_TALISMAN_OF_BLACK_TORTOISE,Talisman Of Black Tortoise
 5430,9,8,1,-2,0x2,3:3:4:4:5,5,1,yes,0,0,0,magic,0,0,3,	SOA_TALISMAN_OF_FOUR_BEARING_GOD,Talisman Of Four Bearing God
-5431,9,8,1,-2,0x2,3:3:4:4:5,5,5,yes,0,0,0,magic,0,0,0,	SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS,Circle Of Directions And Elementals// Can be used with four dir and five elem buff.
+5431,9,8,1,-2,0x2,3:3:4:4:5,5,5,yes,0,0,0,magic,0,0,0,	SOA_CIRCLE_OF_DIRECTIONS_AND_ELEMENTALS,Circle Of Directions And Elementals
 5432,0,6,4,0,0x3,11,10,1,yes,0,0,0,none,0,0,0,	SOA_SOUL_OF_HEAVEN_AND_EARTH,Soul Of Heaven And Earth
 
 // Spirit Handler
@@ -135,7 +133,7 @@
 5445,9,6,2,0,0,0,7,1,yes,0,0,0,magic,0,0,4,	SH_HYUN_ROKS_BREEZE,Hyun Roks Breeze
 5446,11,6,1,0,0,0,7,1,yes,0,0,0,magic,0,0,1,	SH_HYUN_ROK_CANNON,Hyun Rok Cannon
 5447,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	SH_TEMPORARY_COMMUNION,Temporary Communion
-5448,9,6,16,0,0x1,0,5,1,yes,0,0x600,0,none,0,0,0,	SH_BLESSING_OF_MYSTICAL_CREATURES,Blessing Of Mystical Creatures// Officialy target type 1. Using 16 for proper function.
+5448,9,6,16,0,0x1,0,5,1,yes,0,0x600,0,none,0,0,0,	SH_BLESSING_OF_MYSTICAL_CREATURES,Blessing Of Mystical Creatures// Officialy target type 1. Had to use 16 for proper function.
 
 // Hyper Novice
 5449,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	HN_SELFSTUDY_TATICS,Self Study Tatics
@@ -144,7 +142,7 @@
 5452,2,8,1,-1,0x100,0,10,-8,yes,0,0,0,weapon,0,0,2,	HN_MEGA_SONIC_BLOW,Mega Sonic Blow
 5453,7,8,1,-1,0x2,4,10,-5,yes,0,0,0,weapon,0,0,2,	HN_SHIELD_CHAIN_RUSH,Shield Chain Rush
 5454,7,8,1,-1,0,0,10,-5,yes,0,0,0,weapon,0,0,2,	HN_SPIRAL_PIERCE_MAX,Spiral Pierce Max
-5455,9,8,2,3,0,4,10,-3,yes,0,0,0,magic,0,0,3,	HN_METEOR_STORM_BUSTER,Meteor Storm Buster// Fix Me - Applying stun chance on impact and explosion.
+5455,9,8,2,3,0,4,10,-3,yes,0,0,0,magic,0,0,3,	HN_METEOR_STORM_BUSTER,Meteor Storm Buster
 5456,11,8,1,4,0x2,2:2:2:2:3:3:3:3:4:4,10,-6:-6:-7:-7:-8:-8:-9:-9:-9:-9,yes,0,0,0,magic,0,0,2,	HN_JUPITEL_THUNDER_STORM,Jupitel Thunder Storm// Hit count on levels 9-10 unconfirmed.
 5457,9,8,2,1,0,0,10,1,yes,0,0,0,magic,0,0,3,	HN_JACK_FROST_NOVA,Jack Frost Nova
 5458,0,8,4,2,0x2,1:1:1:2:2:2:3:3:3:4,10,-3,yes,0,0,0,magic,0,0,2,	HN_HELLS_DRIVE,Hells Drive
@@ -162,14 +160,14 @@
 5468,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,0,	SKE_RISING_MOON,Rising Moon
 5469,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_MIDNIGHT_KICK,Midnight Kick
 5470,0,8,4,-1,0x2,2:2:3:3:4,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_DAWN_BREAK,Dawn Break
-5471,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,0,	SKE_TWINKLING_GALAXY,Twinkling Galaxy// Status ID 1404 triggers.
-5472,1,8,1,-1,0x3,2,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_STAR_BURST,Star Burst// Unit ID 2409 appears? This can't be right.
-5473,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,3,	SKE_STAR_CANNON,Star Cannon// Status ID 1406 triggers. Update star impact AoE size and star count.
+5471,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,0,	SKE_TWINKLING_GALAXY,Twinkling Galaxy// Status ID 1404 triggers. What does it do?
+5472,1,8,1,-1,0x3,2,5,-2,yes,0,0,0,weapon,0,0,3,	SKE_STAR_BURST,Star Burst// Unit ID 2409 appears? This can't be right. Using ID for dummy.
+5473,0,8,4,-1,0,6:6:5:5:4,5,-3,yes,0,0,0,weapon,0,0,3,	SKE_STAR_CANNON,Star Cannon// Status ID 1406 triggers. What does it do?
 5474,9,8,1,-1,0x100,0,10,1,yes,0,0,0,weapon,0,0,0,	SKE_ALL_IN_THE_SKY,All In The Sky// High jump packet used for jump.
 5475,0,6,4,0,0x1,0,10,1,yes,0,0,0,none,0,0,0,	SKE_ENCHANTING_SKY,Enchanting Sky
 
 // Shinkiro/Shiranui
-5476,5,8,2,7,0x2,2,5,-2,yes,0,0,0,magic,0,0,0,	SS_TOKEDASU,Melt Away// Shadow cloak reduces physical and magic damage. Add later.
+5476,5,8,2,7,0x2,2,5,-2,yes,0,0,0,magic,0,0,0,	SS_TOKEDASU,Melt Away
 5477,11,8,1,-1,0,15,5,-2,yes,0,0,0,weapon,0,0,0,	SS_SHIMIRU,Infiltrate// Fix clone move code later.
 5478,0,6,4,0,0x3,7,1,1,yes,0,0,0,none,0,0,0,	SS_AKUMUKESU,Nightmare Erasion
 5479,5,6,2,0,0x1,0,1,1,yes,0,0,3,none,0,0,0,	SS_SHINKIROU,Mirage
