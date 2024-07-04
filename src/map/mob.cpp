@@ -191,6 +191,7 @@ void mvptomb_create(struct mob_data *md, char *killer, time_t time)
 		mvptomb_destroy(md);
 
 	CREATE(nd, struct npc_data, 1);
+	new (nd) npc_data();
 
 	nd->bl.id = md->tomb_nid = npc_get_new_npc_id();
 
@@ -203,12 +204,16 @@ void mvptomb_create(struct mob_data *md, char *killer, time_t time)
 	safestrncpy(nd->name, msg_txt(nullptr,656), sizeof(nd->name));
 
 	nd->class_ = 565;
-	nd->speed = 200;
+	nd->speed = DEFAULT_NPC_WALK_SPEED;
 	nd->subtype = NPCTYPE_TOMB;
 
 	nd->u.tomb.md = md;
 	nd->u.tomb.kill_time = time;
 	nd->u.tomb.spawn_timer = INVALID_TIMER;
+
+	nd->dynamicnpc.owner_char_id = 0;
+	nd->dynamicnpc.last_interaction = 0;
+	nd->dynamicnpc.removal_tid = INVALID_TIMER;
 
 	if (killer)
 		safestrncpy(nd->u.tomb.killer_name, killer, NAME_LENGTH);
@@ -372,8 +377,10 @@ e_mob_bosstype s_mob_db::get_bosstype(){
 }
 
 e_mob_bosstype mob_data::get_bosstype(){
-	if( this->db != nullptr ){
-		return this->db->get_bosstype();
+	if( status_has_mode( &this->status, MD_MVP ) ){
+		return BOSSTYPE_MVP;
+	}else if( this->status.class_ == CLASS_BOSS ){
+		return BOSSTYPE_MINIBOSS;
 	}else{
 		return BOSSTYPE_NONE;
 	}
@@ -3466,7 +3473,6 @@ int mob_class_change (struct mob_data *md, int mob_id)
 	status_set_viewdata(&md->bl, mob_id);
 	clif_mob_class_change(md,md->vd->class_);
 	status_calc_mob(md,SCO_FIRST);
-	md->ud.state.speed_changed = 1; //Speed change update.
 
 	if (battle_config.monster_class_change_recover) {
 		memset(md->dmglog, 0, sizeof(md->dmglog));
