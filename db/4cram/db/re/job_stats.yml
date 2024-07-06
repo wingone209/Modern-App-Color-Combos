@@ -10598,8 +10598,8 @@ Body:
       Sky_Emperor2: true
     MaxWeight: 42000
     HpFactor: 90
-    HpIncrease: 4110
-    SpIncrease: 710
+    HpIncrease: 3786
+    SpIncrease: 797
     BonusStats:
       - Level: 1
         Str: 1
@@ -10740,8 +10740,8 @@ Body:
       Soul_Ascetic: true
     MaxWeight: 42000
     HpFactor: 75
-    HpIncrease: 2810
-    SpIncrease: 940
+    HpIncrease: 3431
+    SpIncrease: 1104
     BonusStats:
       - Level: 1
         Vit: 1
@@ -10873,8 +10873,8 @@ Body:
       Shinkiro: true
     MaxWeight: 45000
     HpFactor: 75
-    HpIncrease: 5340
-    SpIncrease: 710
+    HpIncrease: 5741
+    SpIncrease: 803
     BonusStats:
       - Level: 1
         Str: 1
@@ -11017,8 +11017,8 @@ Body:
       Shiranui: true
     MaxWeight: 45000
     HpFactor: 75
-    HpIncrease: 5340
-    SpIncrease: 710
+    HpIncrease: 5741
+    SpIncrease: 803
     BonusStats:
       - Level: 1
         Vit: 1
@@ -11149,8 +11149,8 @@ Body:
       Night_Watch: true
     MaxWeight: 48000
     HpFactor: 90
-    HpIncrease: 3050
-    SpIncrease: 680
+    HpIncrease: 2587
+    SpIncrease: 1096
     BonusStats:
       - Level: 1
         Str: 1
@@ -11289,8 +11289,8 @@ Body:
       Hyper_Novice: true
     MaxWeight: 40000
     HpFactor: 75
-    HpIncrease: 860
-    SpIncrease: 590
+    HpIncrease: 930
+    SpIncrease: 744
     BonusStats:
       - Level: 1
         Str: 1
@@ -11434,8 +11434,8 @@ Body:
       Spirit_Handler: true
     MaxWeight: 42000
     HpFactor: 100
-    HpIncrease: 3620
-    SpIncrease: 580
+    HpIncrease: 1437
+    SpIncrease: 913
     BonusStats:
       - Level: 1
         Dex: 1

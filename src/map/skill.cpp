@@ -8924,7 +8924,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 
 		if (sd && sd->status.weapon == W_SHOTGUN)
 		{
-			splash_size -= 3;
+			splash_size -= 2;
 			flag |= SK_SECONDATK;
 			clif_skill_nodamage(src, bl, NW_THE_VIGILANTE_AT_NIGHT_GUN_SHOTGUN, skill_lv, 1);
 		}

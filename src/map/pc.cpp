@@ -9465,16 +9465,17 @@ int pc_skillheal_bonus(map_session_data *sd, uint16 skill_id) {
 
 	if( bonus ) {
 		switch( skill_id ) {
-		case AL_HEAL:               if (!(battle_config.skill_add_heal_rate & 1)) bonus = 0; break;
-		case PR_SANCTUARY:          if (!(battle_config.skill_add_heal_rate & 2)) bonus = 0; break;
-		case AM_POTIONPITCHER:      if (!(battle_config.skill_add_heal_rate & 4)) bonus = 0; break;
-		case CR_SLIMPITCHER:        if (!(battle_config.skill_add_heal_rate & 8)) bonus = 0; break;
-		case BA_APPLEIDUN:          if (!(battle_config.skill_add_heal_rate & 16)) bonus = 0; break;
-		case AB_CHEAL:              if (!(battle_config.skill_add_heal_rate & 32)) bonus = 0; break;
-		case AB_HIGHNESSHEAL:       if (!(battle_config.skill_add_heal_rate & 64)) bonus = 0; break;
-		case CD_MEDIALE_VOTUM:      if (!(battle_config.skill_add_heal_rate & 128)) bonus = 0; break;
-		case CD_DILECTIO_HEAL:      if (!(battle_config.skill_add_heal_rate & 256)) bonus = 0; break;
-		case SOA_TOTEM_OF_TUTELARY: if (!(battle_config.skill_add_heal_rate & 512)) bonus = 0; break;
+		case AL_HEAL:                  if (!(battle_config.skill_add_heal_rate & 1)) bonus = 0; break;
+		case PR_SANCTUARY:             if (!(battle_config.skill_add_heal_rate & 2)) bonus = 0; break;
+		case AM_POTIONPITCHER:         if (!(battle_config.skill_add_heal_rate & 4)) bonus = 0; break;
+		case CR_SLIMPITCHER:           if (!(battle_config.skill_add_heal_rate & 8)) bonus = 0; break;
+		case BA_APPLEIDUN:             if (!(battle_config.skill_add_heal_rate & 16)) bonus = 0; break;
+		case AB_CHEAL:                 if (!(battle_config.skill_add_heal_rate & 32)) bonus = 0; break;
+		case AB_HIGHNESSHEAL:          if (!(battle_config.skill_add_heal_rate & 64)) bonus = 0; break;
+		case CD_MEDIALE_VOTUM:         if (!(battle_config.skill_add_heal_rate & 128)) bonus = 0; break;
+		case CD_DILECTIO_HEAL:         if (!(battle_config.skill_add_heal_rate & 256)) bonus = 0; break;
+		case SOA_TOTEM_OF_TUTELARY:    if (!(battle_config.skill_add_heal_rate & 512)) bonus = 0; break;
+		case SH_KI_SUL_WATER_SPRAYING: if (!(battle_config.skill_add_heal_rate & 1024)) bonus = 0; break;
 		}
 	}
 
