@@ -13587,7 +13587,7 @@ static unsigned int pc_calc_basehp(uint16 level, uint16 job_id) {
  */
 static unsigned int pc_calc_basesp(uint16 level, uint16 job_id) {
 	std::shared_ptr<s_job_info> job = job_db.find(job_id);
-	double base_sp = 10 + floor(level * (job->sp_increase / 100.));
+	double base_sp = 10 + level * (job->sp_increase / 100.);
 
 	switch (job_id) {
 		case JOB_NINJA:
@@ -13607,6 +13607,9 @@ static unsigned int pc_calc_basesp(uint16 level, uint16 job_id) {
 			base_sp -= 4;// Temp. Needs more work. [Rytech]
 			break;
 	}
+
+	for (uint16 i = 2; i <= level; i++)
+		base_sp += floor(((job->sp_factor / 100.) * i));
 
 	return (unsigned int)base_sp;
 }
@@ -13688,6 +13691,19 @@ uint64 JobDatabase::parseBodyNode(const ryml::NodeRef& node) {
 			} else {
 				if (!exists)
 					job->hp_increase = 500;
+			}
+
+			if (this->nodeExists(node, "SpFactor")) {
+				uint32 sp;
+
+				if (!this->asUInt32(node, "SpFactor", sp))
+					return 0;
+
+				job->sp_factor = sp;
+			}
+			else {
+				if (!exists)
+					job->sp_factor = 0;
 			}
 
 			if (this->nodeExists(node, "SpIncrease")) {

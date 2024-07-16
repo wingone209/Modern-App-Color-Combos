@@ -6332,6 +6332,54 @@ ACMD_FUNC(displayskillunit)
 }
 
 /*==========================================
+* @calchpsp by [Rytech]
+* Debug command used to figure out the base HP/SP given from a set factor/increase setting.
+* Factor/Increase settings are useful for filling in the blanks for unknown base HP/SP for different levels.
+*------------------------------------------*/
+ACMD_FUNC(calchpsp)
+{
+	double base_amount = 0;
+	short level;
+	short factor;
+	short increase;
+	short calc_flag;
+
+	nullpo_retr(-1, sd);
+
+	if (!message || !*message || sscanf(message, "%6hu %6hu %6hu %6hu", &calc_flag, &level, &factor, &increase) < 4)
+	{
+		clif_displaymessage(fd, "Calculate HP (0) or SP (1), Level, Factor, Increase");
+		return -1;
+	}
+
+	if (calc_flag >= 1)
+		base_amount = 10;// SP
+	else
+		base_amount = 35;// HP
+
+	base_amount += (increase / 100.);
+
+	for (uint16 i = 2; i <= level; i++)
+	{
+		if (calc_flag >= 1)
+			base_amount += (increase / 100.) + floor(((factor / 100.) * i));// SP
+		else
+			base_amount += (increase / 100.) + floor(((factor / 100.) * i) + 0.5);// HP
+
+		if (i == 200 || i == 250 || i == 260 || i == 275)
+		{
+			sprintf(atcmd_output, "Level: %d, Amount: %f", i, base_amount);
+			clif_displaymessage(fd, atcmd_output);
+		}
+	}
+
+	sprintf(atcmd_output, "Calc Flag: %d, Level: %d, Factor: %d, Increase: %d, Result: %f", calc_flag, level, factor, increase, base_amount);
+	clif_displaymessage(fd, atcmd_output);
+
+	return 0;
+}
+
+/*==========================================
  * @skilltree by [MouseJstr]
  * prints the skill tree for a player required to get to a skill
  *------------------------------------------*/
@@ -11172,6 +11220,7 @@ void atcommand_basecommands(void) {
 		ACMD_DEF(displayskill),
 		ACMD_DEF(displayskillcast),
 		ACMD_DEF(displayskillunit),
+		ACMD_DEF(calchpsp),
 		ACMD_DEF(snow),
 		ACMD_DEF(sakura),
 		ACMD_DEF(clouds),

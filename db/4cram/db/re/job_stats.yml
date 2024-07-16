@@ -27,6 +27,7 @@
 #   MaxWeight                Base maximum weight. (Default: 20000)
 #   HpFactor                 Exponential HP increase. Per base level: [HpFactor * BaseLv / 100]. Used when macro HP_SP_TABLES is disabled. (Default: 0)
 #   HpIncrease               Linear HP increase. Per base level: [HpIncrease / 100]. Used when macro HP_SP_TABLES is disabled. (Default: 500)
+#   SpFactor                 Exponential SP increase. Per base level: [SpFactor * BaseLv / 100]. Used when macro HP_SP_TABLES is disabled. (Default: 0)
 #   SpIncrease               Linear SP increase. Per base level: [SpIncrease / 100]. Used when macro HP_SP_TABLES is disabled. (Default: 100)
 #   BaseASPD:                Base ASPD for each weapon type. (Default: 2000)
 #     Weapon                 Weapon type with associated ASPD.
@@ -10597,9 +10598,10 @@ Body:
       Sky_Emperor: true
       Sky_Emperor2: true
     MaxWeight: 42000
-    HpFactor: 90
-    HpIncrease: 3786
-    SpIncrease: 797
+    HpFactor: 72
+    HpIncrease: 6050
+    SpFactor: 3
+    SpIncrease: 469
     BonusStats:
       - Level: 1
         Str: 1
@@ -10739,9 +10741,10 @@ Body:
   - Jobs:
       Soul_Ascetic: true
     MaxWeight: 42000
-    HpFactor: 75
-    HpIncrease: 3431
-    SpIncrease: 1104
+    HpFactor: 94
+    HpIncrease: 1058
+    SpFactor: 6
+    SpIncrease: 400
     BonusStats:
       - Level: 1
         Vit: 1
@@ -10872,9 +10875,10 @@ Body:
   - Jobs:
       Shinkiro: true
     MaxWeight: 45000
-    HpFactor: 75
-    HpIncrease: 5741
-    SpIncrease: 803
+    HpFactor: 85
+    HpIncrease: 4496
+    SpFactor: 3
+    SpIncrease: 474
     BonusStats:
       - Level: 1
         Str: 1
@@ -11016,9 +11020,10 @@ Body:
   - Jobs:
       Shiranui: true
     MaxWeight: 45000
-    HpFactor: 75
-    HpIncrease: 5741
-    SpIncrease: 803
+    HpFactor: 85
+    HpIncrease: 4496
+    SpFactor: 3
+    SpIncrease: 474
     BonusStats:
       - Level: 1
         Vit: 1
@@ -11148,9 +11153,10 @@ Body:
   - Jobs:
       Night_Watch: true
     MaxWeight: 48000
-    HpFactor: 90
-    HpIncrease: 2587
-    SpIncrease: 1096
+    HpFactor: 66
+    HpIncrease: 5603
+    SpFactor: 9
+    SpIncrease: 16
     BonusStats:
       - Level: 1
         Str: 1
@@ -11288,9 +11294,10 @@ Body:
   - Jobs:
       Hyper_Novice: true
     MaxWeight: 40000
-    HpFactor: 75
-    HpIncrease: 930
-    SpIncrease: 744
+    HpFactor: 38
+    HpIncrease: 5584
+    SpFactor: 6
+    SpIncrease: 40
     BonusStats:
       - Level: 1
         Str: 1
@@ -11433,9 +11440,10 @@ Body:
   - Jobs:
       Spirit_Handler: true
     MaxWeight: 42000
-    HpFactor: 100
-    HpIncrease: 1437
-    SpIncrease: 913
+    HpFactor: 16
+    HpIncrease: 11979
+    SpFactor: 7
+    SpIncrease: 84
     BonusStats:
       - Level: 1
         Dex: 1
