@@ -6364,7 +6364,7 @@ Body:
   - Jobs:
       Baby_Rune_Knight: true
       Baby_Rune_Knight2: true
-    MaxWeight: 28000
+    MaxWeight: 35000
     HpFactor: 150
     SpIncrease: 300
     BonusStats:
@@ -6444,7 +6444,7 @@ Body:
         Str: 1
   - Jobs:
       Baby_Warlock: true
-    MaxWeight: 24000
+    MaxWeight: 30000
     HpFactor: 55
     SpIncrease: 900
     BonusStats:
@@ -6525,7 +6525,7 @@ Body:
   - Jobs:
       Baby_Ranger: true
       Baby_Ranger2: true
-    MaxWeight: 27000
+    MaxWeight: 32000
     HpFactor: 85
     SpIncrease: 400
     BonusStats:
@@ -6605,7 +6605,7 @@ Body:
         Agi: 1
   - Jobs:
       Baby_Arch_Bishop: true
-    MaxWeight: 26000
+    MaxWeight: 30000
     HpFactor: 75
     SpIncrease: 800
     BonusStats:
@@ -6686,7 +6686,7 @@ Body:
   - Jobs:
       Baby_Mechanic: true
       Baby_Mechanic2: true
-    MaxWeight: 30000
+    MaxWeight: 38000
     HpFactor: 90
     SpIncrease: 400
     BonusStats:
@@ -6766,7 +6766,7 @@ Body:
         Str: 1
   - Jobs:
       Baby_Guillotine_Cross: true
-    MaxWeight: 24000
+    MaxWeight: 32000
     HpFactor: 110
     SpIncrease: 400
     BonusStats:
@@ -6847,7 +6847,7 @@ Body:
   - Jobs:
       Baby_Royal_Guard: true
       Baby_Royal_Guard2: true
-    MaxWeight: 28000
+    MaxWeight: 35000
     HpFactor: 110
     HpIncrease: 700
     SpIncrease: 400
@@ -6928,7 +6928,7 @@ Body:
         Int: 1
   - Jobs:
       Baby_Sorcerer: true
-    MaxWeight: 24000
+    MaxWeight: 30000
     HpFactor: 75
     SpIncrease: 900
     BonusStats:
@@ -7008,7 +7008,7 @@ Body:
         Int: 1
   - Jobs:
       Baby_Minstrel: true
-    MaxWeight: 27000
+    MaxWeight: 32000
     HpFactor: 75
     HpIncrease: 300
     SpIncrease: 400
@@ -7089,7 +7089,7 @@ Body:
         Dex: 1
   - Jobs:
       Baby_Wanderer: true
-    MaxWeight: 27000
+    MaxWeight: 32000
     HpFactor: 75
     HpIncrease: 300
     SpIncrease: 400
@@ -7170,7 +7170,7 @@ Body:
         Dex: 1
   - Jobs:
       Baby_Sura: true
-    MaxWeight: 26000
+    MaxWeight: 30000
     HpFactor: 90
     HpIncrease: 650
     SpIncrease: 400
@@ -7251,7 +7251,7 @@ Body:
         Int: 1
   - Jobs:
       Baby_Genetic: true
-    MaxWeight: 30000
+    MaxWeight: 32000
     HpFactor: 90
     SpIncrease: 900
     BonusStats:
@@ -7331,7 +7331,7 @@ Body:
         Int: 1
   - Jobs:
       Baby_Shadow_Chaser: true
-    MaxWeight: 24000
+    MaxWeight: 28000
     HpFactor: 85
     SpIncrease: 400
     BonusStats:
@@ -8518,7 +8518,7 @@ Body:
         Agi: 1
   - Jobs:
       Soul_Reaper: true
-    MaxWeight: 24000
+    MaxWeight: 28000
     HpFactor: 75
     SpIncrease: 900
     BonusStats:
@@ -8680,7 +8680,7 @@ Body:
         Agi: 1
   - Jobs:
       Baby_Soul_Reaper: true
-    MaxWeight: 24000
+    MaxWeight: 28000
     HpFactor: 75
     SpIncrease: 900
     BonusStats:
@@ -8761,9 +8761,11 @@ Body:
   - Jobs:
       Dragon_Knight: true
       Dragon_Knight2: true
-    MaxWeight: 35000
-    HpFactor: 150
-    SpIncrease: 300
+    MaxWeight: 45000
+    HpFactor: 68
+    HpIncrease: 5828
+    SpFactor: 7
+    SpIncrease: 14
     BonusStats:
       - Level: 1
         Str: 1
@@ -8898,9 +8900,11 @@ Body:
   - Jobs:
       Meister: true
       Meister2: true
-    MaxWeight: 38000
-    HpFactor: 90
-    SpIncrease: 400
+    MaxWeight: 48000
+    HpFactor: 76
+    HpIncrease: 4073
+    SpFactor: 3
+    SpIncrease: 552
     BonusStats:
       - Level: 1
         Str: 1
@@ -9039,9 +9043,11 @@ Body:
         Pow: 1
   - Jobs:
       Shadow_Cross: true
-    MaxWeight: 32000
-    HpFactor: 110
-    SpIncrease: 400
+    MaxWeight: 42000
+    HpFactor: 64
+    HpIncrease: 5398
+    SpFactor: 7
+    SpIncrease: 4
     BonusStats:
       - Level: 1
         Str: 1
@@ -9180,9 +9186,11 @@ Body:
         Crt: 1
   - Jobs:
       Arch_Mage: true
-    MaxWeight: 30000
-    HpFactor: 55
-    SpIncrease: 900
+    MaxWeight: 40000
+    HpFactor: 91
+    HpIncrease: 1075
+    SpFactor: 6
+    SpIncrease: 438
     BonusStats:
       - Level: 1
         Int: 1
@@ -9321,9 +9329,11 @@ Body:
         Spl: 1
   - Jobs:
       Cardinal: true
-    MaxWeight: 30000
-    HpFactor: 75
-    SpIncrease: 800
+    MaxWeight: 40000
+    HpFactor: 94
+    HpIncrease: 1047
+    SpFactor: 5
+    SpIncrease: 530
     BonusStats:
       - Level: 1
         Str: 1
@@ -9464,9 +9474,11 @@ Body:
   - Jobs:
       Windhawk: true
       Windhawk2: true
-    MaxWeight: 32000
-    HpFactor: 85
-    SpIncrease: 400
+    MaxWeight: 42000
+    HpFactor: 93
+    HpIncrease: 1121
+    SpFactor: 6
+    SpIncrease: 112
     BonusStats:
       - Level: 1
         Dex: 1
@@ -9606,10 +9618,11 @@ Body:
   - Jobs:
       Imperial_Guard: true
       Imperial_Guard2: true
-    MaxWeight: 35000
-    HpFactor: 110
-    HpIncrease: 700
-    SpIncrease: 400
+    MaxWeight: 45000
+    HpFactor: 94
+    HpIncrease: 2767
+    SpFactor: 3
+    SpIncrease: 504
     BonusStats:
       - Level: 1
         Pow: 1
@@ -9748,9 +9761,11 @@ Body:
         Con: 1
   - Jobs:
       Biolo: true
-    MaxWeight: 32000
-    HpFactor: 90
-    SpIncrease: 900
+    MaxWeight: 42000
+    HpFactor: 104
+    HpIncrease: 22
+    SpFactor: 0
+    SpIncrease: 890
     BonusStats:
       - Level: 1
         Int: 1
@@ -9889,9 +9904,11 @@ Body:
         Con: 1
   - Jobs:
       Abyss_Chaser: true
-    MaxWeight: 28000
-    HpFactor: 85
-    SpIncrease: 400
+    MaxWeight: 42000
+    HpFactor: 64
+    HpIncrease: 5503
+    SpFactor: 7
+    SpIncrease: 11
     BonusStats:
       - Level: 1
         Luk: 1
@@ -10030,9 +10047,11 @@ Body:
         Con: 1
   - Jobs:
       Elemental_Master: true
-    MaxWeight: 30000
-    HpFactor: 75
-    SpIncrease: 900
+    MaxWeight: 40000
+    HpFactor: 104
+    HpIncrease: 40
+    SpFactor: 9
+    SpIncrease: 61
     BonusStats:
       - Level: 1
         Int: 1
@@ -10172,10 +10191,11 @@ Body:
         Spl: 1
   - Jobs:
       Inquisitor: true
-    MaxWeight: 30000
+    MaxWeight: 42000
     HpFactor: 90
-    HpIncrease: 650
-    SpIncrease: 400
+    HpIncrease: 2633
+    SpFactor: 7
+    SpIncrease: 33
     BonusStats:
       - Level: 1
         Agi: 1
@@ -10313,10 +10333,11 @@ Body:
         Wis: 1
   - Jobs:
       Troubadour: true
-    MaxWeight: 32000
-    HpFactor: 75
-    HpIncrease: 300
-    SpIncrease: 400
+    MaxWeight: 42000
+    HpFactor: 95
+    HpIncrease: 1119
+    SpFactor: 8
+    SpIncrease: 3
     BonusStats:
       - Level: 1
         Int: 1
@@ -10454,10 +10475,11 @@ Body:
         Con: 1
   - Jobs:
       Trouvere: true
-    MaxWeight: 32000
-    HpFactor: 75
-    HpIncrease: 300
-    SpIncrease: 400
+    MaxWeight: 42000
+    HpFactor: 95
+    HpIncrease: 1119
+    SpFactor: 8
+    SpIncrease: 3
     BonusStats:
       - Level: 1
         Dex: 1

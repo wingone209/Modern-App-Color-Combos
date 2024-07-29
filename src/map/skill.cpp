@@ -4023,7 +4023,7 @@ int64 skill_attack (int attack_type, struct block_list* src, struct block_list *
 		case SS_KAGENOMAI:
 		//case SS_KAGEGISSEN:
 		case SS_ANTENPOU:
-			if (flag&SK_SECONDATK && sd->shinkirou_clone_id > 0)// Clones casting the skills.
+			if (flag&SK_SECONDATK && sd && sd->shinkirou_clone_id > 0)// Clones casting the skills.
 				dmg.dmotion = clif_skill_damage(map_id2bl(sd->shinkirou_clone_id), bl, tick, dmg.amotion, dmg.dmotion, damage, dmg.div_, skill_id, skill_lv, dmg_type);
 			else// Caster casting the skills.
 				dmg.dmotion = clif_skill_damage(dsrc, bl, tick, dmg.amotion, dmg.dmotion, damage, dmg.div_, skill_id, skill_lv, dmg_type);

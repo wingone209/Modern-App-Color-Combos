@@ -6343,12 +6343,14 @@ ACMD_FUNC(calchpsp)
 	short factor;
 	short increase;
 	short calc_flag;
+	short vitint;
+	short rebirth;
 
 	nullpo_retr(-1, sd);
 
-	if (!message || !*message || sscanf(message, "%6hu %6hu %6hu %6hu", &calc_flag, &level, &factor, &increase) < 4)
+	if (!message || !*message || sscanf(message, "%6hu %6hu %6hu %6hu %6hu %6hu", &calc_flag, &vitint, &rebirth, &level, &factor, &increase) < 6)
 	{
-		clif_displaymessage(fd, "Calculate HP (0) or SP (1), Level, Factor, Increase");
+		clif_displaymessage(fd, "Calculate HP (0) or SP (1), VIT/INT, Rebirth, Level, Factor, Increase");
 		return -1;
 	}
 
@@ -6368,12 +6370,14 @@ ACMD_FUNC(calchpsp)
 
 		if (i == 200 || i == 250 || i == 260 || i == 275)
 		{
-			sprintf(atcmd_output, "Level: %d, Amount: %f", i, base_amount);
+			sprintf(atcmd_output, "Level: %d, Amount: %f", i, base_amount * (1 + (vitint * 0.01)) * (rebirth ? 1.25 : 1));
 			clif_displaymessage(fd, atcmd_output);
 		}
 	}
 
-	sprintf(atcmd_output, "Calc Flag: %d, Level: %d, Factor: %d, Increase: %d, Result: %f", calc_flag, level, factor, increase, base_amount);
+	base_amount = base_amount * (1 + (vitint * 0.01)) * (rebirth ? 1.25 : 1);
+
+	sprintf(atcmd_output, "Calc Flag: %d, VIT/INT: %d, Rebirth: %d, Level: %d, Factor: %d, Increase: %d, Result: %f", calc_flag, vitint, rebirth, level, factor, increase, base_amount);
 	clif_displaymessage(fd, atcmd_output);
 
 	return 0;
