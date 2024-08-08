@@ -7732,10 +7732,8 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 				ATK_ADDRATE(wd.damage, wd.damage2, (10 + 2 * katar_skill));
 		}
 
-		// Res reduces physical damage by a percentage and
-		// is calculated before DEF and other reductions.
+		// Res reduces physical damage by a percentage and is calculated before DEF and other reductions.
 		// All skills that use the simple defense formula (damage substracted by DEF+DEF2) ignore Res
-		// TODO: Res formula probably should be: (2000+x)/(2000+5x), but with the reduction rounded down
 		if ((wd.damage + wd.damage2) && tstatus->res > 0 && !nk[NK_SIMPLEDEFENSE]) {
 			short res = tstatus->res;
 			short ignore_res = 0;// Value used as a percentage.
@@ -7757,8 +7755,8 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 				res -= res * ignore_res / 100;
 
 			// Apply damage reduction.
-			wd.damage = wd.damage * (5000 + res) / (5000 + 10 * res);
-			wd.damage2 = wd.damage2 * (5000 + res) / (5000 + 10 * res);
+			wd.damage = wd.damage * (2000 + res) / (2000 + 5 * res);
+			wd.damage2 = wd.damage2 * (2000 + res) / (2000 + 5 * res);
 		}
 
 #else
@@ -9195,9 +9193,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 			ad.damage -= (int64)ad.damage*i/100;
 
 #ifdef RENEWAL
-		// MRes reduces magical damage by a percentage and
-		// is calculated before MDEF and other reductions.
-		// TODO: MRes formula probably should be: (2000+x)/(2000+5x), but with the reduction rounded down
+		// MRes reduces magical damage by a percentage and is calculated before MDEF and other reductions.
 		if (ad.damage && tstatus->mres > 0) {
 			short mres = tstatus->mres;
 			short ignore_mres = 0;// Value used as percentage.
@@ -9215,7 +9211,7 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 				mres -= mres * ignore_mres / 100;
 
 			// Apply damage reduction.
-			ad.damage = ad.damage * (5000 + mres) / (5000 + 10 * mres);
+			ad.damage = ad.damage * (2000 + mres) / (2000 + 5 * mres);
 		}
 #endif
 

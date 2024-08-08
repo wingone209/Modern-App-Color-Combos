@@ -191,4 +191,31 @@
 // Extra 2021 Expanded Job Skills
 5496,0,6,0,0,0,0,5,1,no,0,0,0,none,0,0,0,	NW_THE_VIGILANTE_AT_NIGHT_GUN_GATLING,The Vigilante At Night Gun Gatling
 5497,0,6,0,0,0,0,5,1,no,0,0,0,none,0,0,0,	NW_THE_VIGILANTE_AT_NIGHT_GUN_SHOTGUN,The Vigilante At Night Gun Shotgun
-5498,0,6,1,-1,0x2,4,10,1,no,0,0,0,weapon,0,0,0,	SS_FUUMAKOUCHIKU_BLASTING,Huuma Shuriken - Construct Blasting
+5498,0,6,0,0,0,0,10,1,no,0,0,0,none,0,0,0,	SS_FUUMAKOUCHIKU_BLASTING,Huuma Shuriken - Construct Blasting
+
+// Level 275/60 Skills Expansion
+5499,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SS_FOUR_CHARM,Four Charm
+5500,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_WILD_SHOT,Wild Shot
+5501,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	NW_MIDNIGHT_FALLEN,Midnight Fallen
+
+//6501,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	,
+//6502,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	,
+6503,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	IG_RADIANT_SPEAR,Radiant Spear
+6504,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	IG_IMPERIAL_CROSS,Imperial Cross
+//6505,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	,
+6506,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MT_RUSH_STRIKE,Rush Strike
+6507,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MT_POWERFUL_SWING,Powerful Swing
+6508,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	MT_ENERGY_CANNONADE,Energy Cannonade
+6509,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	BO_MYSTERY_POWDER,Mystery Powder
+6510,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	BO_DUST_EXPLOSION,Dust Explosion
+6511,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	SHC_CROSS_SLASH,Cross Slash
+6512,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	ABC_HIT_AND_SLIDING,Hit And Sliding
+6513,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	ABC_CHASING_BREAK,Chasing Break
+6514,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	ABC_CHASING_SHOT,Chasing Shot
+//6515,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	,
+//6516,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	,
+//6517,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	,
+//6518,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	,
+//6519,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	,
+//6520,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	,
+6521,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	TR_RHYTHMICAL_WAVE,Rhythmical Wave

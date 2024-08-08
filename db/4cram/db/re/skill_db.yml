@@ -3684,13 +3684,97 @@ Body:
     Name: SS_FUUMAKOUCHIKU_BLASTING
     Description: Huuma Shuriken - Construct Blasting
     MaxLevel: 10
-    Type: Weapon
-    TargetType: Attack
-    DamageFlags:
-      Splash: true
     Hit: Single
     HitCount: 1
-    Element: Weapon
-    SplashArea: 4
+    Requires:
+      SpCost: 1
+  - Id: 5499
+    Name: SS_FOUR_CHARM
+    Description: Four Charm
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 5500
+    Name: NW_WILD_SHOT
+    Description: Wild Shot
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 5501
+    Name: NW_MIDNIGHT_FALLEN
+    Description: Midnight Fallen
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6503
+    Name: IG_RADIANT_SPEAR
+    Description: Radiant Spear
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6504
+    Name: IG_IMPERIAL_CROSS
+    Description: Imperial Cross
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6506
+    Name: MT_RUSH_STRIKE
+    Description: Rush Strike
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6507
+    Name: MT_POWERFUL_SWING
+    Description: Powerful Swing
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6508
+    Name: MT_ENERGY_CANNONADE
+    Description: Energy Cannonade
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6509
+    Name: BO_MYSTERY_POWDER
+    Description: Mystery Powder
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6510
+    Name: BO_DUST_EXPLOSION
+    Description: Dust Explosion
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6511
+    Name: SHC_CROSS_SLASH
+    Description: Cross Slash
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6512
+    Name: ABC_HIT_AND_SLIDING
+    Description: Hit And Sliding
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6513
+    Name: ABC_CHASING_BREAK
+    Description: Chasing Break
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6514
+    Name: ABC_CHASING_SHOT
+    Description: Chasing Shot
+    MaxLevel: 10
+    Requires:
+      SpCost: 1
+  - Id: 6521
+    Name: TR_RHYTHMICAL_WAVE
+    Description: Rhythmical Wave
+    MaxLevel: 10
     Requires:
       SpCost: 1

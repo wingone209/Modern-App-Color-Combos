@@ -982,7 +982,7 @@ Body:
       Hyper_Novice: true
       Spirit_Handler: true
       Sky_Emperor2: true
-    MaxBaseLevel: 260
+    MaxBaseLevel: 275
     BaseExp:
       - Level: 1
         Exp: 658
@@ -1503,6 +1503,36 @@ Body:
       - Level: 259
         Exp: 270217017679
       - Level: 260
+        Exp: 300000000000
+      - Level: 261
+        Exp: 300000000000
+      - Level: 262
+        Exp: 300000000000
+      - Level: 263
+        Exp: 300000000000
+      - Level: 264
+        Exp: 300000000000
+      - Level: 265
+        Exp: 300000000000
+      - Level: 266
+        Exp: 300000000000
+      - Level: 267
+        Exp: 300000000000
+      - Level: 268
+        Exp: 300000000000
+      - Level: 269
+        Exp: 300000000000
+      - Level: 270
+        Exp: 300000000000
+      - Level: 271
+        Exp: 300000000000
+      - Level: 272
+        Exp: 300000000000
+      - Level: 273
+        Exp: 300000000000
+      - Level: 274
+        Exp: 300000000000
+      - Level: 275
         Exp: 9999
   - Jobs:
       Summoner: true
@@ -2700,7 +2730,7 @@ Body:
       Hyper_Novice: true
       Spirit_Handler: true
       Sky_Emperor2: true
-    MaxJobLevel: 55
+    MaxJobLevel: 60
     JobExp:
       - Level: 1
         Exp: 4700000
@@ -2811,6 +2841,16 @@ Body:
       - Level: 54
         Exp: 6559840847
       - Level: 55
+        Exp: 7000000000
+      - Level: 56
+        Exp: 7000000000
+      - Level: 57
+        Exp: 7000000000
+      - Level: 58
+        Exp: 7000000000
+      - Level: 59
+        Exp: 7000000000
+      - Level: 60
         Exp: 9999
   - Jobs:
       Gunslinger: true
