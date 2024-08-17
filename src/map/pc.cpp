@@ -2045,7 +2045,11 @@ bool pc_authok(map_session_data *sd, uint32 login_id2, time_t expiration_time, i
 	sd->status.hair = cap_value(sd->status.hair,MIN_HAIR_STYLE,MAX_HAIR_STYLE);
 	sd->status.hair_color = cap_value(sd->status.hair_color,MIN_HAIR_COLOR,MAX_HAIR_COLOR);
 	sd->status.clothes_color = cap_value(sd->status.clothes_color,MIN_CLOTH_COLOR,MAX_CLOTH_COLOR);
-	sd->status.body = cap_value(sd->status.body,MIN_BODY_STYLE,MAX_BODY_STYLE);
+
+	if (PACKETVER >= 20231201)// Temp fix for body style v2. [Rytech]
+		sd->status.body = sd->status.class_;
+	else
+		sd->status.body = cap_value(sd->status.body,MIN_BODY_STYLE,MAX_BODY_STYLE);
 
 	//Initializations to null/0 unneeded since map_session_data was filled with 0 upon allocation.
 	sd->state.connect_new = 1;
@@ -10758,8 +10762,11 @@ bool pc_jobchange(map_session_data *sd,int job, char upper)
 
 	// Reset body style to 0 before changing job to avoid
 	// errors since not every job has a alternate outfit.
-	sd->status.body = 0;
-	clif_changelook(&sd->bl,LOOK_BODY2,0);
+	if (PACKETVER >= 20231201)// Temp fix for body style v2. [Rytech]
+		sd->status.body = job;
+	else
+		sd->status.body = 0;
+	clif_changelook(&sd->bl,LOOK_BODY2,sd->status.body);
 
 	sd->status.class_ = job;
 	fame_flag = pc_famerank(sd->status.char_id,sd->class_&MAPID_UPPERMASK);
@@ -11006,7 +11013,8 @@ void pc_changelook(map_session_data *sd,int type,int val) {
 		sd->setlook_robe = val;
 		break;
 	case LOOK_BODY2:
-		val = cap_value(val, MIN_BODY_STYLE, MAX_BODY_STYLE);
+		if (PACKETVER < 20231201)
+			val = cap_value(val, MIN_BODY_STYLE, MAX_BODY_STYLE);
 
 		sd->status.body = val;
 		break;

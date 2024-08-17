@@ -1,0 +1,59 @@
+Header:
+  Type: SKILL_TREE_DB
+  Version: 1
+
+Body:
+  - Job: Meister
+    Tree:
+      - Name: MT_RUSH_STRIKE
+        MaxLevel: 5
+      - Name: MT_POWERFUL_SWING
+        MaxLevel: 5
+      - Name: MT_ENERGY_CANNONADE
+        MaxLevel: 5
+  - Job: Shadow_Cross
+    Tree:
+      - Name: SHC_CROSS_SLASH
+        MaxLevel: 5
+  - Job: Imperial_Guard
+    Tree:
+      - Name: IG_RADIANT_SPEAR
+        MaxLevel: 10
+      - Name: IG_IMPERIAL_CROSS
+        MaxLevel: 5
+  - Job: Biolo
+    Tree:
+      - Name: BO_MYSTERY_POWDER
+        MaxLevel: 5
+      - Name: BO_DUST_EXPLOSION
+        MaxLevel: 5
+  - Job: Abyss_Chaser
+    Tree:
+      - Name: ABC_HIT_AND_SLIDING
+        MaxLevel: 5
+      - Name: ABC_CHASING_BREAK
+        MaxLevel: 5
+      - Name: ABC_CHASING_SHOT
+        MaxLevel: 5
+  - Job: Troubadour
+    Tree:
+      - Name: TR_RHYTHMICAL_WAVE
+        MaxLevel: 5
+  - Job: Trouvere
+    Tree:
+      - Name: TR_RHYTHMICAL_WAVE
+        MaxLevel: 5
+  - Job: Shinkiro
+    Tree:
+      - Name: SS_FOUR_CHARM
+        MaxLevel: 1
+  - Job: Shiranui
+    Tree:
+      - Name: SS_FOUR_CHARM
+        MaxLevel: 1
+  - Job: Night_Watch
+    Tree:
+      - Name: NW_WILD_SHOT
+        MaxLevel: 5
+      - Name: NW_MIDNIGHT_FALLEN
+        MaxLevel: 5

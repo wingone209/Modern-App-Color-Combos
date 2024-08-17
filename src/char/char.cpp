@@ -1827,7 +1827,10 @@ int char_mmo_char_tobuf(uint8* buffer, struct mmo_charstatus* p){
 	info->job = p->class_;
 	info->head = p->hair;
 #if PACKETVER >= 20141022
-	info->body = p->body;
+	if (PACKETVER >= 20231201)// Temp fix for body style v2. [Rytech]
+		info->body = p->class_;
+	else
+		info->body = p->body;
 #endif
 	//When the weapon is sent and your option is riding, the client crashes on login!?
 	info->weapon = p->option&(0x20|0x80000|0x100000|0x200000|0x400000|0x800000|0x1000000|0x2000000|0x4000000|0x8000000) ? 0 : p->weapon;

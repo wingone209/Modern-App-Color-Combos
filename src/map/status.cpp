@@ -9356,7 +9356,12 @@ void status_set_viewdata(struct block_list *bl, int class_)
 				sd->vd.hair_style = cap_value(sd->status.hair, MIN_HAIR_STYLE, MAX_HAIR_STYLE);
 				sd->vd.hair_color = cap_value(sd->status.hair_color, MIN_HAIR_COLOR, MAX_HAIR_COLOR);
 				sd->vd.cloth_color = cap_value(sd->status.clothes_color, MIN_CLOTH_COLOR, MAX_CLOTH_COLOR);
-				sd->vd.body_style = cap_value(sd->status.body, MIN_BODY_STYLE, MAX_BODY_STYLE);
+
+				if (PACKETVER >= 20231201)// Temp fix for body style v2. [Rytech]
+					sd->vd.body_style = sd->status.body;
+				else
+					sd->vd.body_style = cap_value(sd->status.body, MIN_BODY_STYLE, MAX_BODY_STYLE);
+
 				sd->vd.sex = sd->status.sex;
 
 				if (sd->vd.cloth_color) {
