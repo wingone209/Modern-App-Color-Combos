@@ -2635,6 +2635,8 @@ static int battle_range_type(struct block_list *src, struct block_list *target, 
 		//case ABC_DEFT_STAB: // 2 cell cast range???
 		case SKE_ALL_IN_THE_SKY: // 9 cell cast range.
 		case SS_SHIMIRU: // 11 cell cast range.
+		case MT_RUSH_STRIKE: // 7 cell cast range.
+		case ABC_CHASING_BREAK: // 7 cell cast range.
 		case NPC_MAXPAIN_ATK:
 			return BF_SHORT;
 		case CD_PETITIO: { // Skill range is 2 but damage is melee with books and ranged with mace.
@@ -2652,6 +2654,14 @@ static int battle_range_type(struct block_list *src, struct block_list *target, 
 			if( sd != nullptr && ( sd->status.weapon == W_1HSPEAR || sd->status.weapon == W_2HSPEAR ) ){
 				return BF_LONG;
 			}
+
+			break;
+		}
+		case ABC_HIT_AND_SLIDING: { // Skill range is 2 but damage is melee unless used with a bow.
+			map_session_data* sd = BL_CAST(BL_PC, src);
+
+			if (sd && sd->status.weapon == W_BOW)
+				return BF_LONG;
 
 			break;
 		}
@@ -5990,7 +6000,10 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			RE_LVL_DMOD(100);
 			break;
 		case ABC_UNLUCKY_RUSH:
-			skillratio += -100 + 100 + 300 * skill_lv + 5 * sstatus->pow;
+			skillratio += 300 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			if (sc && sc->getSCE(SC_CHASING))
+				skillratio += 2500 * skill_lv;
 			RE_LVL_DMOD(100);
 			break;
 		case ABC_CHAIN_REACTION_SHOT:
@@ -5999,8 +6012,10 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			RE_LVL_DMOD(100);
 			break;
 		case ABC_CHAIN_REACTION_SHOT_ATK:
-			skillratio += -100 + 800 + 2550 * skill_lv;
+			skillratio += 700 + 2550 * skill_lv;
 			skillratio += 15 * sstatus->con;
+			if (sc && sc->getSCE(SC_CHASING))
+				skillratio += 700 * skill_lv;
 			RE_LVL_DMOD(100);
 			break;
 		case ABC_DEFT_STAB:
@@ -6147,7 +6162,7 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			}
 			break;
 		case NW_THE_VIGILANTE_AT_NIGHT:
-			if (wd->miscflag & SK_SECONDATK)
+			if (wd->miscflag&SK_SECONDATK)
 			{// Shotgun
 				skillratio += 700 + 700 * skill_lv;
 				if (sd && sd->intensive_aim_count)
@@ -6461,6 +6476,112 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			RE_LVL_DMOD(100);
 			if (tsc && tsc->getSCE(SC_NIGHTMARE))
 				skillratio += skillratio * 50 / 100;
+			break;
+		case NW_WILD_SHOT:
+			if (sc && sc->getSCE(SC_HIDDEN_CARD))
+			{// Damage With Hidden Card
+				if (wd->miscflag&SK_SECONDATK)// Rifle
+					skillratio += 770 + 280 * skill_lv;
+				else// Revolver
+					skillratio += 770 + 240 * skill_lv;
+			}
+			else// All Guns (No Hidden Card)
+				skillratio += 770 + 180 * skill_lv;
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case NW_MIDNIGHT_FALLEN:
+			if (sc && sc->getSCE(SC_HIDDEN_CARD))
+			{// Damage With Hidden Card
+				if (wd->miscflag&SK_THIRDATK)// Grenade
+					skillratio += 2300 + 1140 * skill_lv;
+				else if (wd->miscflag&SK_SECONDATK)// Shotgun
+					skillratio += 2300 + 1200 * skill_lv;
+				else// Gatling
+					skillratio += 2300 + 1000 * skill_lv;
+			}
+			else// All Guns (No Hidden Card)
+				skillratio += 2300 + 800 * skill_lv;
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case IG_RADIANT_SPEAR:
+			if (sc && sc->getSCE(SC_SPEAR_SCAR))
+				skillratio += 3400 + 1400 * skill_lv;
+			else
+				skillratio += 3400 + 1150 * skill_lv;
+			skillratio += 50 * skill_lv * pc_checkskill(sd, IG_SPEAR_SWORD_M);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case IG_IMPERIAL_CROSS:
+			if (sc && sc->getSCE(SC_SPEAR_SCAR))
+				skillratio += 1650 + 1650 * skill_lv;
+			else
+				skillratio += 1550 + 1350 * skill_lv;
+			skillratio += 25 * skill_lv * pc_checkskill(sd, IG_SPEAR_SWORD_M);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case MT_RUSH_STRIKE:
+			skillratio += -100 + 3500 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case MT_POWERFUL_SWING:
+			if (sc && sc->getSCE(SC_AXE_STOMP))
+				skillratio += 300 + 950 * skill_lv;
+			else
+				skillratio += 200 + 850 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case MT_ENERGY_CANNONADE:
+			skillratio += 150 + 750 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case BO_MYSTERY_POWDER:
+			skillratio += 1400 + 4000 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case BO_DUST_EXPLOSION:
+			if (sc && sc->getSCE(SC_RESEARCHREPORT))
+				skillratio += 350 + 800 * skill_lv;
+			else
+				skillratio += 350 + 600 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SHC_CROSS_SLASH:
+			if (sc && sc->getSCE(SC_SHADOW_EXCEED))
+				skillratio += -100 + 360 * skill_lv;
+			else
+				skillratio += -100 + 300 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case ABC_HIT_AND_SLIDING:
+			skillratio += -100 + 3500 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case ABC_CHASING_BREAK:
+			if (sc && sc->getSCE(SC_CHASING))
+				skillratio += 1650 + 500 * skill_lv;
+			else
+				skillratio += 1450 + 450 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case ABC_CHASING_SHOT:
+			if (sc && sc->getSCE(SC_CHASING))
+				skillratio += 1650 + 700 * skill_lv;
+			else
+				skillratio += 1400 + 700 * skill_lv;
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
 			break;
 		case ABR_BATTLE_BUSTER:// Need official formula.
 		case ABR_DUAL_CANNON_FIRE:// Need official formula.
@@ -7471,6 +7592,18 @@ static struct Damage initialize_weapon_data(struct block_list *src, struct block
 			case SS_KUNAIWAIKYOKU:
 				if (wd.miscflag&SK_SECONDATK)
 					wd.div_ = -3;
+				break;
+			case IG_RADIANT_SPEAR:
+				if (sc && sc->getSCE(SC_SPEAR_SCAR))
+					wd.div_ = -3;
+				break;
+			case ABC_CHASING_BREAK:
+				if (sc && sc->getSCE(SC_CHASING))
+					wd.div_ = 7;
+				break;
+			case ABC_CHASING_SHOT:
+				if (sc && sc->getSCE(SC_CHASING))
+					wd.div_ = 3;
 				break;
 		}
 	} else {
@@ -9083,24 +9216,32 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						skillratio += 500 + 1100 * skill_lv;
 						skillratio += 70 * skill_lv * pc_checkskill(sd, SS_ANTENPOU);
 						skillratio += 5 * sstatus->spl;
+						if (sc && sc->getSCE(SC_FIRE_CHARM_POWER))
+							skillratio += 8500;
 						RE_LVL_DMOD(100);
 						break;
 					case SS_REIKETSUHOU:
 						skillratio += 350 + 950 * skill_lv;
 						skillratio += 40 * skill_lv * pc_checkskill(sd, SS_ANTENPOU);
 						skillratio += 5 * sstatus->spl;
+						if (sc && sc->getSCE(SC_WATER_CHARM_POWER))
+							skillratio += 7000;
 						RE_LVL_DMOD(100);
 						break;
 					case SS_RAIDENPOU:
 						skillratio += 500 + 1100 * skill_lv;
 						skillratio += 70 * skill_lv * pc_checkskill(sd, SS_ANTENPOU);
 						skillratio += 5 * sstatus->spl;
+						if (sc && sc->getSCE(SC_WIND_CHARM_POWER))
+							skillratio += 8500;
 						RE_LVL_DMOD(100);
 						break;
 					case SS_KINRYUUHOU:
 						skillratio += 700 + 1500 * skill_lv;
 						skillratio += 15 * skill_lv * pc_checkskill(sd, SS_ANTENPOU);
 						skillratio += 5 * sstatus->spl;
+						if (sc && sc->getSCE(SC_GROUND_CHARM_POWER))
+							skillratio += 5500;
 						RE_LVL_DMOD(100);
 						break;
 					case SS_ANTENPOU:
@@ -9113,6 +9254,15 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 					case SS_ANKOKURYUUAKUMU:
 						skillratio += 15400;
 						skillratio += 10 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case TR_RHYTHMICAL_WAVE:
+						if (sc && sc->getSCE(SC_MYSTIC_SYMPHONY))
+							skillratio += 350 + 4650 * skill_lv;
+						else
+							skillratio += 150 + 3650 * skill_lv;
+						skillratio += 50 * skill_lv * pc_checkskill(sd, TR_STAGE_MANNER);// Need official increase amount. [Rytech]
+						skillratio += 5 * sstatus->spl;
 						RE_LVL_DMOD(100);
 						break;
 					case EM_EL_FLAMEROCK:

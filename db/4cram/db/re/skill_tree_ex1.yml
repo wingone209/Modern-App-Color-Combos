@@ -7,53 +7,120 @@ Body:
     Tree:
       - Name: MT_RUSH_STRIKE
         MaxLevel: 5
+        Requires:
+          - Name: MT_RUSH_QUAKE
+            Level: 5
       - Name: MT_POWERFUL_SWING
         MaxLevel: 5
+        Requires:
+          - Name: MT_RUSH_STRIKE
+            Level: 3
       - Name: MT_ENERGY_CANNONADE
         MaxLevel: 5
+        Requires:
+          - Name: MT_TRIPLE_LASER
+            Level: 3
   - Job: Shadow_Cross
     Tree:
       - Name: SHC_CROSS_SLASH
         MaxLevel: 5
+        Requires:
+          - Name: GC_WEAPONBLOCKING
+            Level: 3
+          - Name: SHC_DANCING_KNIFE
+            Level: 3
   - Job: Imperial_Guard
     Tree:
       - Name: IG_RADIANT_SPEAR
         MaxLevel: 10
+        Requires:
+          - Name: IG_SHIELD_SHOOTING
+            Level: 3
+          - Name: IG_OVERSLASH
+            Level: 3
       - Name: IG_IMPERIAL_CROSS
         MaxLevel: 5
+        Requires:
+          - Name: IG_OVERSLASH
+            Level: 5
   - Job: Biolo
     Tree:
       - Name: BO_MYSTERY_POWDER
         MaxLevel: 5
+        Requires:
+          - Name: BO_EXPLOSIVE_POWDER
+            Level: 5
       - Name: BO_DUST_EXPLOSION
         MaxLevel: 5
+        Requires:
+          - Name: BO_MYSTERY_POWDER
+            Level: 3
   - Job: Abyss_Chaser
     Tree:
       - Name: ABC_HIT_AND_SLIDING
         MaxLevel: 5
+        Requires:
+          - Name: ABC_DAGGER_AND_BOW_M
+            Level: 3
       - Name: ABC_CHASING_BREAK
         MaxLevel: 5
+        Requires:
+          - Name: ABC_HIT_AND_SLIDING
+            Level: 3
       - Name: ABC_CHASING_SHOT
         MaxLevel: 5
+        Requires:
+          - Name: ABC_HIT_AND_SLIDING
+            Level: 3
   - Job: Troubadour
     Tree:
       - Name: TR_RHYTHMICAL_WAVE
         MaxLevel: 5
+        Requires:
+          - Name: TR_METALIC_FURY
+            Level: 3
   - Job: Trouvere
     Tree:
       - Name: TR_RHYTHMICAL_WAVE
         MaxLevel: 5
+        Requires:
+          - Name: TR_METALIC_FURY
+            Level: 3
   - Job: Shinkiro
     Tree:
       - Name: SS_FOUR_CHARM
         MaxLevel: 1
+        Requires:
+          - Name: KO_KAIHOU
+            Level: 1
+          - Name: SS_SHINKIROU
+            Level: 1
   - Job: Shiranui
     Tree:
       - Name: SS_FOUR_CHARM
         MaxLevel: 1
+        Requires:
+          - Name: KO_KAIHOU
+            Level: 1
+          - Name: SS_SHINKIROU
+            Level: 1
   - Job: Night_Watch
     Tree:
       - Name: NW_WILD_SHOT
         MaxLevel: 5
+        Requires:
+          - Name: NW_ONLY_ONE_BULLET
+            Level: 3
+          - Name: NW_SPIRAL_SHOOTING
+            Level: 3
+          - Name: NW_MAGAZINE_FOR_ONE
+            Level: 3
       - Name: NW_MIDNIGHT_FALLEN
         MaxLevel: 5
+        Requires:
+          - Name: NW_THE_VIGILANTE_AT_NIGHT
+            Level: 3
+          - Name: NW_MAGAZINE_FOR_ONE
+            Level: 3
+          - Name: NW_WILD_FIRE
+            Level: 3

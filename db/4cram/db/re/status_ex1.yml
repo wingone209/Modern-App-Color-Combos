@@ -44,24 +44,69 @@ Header:
   Type: STATUS_DB
   Version: 3
 
-Footer:
-  Imports:
-  - Path: db/pre-re/status.yml
-    Mode: Prerenewal
-  - Path: db/re/status.yml
-    Mode: Renewal
-  - Path: db/4cram/db/re/status_ske.yml
-    Mode: Renewal
-  - Path: db/4cram/db/re/status_soa.yml
-    Mode: Renewal
-  - Path: db/4cram/db/re/status_ss.yml
-    Mode: Renewal
-  - Path: db/4cram/db/re/status_nw.yml
-    Mode: Renewal
-  - Path: db/4cram/db/re/status_hn.yml
-    Mode: Renewal
-  - Path: db/4cram/db/re/status_sh.yml
-    Mode: Renewal
-  - Path: db/4cram/db/re/status_ex1.yml
-    Mode: Renewal
-  - Path: db/import/status.yml
+Body:
+#================================
+#  - Status: 
+#    Icon: 
+#    DurationLookup: 
+#    Flags:
+#      NoDispell: true
+#      NoClearance: true
+#      NoBanishingBuster: true
+#      BlEffect: true
+#      DisplayPc: true
+#    Fail:
+#      : true
+#    EndOnStart:
+#      : true
+#================================
+  - Status: Chasing
+    Icon: EFST_CHASING
+    DurationLookup: ABC_HIT_AND_SLIDING
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+#================================
+  - Status: Mystery_Powder
+    Icon: EFST_MYSTERY_POWDER
+    DurationLookup: BO_MYSTERY_POWDER
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+      BlEffect: true
+      DisplayPc: true
+#================================
+  - Status: Fire_Charm_Power
+    Icon: EFST_FIRE_CHARM_POWER
+    DurationLookup: SS_FOUR_CHARM
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+#================================
+  - Status: Water_Charm_Power
+    Icon: EFST_WATER_CHARM_POWER
+    DurationLookup: SS_FOUR_CHARM
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+#================================
+  - Status: Wind_Charm_Power
+    Icon: EFST_WIND_CHARM_POWER
+    DurationLookup: SS_FOUR_CHARM
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+#================================
+  - Status: Ground_Charm_Power
+    Icon: EFST_GROUND_CHARM_POWER
+    DurationLookup: SS_FOUR_CHARM
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+#================================

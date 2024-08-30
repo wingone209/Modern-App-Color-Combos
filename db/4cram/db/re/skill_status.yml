@@ -185,3 +185,15 @@ Body:
   - Id: 5492
     Status: Nightmare
 #================================
+# BO_MYSTERY_POWDER
+  - Id: 6509
+    Status: Mystery_Powder
+
+# SHC_CROSS_SLASH
+  - Id: 6511
+    Status: Weaponblock_On
+
+# ABC_HIT_AND_SLIDING
+  - Id: 6512
+    Status: Chasing
+#================================

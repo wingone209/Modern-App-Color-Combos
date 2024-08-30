@@ -63,3 +63,5 @@
 5487,0x12b,   ,  0, 2,250,enemy, 0x018	//SS_KUNAIKUSSETSU
 //5488,0x12c,   ,  0, 0,1000,enemy, 0x010	//SS_SEKIENHOU - Special AoE Shape. Radius of 4? No longer used.
 5489,0x86,    ,  0, 2:2:2:2:2:3:3:3:3:3,1000,enemy, 0x010	//SS_REIKETSUHOU - Says last level is 9x9? Sounds like a typo.
+
+5501,0x86,    ,  0, 3:3:3:4:4,1000,enemy, 0x010	//NW_MIDNIGHT_FALLEN

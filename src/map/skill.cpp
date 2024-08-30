@@ -3595,6 +3595,7 @@ void skill_attack_blow(struct block_list *src, struct block_list *dsrc, struct b
  *        flag&4  - Skip to blow target (because already knocked back before skill_attack somewhere)
  *        flag&8  - SC_COMBO state used to deal bonus damage
  *        flag&16 - (SK_SECONDATK) Trigger a skills 2nd attack if the skill supports it.
+ *        flag&32 - (SK_THIRDATK) Trigger a skills 3rd attack if the skill supports it.
  *        Note: A example is a skill that deals 2 different attacks through a single skill ID
  *        using different damage formulas, elements, number of hits, etc.
  *
@@ -5337,10 +5338,19 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case TR_RHYTHMSHOOTING:
 	case HN_MEGA_SONIC_BLOW:
 	case HN_SPIRAL_PIERCE_MAX:
+	case IG_IMPERIAL_CROSS:
 		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
 		if (skill_id == DK_DRAGONIC_AURA)
 			sc_start(src, src, SC_DRAGONIC_AURA, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+		break;
+
+	case ABC_HIT_AND_SLIDING:
+		// Back away first before doing skill animation to avoid canceling it out.
+		skill_blown(bl, src, skill_get_blewcount(skill_id, skill_lv), -1, BLOWN_NONE);
+		clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag|4);
+		sc_start(src, src, SC_CHASING, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		break;
 
 	case NW_ONLY_ONE_BULLET:
@@ -5891,6 +5901,17 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case SS_KAGEAKUMU:
 	case SS_HITOUAKUMU:
 	case SS_ANKOKURYUUAKUMU:
+	case NW_WILD_SHOT:
+	case IG_RADIANT_SPEAR:
+	case MT_RUSH_STRIKE:
+	case MT_POWERFUL_SWING:
+	case MT_ENERGY_CANNONADE:
+	case BO_MYSTERY_POWDER:
+	case BO_DUST_EXPLOSION:
+	case SHC_CROSS_SLASH:
+	case ABC_CHASING_BREAK:
+	case ABC_CHASING_SHOT:
+	case TR_RHYTHMICAL_WAVE:
 		if( flag&1 ) {//Recursive invocation
 			int sflag = skill_area_temp[0] & 0xFFF;
 			int heal = 0;
@@ -5914,9 +5935,13 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 			if (skill_id == SH_HOGOGONG_STRIKE && !(tsc && tsc->getSCE(SC_HOGOGONG)))
 				break;
 
-			// Secondary attack.
+			// Second attack.
 			if (flag&SK_SECONDATK)
 				sflag |= SK_SECONDATK;
+
+			// Third attack.
+			if (flag&SK_THIRDATK)
+				sflag |= SK_THIRDATK;
 
 			if( flag&SD_LEVEL )
 				sflag |= SD_LEVEL; // -1 will be used in packets instead of the skill level
@@ -6019,7 +6044,11 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 					break;
 				}
-				case SHC_FATAL_SHADOW_CROW: {
+				case SHC_FATAL_SHADOW_CROW:
+				case MT_RUSH_STRIKE:
+				case ABC_CHASING_BREAK:
+				case ABC_CHASING_SHOT:
+				{
 					uint8 dir = DIR_NORTHEAST;
 
 					if (bl->x != src->x || bl->y != src->y)
@@ -6048,6 +6077,11 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 				case SKE_NOON_BLAST:
 				case SKE_SUNSET_BLAST:
 				case SS_KAGEGISSEN:
+				case IG_RADIANT_SPEAR:
+				case MT_POWERFUL_SWING:
+				case MT_ENERGY_CANNONADE:
+				case BO_DUST_EXPLOSION:
+				case TR_RHYTHMICAL_WAVE:
 				case EM_EL_FLAMEROCK:
 				case EM_EL_AGE_OF_ICE:
 				case EM_EL_STORM_WIND:
@@ -6108,6 +6142,8 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 					break;
 				case IG_SHIELD_SHOOTING:
 				case IG_GRAND_JUDGEMENT:
+				case BO_MYSTERY_POWDER:
+				case SHC_CROSS_SLASH:
 					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 					sc_start(src, src, skill_get_sc(skill_id), 100, skill_lv, skill_get_time(skill_id, skill_lv));
 					break;
@@ -6143,6 +6179,14 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 					if (sc && sc->getSCE(SC_SBUNSHIN))
 						map_foreachinrange(skill_shinkirou, src, 15, BL_SKILL, src, bl, 0, 0, skill_id, skill_lv, tick);
+					break;
+				case NW_WILD_SHOT:
+					if (sd && sd->status.weapon == W_RIFLE)
+					{
+						splash_size += 1;
+						flag |= SK_SECONDATK;
+					}
+					clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
 					break;
 			}
 
@@ -8225,7 +8269,19 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 		else for (i = 0; i <= 6; i++)// Level 7 removes the element and damage bonus.
 			status_change_end(bl, hyun_rok_color[i]);
 	}
-	break;
+		break;
+
+	case SS_FOUR_CHARM:
+	{
+		const enum sc_type charm_power[4] = { SC_WATER_CHARM_POWER, SC_GROUND_CHARM_POWER, SC_FIRE_CHARM_POWER, SC_WIND_CHARM_POWER };
+
+		if (sd)
+		{
+			clif_skill_nodamage(src, bl, skill_id, skill_lv, 1);
+			sc_start(src, bl, charm_power[sd->spiritcharm_type - 1], 100, 1, skill_get_time(skill_id, skill_lv));
+		}
+	}
+		break;
 
 	case NPC_GRADUAL_GRAVITY:
 	case NPC_DEADLYCURSE:
@@ -14418,6 +14474,16 @@ int skill_castend_pos2(struct block_list* src, int x, int y, uint16 skill_id, ui
 			map_foreachinrange(skill_shinkirou, src, 15, BL_SKILL, src, src, 0, 0, skill_id, skill_lv, tick);
 		break;
 
+	case NW_MIDNIGHT_FALLEN:
+		flag |= 1;
+		if (sd && sd->status.weapon == W_GRENADE)
+			skill_unitsetting(src, skill_id, skill_lv, x, y, SK_THIRDATK);
+		else if (sd && sd->status.weapon == W_SHOTGUN)
+			skill_unitsetting(src, skill_id, skill_lv, x, y, SK_SECONDATK);
+		else
+			skill_unitsetting(src, skill_id, skill_lv, x, y, 0);
+		break;
+
 	case WZ_ICEWALL:
 	case NPC_CANE_OF_EVIL_EYE:
 		flag|=1;
@@ -15937,6 +16003,18 @@ std::shared_ptr<s_skill_unit_group> skill_unitsetting(struct block_list *src, ui
 				target |= SK_SECONDATK;
 		}
 		break;
+	case NW_MIDNIGHT_FALLEN:
+		if (flag & SK_THIRDATK)
+		{
+			range += 1;
+			target |= SK_THIRDATK;
+		}
+		else if (flag & SK_SECONDATK)
+		{
+			range -= 1;
+			target |= SK_SECONDATK;
+		}
+		break;
 	}
 
 	// Init skill unit group
@@ -16658,7 +16736,10 @@ int skill_unit_onplace_timer(struct skill_unit *unit, struct block_list *bl, t_t
 				case HN_METEOR_STORM_BUSTER:
 				case SS_FUUMAKOUCHIKU:
 				case SS_KUNAIWAIKYOKU:
-					if (sg->target_flag&SK_SECONDATK)// Secondary
+				case NW_MIDNIGHT_FALLEN:
+					if (sg->target_flag & SK_THIRDATK)// Third Attack
+						skill_attack(skill_get_type(sg->skill_id), ss, &unit->bl, bl, sg->skill_id, sg->skill_lv, tick, SK_THIRDATK);
+					else if (sg->target_flag&SK_SECONDATK)// Second Attack
 						skill_attack(skill_get_type(sg->skill_id), ss, &unit->bl, bl, sg->skill_id, sg->skill_lv, tick, SK_SECONDATK);
 					else// Main
 						skill_attack(skill_get_type(sg->skill_id), ss, &unit->bl, bl, sg->skill_id, sg->skill_lv, tick, 0);
@@ -18771,6 +18852,12 @@ bool skill_check_condition_castbegin( map_session_data& sd, uint16 skill_id, uin
 			if (map_foreachinrange(skill_unit_rangecheck, &sd.bl, MUR_TWINKLING_GALAXY, BL_SKILL, &sd.bl, UNT_TWINKLING_GALAXY, 0) == 0)
 			{
 				clif_skill_fail( sd, skill_id, USESKILL_FAIL_TWINKLING_GALAXY );
+				return false;
+			}
+			break;
+		case SS_FOUR_CHARM:
+			if (sd.spiritcharm_type == CHARM_TYPE_NONE || sd.spiritcharm < 10) {
+				clif_skill_fail(sd, skill_id, USESKILL_FAIL_SUMMON_NONE);
 				return false;
 			}
 			break;

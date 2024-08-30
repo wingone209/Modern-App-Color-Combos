@@ -43,10 +43,11 @@ class status_change;
 #define MUR_TOTEM_OF_TUTELARY 4 /// Ranges 5x5 Lv1 to 9x9 Lv5
 #define MUR_TWINKLING_GALAXY 6 /// Ranges 13x13 Lv1 to 9x9 Lv5
 
-/// Flag to trigger a skills 2nd/Alt attack if the skill supports it.
-/// Note: A example is a skill that deals 2 different attacks through a single skill ID
-/// using different damage formulas, number of hits, elements, etc.
+/// Flag to trigger a skills 2nd/3rd attack if the skill supports it.
+/// Note: A example is a skill that deals more then 1 different attacks through
+/// a single skill ID using different damage formulas, number of hits, elements, etc.
 #define SK_SECONDATK 0x10
+#define SK_THIRDATK 0x20
 
 /// Used with tracking the hitcount of Earthquake for skills that can avoid the first attack
 #define NPC_EARTHQUAKE_FLAG 0x800
