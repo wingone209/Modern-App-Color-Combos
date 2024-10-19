@@ -3546,6 +3546,8 @@ int battle_get_magic_element(struct block_list* src, struct block_list* target, 
 	
 	if (element == ELE_WEAPON) { // pl=-1 : the skill takes the weapon's element
 		element = sstatus->rhw.ele;
+		if (is_skill_using_arrow(src, skill_id) && sd && sd->bonus.arrow_ele)
+			element = sd->bonus.arrow_ele;
 		if(sd && sd->spiritcharm_type != CHARM_TYPE_NONE && sd->spiritcharm >= MAX_SPIRITCHARM)
 			element = sd->spiritcharm_type; // Summoning 10 spiritcharm will endow your weapon
 	} else if (element == ELE_ENDOWED) //Use status element
@@ -3595,12 +3597,6 @@ int battle_get_magic_element(struct block_list* src, struct block_list* target, 
 		case LG_RAYOFGENESIS:
 			if (sc && sc->getSCE(SC_INSPIRATION))
 				element = ELE_NEUTRAL;
-			break;
-		case WM_REVERBERATION:
-		case TR_METALIC_FURY:
-		case TR_SOUNDBLEND:
-			if (sd)
-				element = sd->bonus.arrow_ele;
 			break;
 		case SU_CN_METEOR:
 		case SU_CN_METEOR2:
@@ -8193,7 +8189,11 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 
 	//Set miscellaneous data that needs be filled
 	if(sd) {
-		sd->state.arrow_atk = 0;
+		// Some magic skills require arrows and should be consumed.
+		if (skill_get_ammotype(skill_id))
+			sd->state.arrow_atk = 1;
+		else
+			sd->state.arrow_atk = 0;
 		ad.blewcount += battle_blewcount_bonus(sd, skill_id);
 	}
 

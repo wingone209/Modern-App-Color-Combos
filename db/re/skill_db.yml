@@ -26464,11 +26464,10 @@ Body:
     TargetType: Attack
     DamageFlags:
       Splash: true
-    Flags:
-      IsTrap: true
     Range: 9
     Hit: Multi_Hit
     HitCount: -10
+    Element: Weapon
     SplashArea: 2
     CopyFlags:
       Skill:
@@ -26490,6 +26489,9 @@ Body:
           Amount: 74
         - Level: 5
           Amount: 80
+      Weapon:
+        Musical: true
+        Whip: true
       Ammo:
         Arrow: true
       AmmoAmount: 5
