@@ -1751,6 +1751,7 @@ Body:
       NoSave: true
       NoRemoveOnDead: true
       RemoveOnChangeMap: true
+      BossResist: true
   - Status: Closeconfine2
     Icon: EFST_RG_CCONFINE_S
     DurationLookup: RG_CLOSECONFINE
@@ -1764,6 +1765,7 @@ Body:
       NoSave: true
       NoRemoveOnDead: true
       RemoveOnChangeMap: true
+      BossResist: true
     Fail:
       Closeconfine2: true
   - Status: Dancing
@@ -2496,6 +2498,9 @@ Body:
     CalcFlags:
       Batk: true
       Watk: true
+    Flags:
+      NoSave: true
+      RemoveFromHomOnWarp: true
   - Status: Fleet
     DurationLookup: HFLI_FLEET
     CalcFlags:
@@ -2510,6 +2515,10 @@ Body:
     DurationLookup: HAMI_DEFENCE
     CalcFlags:
       Def: true
+      Vit: true
+    Flags:
+      NoSave: true
+      RemoveFromHomOnWarp: true
   - Status: Incaspdrate
     CalcFlags:
       Aspd: true
