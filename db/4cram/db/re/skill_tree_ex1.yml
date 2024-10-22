@@ -3,6 +3,10 @@ Header:
   Version: 1
 
 Body:
+  - Job: Dragon_Knight
+    Tree:
+      - Name: DK_DRAGONIC_PIERCE
+        MaxLevel: 5
   - Job: Meister
     Tree:
       - Name: MT_RUSH_STRIKE
@@ -29,6 +33,18 @@ Body:
             Level: 3
           - Name: SHC_DANCING_KNIFE
             Level: 3
+  - Job: Arch_Mage
+    Tree:
+      - Name: AG_ENERGY_CONVERSION
+        MaxLevel: 5
+  - Job: Cardinal
+    Tree:
+      - Name: CD_DIVINUS_FLOS
+        MaxLevel: 5
+  - Job: Windhawk
+    Tree:
+      - Name: WH_WILD_WALK
+        MaxLevel: 5
   - Job: Imperial_Guard
     Tree:
       - Name: IG_RADIANT_SPEAR
@@ -43,6 +59,8 @@ Body:
         Requires:
           - Name: IG_OVERSLASH
             Level: 5
+      - Name: IG_IMPERIAL_PRESSURE
+        MaxLevel: 5
   - Job: Biolo
     Tree:
       - Name: BO_MYSTERY_POWDER
@@ -72,6 +90,16 @@ Body:
         Requires:
           - Name: ABC_HIT_AND_SLIDING
             Level: 3
+      - Name: ABC_ABYSS_FLAME
+        MaxLevel: 5
+  - Job: Elemental_Master
+    Tree:
+      - Name: EM_PSYCHIC_STREAM
+        MaxLevel: 5
+  - Job: Inquisitor
+    Tree:
+      - Name: IQ_BLAZING_FLAME_BLAST
+        MaxLevel: 5
   - Job: Troubadour
     Tree:
       - Name: TR_RHYTHMICAL_WAVE
@@ -86,6 +114,14 @@ Body:
         Requires:
           - Name: TR_METALIC_FURY
             Level: 3
+  - Job: Sky_Emperor
+    Tree:
+      - Name: SKE_SKY_SUN
+        MaxLevel: 5
+      - Name: SKE_SKY_MOON
+        MaxLevel: 5
+      - Name: SKE_STAR_LIGHT_KICK
+        MaxLevel: 5
   - Job: Shinkiro
     Tree:
       - Name: SS_FOUR_CHARM
@@ -124,3 +160,13 @@ Body:
             Level: 3
           - Name: NW_WILD_FIRE
             Level: 3
+  - Job: Hyper_Novice
+    Tree:
+      - Name: HN_OVERCOMING_CRISIS
+        MaxLevel: 5
+  - Job: Spirit_Handler
+    Tree:
+      - Name: SH_CHUL_HO_BATTERING
+        MaxLevel: 7
+      - Name: SH_HYUN_ROK_SPIRIT_POWER
+        MaxLevel: 7

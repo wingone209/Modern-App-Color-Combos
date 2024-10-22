@@ -3802,6 +3802,160 @@ Body:
       Target: Enemy
       Flag:
         PathCheck: true
+  - Id: 5502
+    Name: SKE_SKY_SUN
+    Description: Sky Sun
+    MaxLevel: 5
+    TargetType: Self
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 72
+        - Level: 2
+          Amount: 76
+        - Level: 3
+          Amount: 80
+        - Level: 4
+          Amount: 84
+        - Level: 5
+          Amount: 88
+  - Id: 5503
+    Name: SKE_SKY_MOON
+    Description: Sky Moon
+    MaxLevel: 5
+    TargetType: Attack
+    Range: 2
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 56
+        - Level: 2
+          Amount: 59
+        - Level: 3
+          Amount: 62
+        - Level: 4
+          Amount: 65
+        - Level: 5
+          Amount: 68
+  - Id: 5504
+    Name: SKE_STAR_LIGHT_KICK
+    Description: Star Light Kick
+    MaxLevel: 5
+    TargetType: Attack
+    Range: 7
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 52
+        - Level: 2
+          Amount: 57
+        - Level: 3
+          Amount: 62
+        - Level: 4
+          Amount: 67
+        - Level: 5
+          Amount: 72
+  - Id: 5505
+    Name: HN_OVERCOMING_CRISIS
+    Description: Overcoming Crisis
+    MaxLevel: 5
+    TargetType: Self
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 70
+        - Level: 2
+          Amount: 73
+        - Level: 3
+          Amount: 76
+        - Level: 4
+          Amount: 79
+        - Level: 5
+          Amount: 82
+      ApCost: 50
+  - Id: 5506
+    Name: SH_CHUL_HO_BATTERING
+    Description: Chul Ho Battering
+    MaxLevel: 7
+    TargetType: Attack
+    Range: 7
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 64
+        - Level: 2
+          Amount: 66
+        - Level: 3
+          Amount: 68
+        - Level: 4
+          Amount: 70
+        - Level: 5
+          Amount: 72
+        - Level: 6
+          Amount: 74
+        - Level: 7
+          Amount: 76
+  - Id: 5507
+    Name: SH_HYUN_ROK_SPIRIT_POWER
+    Description: Hyun Rok Spirit Power
+    MaxLevel: 7
+    TargetType: Attack
+    Range: 9
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 70
+        - Level: 2
+          Amount: 73
+        - Level: 3
+          Amount: 76
+        - Level: 4
+          Amount: 79
+        - Level: 5
+          Amount: 82
+        - Level: 6
+          Amount: 85
+        - Level: 7
+          Amount: 88
+  - Id: 6502
+    Name: DK_DRAGONIC_PIERCE
+    Description: Dragonic Pierce
+    MaxLevel: 5
+    TargetType: Attack
+    Range: 7
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 45
+        - Level: 2
+          Amount: 50
+        - Level: 3
+          Amount: 55
+        - Level: 4
+          Amount: 60
+        - Level: 5
+          Amount: 65
   - Id: 6503
     Name: IG_RADIANT_SPEAR
     Description: Radiant Spear
@@ -3896,6 +4050,27 @@ Body:
           Amount: 65
       Status:
         Attack_Stance: true
+  - Id: 6505
+    Name: IG_IMPERIAL_PRESSURE
+    Description: Imperial Pressure
+    MaxLevel: 5
+    TargetType: Attack
+    Range: 9
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 89
+        - Level: 2
+          Amount: 93
+        - Level: 3
+          Amount: 97
+        - Level: 4
+          Amount: 101
+        - Level: 5
+          Amount: 105
   - Id: 6506
     Name: MT_RUSH_STRIKE
     Description: Rush Strike
@@ -4249,6 +4424,134 @@ Body:
           Amount: 105
       Weapon:
         Bow: true
+  - Id: 6515
+    Name: ABC_ABYSS_FLAME
+    Description: Abyss Flame
+    MaxLevel: 5
+    TargetType: Attack
+    Range: 9
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 82
+        - Level: 2
+          Amount: 86
+        - Level: 3
+          Amount: 90
+        - Level: 4
+          Amount: 94
+        - Level: 5
+          Amount: 98
+  - Id: 6516
+    Name: AG_ENERGY_CONVERSION
+    Description: Energy Conversion
+    MaxLevel: 5
+    TargetType: Self
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost: 10
+      ApCost:
+        - Level: 1
+          Amount: 22
+        - Level: 2
+          Amount: 19
+        - Level: 3
+          Amount: 16
+        - Level: 4
+          Amount: 13
+        - Level: 5
+          Amount: 10
+  - Id: 6517
+    Name: EM_PSYCHIC_STREAM
+    Description: Psychic Stream
+    MaxLevel: 5
+    TargetType: Attack
+    Range: 9
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 77
+        - Level: 2
+          Amount: 84
+        - Level: 3
+          Amount: 91
+        - Level: 4
+          Amount: 98
+        - Level: 5
+          Amount: 105
+      ApCost: 5
+  - Id: 6518
+    Name: CD_DIVINUS_FLOS
+    Description: Divinus Flos
+    MaxLevel: 5
+    TargetType: Attack
+    Range: 9
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 99
+        - Level: 2
+          Amount: 103
+        - Level: 3
+          Amount: 107
+        - Level: 4
+          Amount: 111
+        - Level: 5
+          Amount: 115
+  - Id: 6519
+    Name: IQ_BLAZING_FLAME_BLAST
+    Description: Blazing Flame Blast
+    MaxLevel: 5
+    TargetType: Attack
+    Range: 7
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 54
+        - Level: 2
+          Amount: 58
+        - Level: 3
+          Amount: 62
+        - Level: 4
+          Amount: 66
+        - Level: 5
+          Amount: 70
+  - Id: 6520
+    Name: WH_WILD_WALK
+    Description: Wild Walk
+    MaxLevel: 5
+    TargetType: Attack
+    Range: 11
+    Hit: Single
+    HitCount: 1
+    CastCancel: true
+    Requires:
+      SpCost:
+        - Level: 1
+          Amount: 63
+        - Level: 2
+          Amount: 66
+        - Level: 3
+          Amount: 69
+        - Level: 4
+          Amount: 72
+        - Level: 5
+          Amount: 75
+      ApCost: 5
   - Id: 6521
     Name: TR_RHYTHMICAL_WAVE
     Description: Rhythmical Wave
@@ -4295,3 +4598,12 @@ Body:
       Ammo:
         Arrow: true
       AmmoAmount: 1
+  - Id: 6522
+    Name: ABC_ABYSS_FLAME_ATK
+    Description: Abyss Flame Attack
+    MaxLevel: 5
+    TargetType: Self
+    Hit: Single
+    HitCount: 1
+    Requires:
+      SpCost: 1

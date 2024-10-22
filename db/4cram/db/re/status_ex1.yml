@@ -78,6 +78,14 @@ Body:
       BlEffect: true
       DisplayPc: true
 #================================
+  - Status: Wild_Walk
+    Icon: EFST_WILD_WALK
+    DurationLookup: WH_WILD_WALK
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+#================================
   - Status: Fire_Charm_Power
     Icon: EFST_FIRE_CHARM_POWER
     DurationLookup: SS_FOUR_CHARM
@@ -105,6 +113,14 @@ Body:
   - Status: Ground_Charm_Power
     Icon: EFST_GROUND_CHARM_POWER
     DurationLookup: SS_FOUR_CHARM
+    Flags:
+      NoDispell: true
+      NoClearance: true
+      NoBanishingBuster: true
+#================================
+  - Status: Overcoming_Crisis
+    Icon: EFST_OVERCOMING_CRISIS
+    DurationLookup: HN_OVERCOMING_CRISIS
     Flags:
       NoDispell: true
       NoClearance: true

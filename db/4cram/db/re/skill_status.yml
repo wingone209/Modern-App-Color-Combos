@@ -185,6 +185,10 @@ Body:
   - Id: 5492
     Status: Nightmare
 #================================
+# HN_OVERCOMING_CRISIS
+  - Id: 5505
+    Status: Overcoming_Crisis
+
 # BO_MYSTERY_POWDER
   - Id: 6509
     Status: Mystery_Powder
@@ -196,4 +200,8 @@ Body:
 # ABC_HIT_AND_SLIDING
   - Id: 6512
     Status: Chasing
+
+# WH_WILD_WALK
+  - Id: 6520
+    Status: Wild_Walk
 #================================
