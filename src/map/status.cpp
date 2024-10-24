@@ -3136,6 +3136,8 @@ static int status_get_hpbonus(struct block_list *bl, enum e_status_bonus type) {
 			if (sc->getSCE(SC_ANGELUS))
 				bonus += sc->getSCE(SC_ANGELUS)->val1 * 50;
 #endif
+			if (sc->getSCE(SC_OVERCOMING_CRISIS))
+				bonus += sc->getSCE(SC_OVERCOMING_CRISIS)->val2;
 		}
 	} else if (type == STATUS_BONUS_RATE) {
 		status_change *sc = status_get_sc(bl);
@@ -7749,6 +7751,8 @@ static signed short status_calc_flee(struct block_list *bl, status_change *sc, i
 		flee += sc->getSCE(SC_LIMIT_POWER_BOOSTER)->val1;
 	if (sc->getSCE(SC_MYSTICPOWDER))
 		flee += 20;
+	if (sc->getSCE(SC_WILD_WALK))
+		flee += sc->getSCE(SC_WILD_WALK)->val2;
 
 	return (short)cap_value(flee,1,SHRT_MAX);
 }
@@ -8252,6 +8256,8 @@ static unsigned short status_calc_speed(struct block_list *bl, status_change *sc
 		}
 		if (sc->getSCE(SC_SHADOW_CLOCK))
 			val = max(val, 60);
+		if (sc->getSCE(SC_WILD_WALK))
+			val = max(val, sc->getSCE(SC_WILD_WALK)->val3);
 
 		// !FIXME: official items use a single bonus for this [ultramage]
 		if( sc->getSCE(SC_SPEEDUP0) ) // Temporary item-based speedup
@@ -8706,6 +8712,8 @@ static signed short status_calc_patk(struct block_list *bl, status_change *sc, i
 		patk += sc->getSCE(SC_TEMPORARY_COMMUNION)->val2;
 	if (sc->getSCE(SC_BLESSING_OF_M_CREATURES))
 		patk += sc->getSCE(SC_BLESSING_OF_M_CREATURES)->val2;
+	if (sc->getSCE(SC_OVERCOMING_CRISIS))
+		patk += sc->getSCE(SC_OVERCOMING_CRISIS)->val3;
 
 	return (short)cap_value(patk, 0, SHRT_MAX);
 }
@@ -8741,6 +8749,8 @@ static signed short status_calc_smatk(struct block_list *bl, status_change *sc, 
 		smatk += sc->getSCE(SC_TEMPORARY_COMMUNION)->val2;
 	if (sc->getSCE(SC_BLESSING_OF_M_CREATURES))
 		smatk += sc->getSCE(SC_BLESSING_OF_M_CREATURES)->val2;
+	if (sc->getSCE(SC_OVERCOMING_CRISIS))
+		smatk += sc->getSCE(SC_OVERCOMING_CRISIS)->val3;
 
 	return (short)cap_value(smatk, 0, SHRT_MAX);
 }
@@ -12970,6 +12980,14 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 			status_heal(bl, 0, 0, status->max_ap, 0);
 			val2 = 10 * val1;// Patk, SMatk Increase
 			break;
+		case SC_WILD_WALK:
+			val2 = 50 + 50 * val1;// Flee Increase
+			val3 = 25 * ((1 + val1) / 2);// Movement Speed Increase
+			break;
+		case SC_OVERCOMING_CRISIS:
+			val2 = 15000 * val1;// MaxHP Increase
+			val3 = 3 * val1;// Patk, SMatk Increase
+			break;
 		case SC_FLAMETECHNIC:
 		case SC_FLAMEARMOR:
 		case SC_COLD_FORCE:
@@ -13353,6 +13371,9 @@ int status_change_start(struct block_list* src, struct block_list* bl,enum sc_ty
 		case SC_GVG_BLIND:
 			if (val1 || val2)
 				status_zap(bl, val1 ? val1 : 0, val2 ? val2 : 0);
+			break;
+		case SC_OVERCOMING_CRISIS:
+			status_heal(bl, status->max_hp, 0, 1);
 			break;
 	}
 

@@ -5338,11 +5338,16 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case TR_RHYTHMSHOOTING:
 	case HN_MEGA_SONIC_BLOW:
 	case HN_SPIRAL_PIERCE_MAX:
+	case DK_DRAGONIC_PIERCE:
 	case IG_IMPERIAL_CROSS:
+	case IQ_BLAZING_FLAME_BLAST:
+	case WH_WILD_WALK:
 		clif_skill_nodamage(src, *bl, skill_id, skill_lv);
 		skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
 		if (skill_id == DK_DRAGONIC_AURA)
 			sc_start(src, src, SC_DRAGONIC_AURA, 100, skill_lv, skill_get_time(skill_id, skill_lv));
+		else if (skill_id == WH_WILD_WALK)
+			sc_start(src, src, SC_WILD_WALK, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 		break;
 
 	case ABC_HIT_AND_SLIDING:
@@ -5903,7 +5908,13 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case SS_HITOUAKUMU:
 	case SS_ANKOKURYUUAKUMU:
 	case NW_WILD_SHOT:
+	case SKE_SKY_SUN:
+	case SKE_SKY_MOON:
+	case SKE_STAR_LIGHT_KICK:
+	case SH_CHUL_HO_BATTERING:
+	case SH_HYUN_ROK_SPIRIT_POWER:
 	case IG_RADIANT_SPEAR:
+	case IG_IMPERIAL_PRESSURE:
 	case MT_RUSH_STRIKE:
 	case MT_POWERFUL_SWING:
 	case MT_ENERGY_CANNONADE:
@@ -5912,7 +5923,11 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 	case SHC_CROSS_SLASH:
 	case ABC_CHASING_BREAK:
 	case ABC_CHASING_SHOT:
+	case ABC_ABYSS_FLAME:
+	case EM_PSYCHIC_STREAM:
+	case CD_DIVINUS_FLOS:
 	case TR_RHYTHMICAL_WAVE:
+	case ABC_ABYSS_FLAME_ATK:
 		if( flag&1 ) {//Recursive invocation
 			int sflag = skill_area_temp[0] & 0xFFF;
 			int heal = 0;
@@ -6046,9 +6061,11 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 					break;
 				}
 				case SHC_FATAL_SHADOW_CROW:
+				case SKE_STAR_LIGHT_KICK:
 				case MT_RUSH_STRIKE:
 				case ABC_CHASING_BREAK:
 				case ABC_CHASING_SHOT:
+				case EM_PSYCHIC_STREAM:
 				{
 					uint8 dir = DIR_NORTHEAST;
 
@@ -6079,11 +6096,17 @@ int skill_castend_damage_id (struct block_list* src, struct block_list *bl, uint
 				case SKE_NOON_BLAST:
 				case SKE_SUNSET_BLAST:
 				case SS_KAGEGISSEN:
+				case SKE_SKY_MOON:
+				case SH_CHUL_HO_BATTERING:
+				case SH_HYUN_ROK_SPIRIT_POWER:
 				case IG_RADIANT_SPEAR:
+				case IG_IMPERIAL_PRESSURE:
 				case MT_POWERFUL_SWING:
 				case MT_ENERGY_CANNONADE:
 				case BO_DUST_EXPLOSION:
+				case CD_DIVINUS_FLOS:
 				case TR_RHYTHMICAL_WAVE:
+				case ABC_ABYSS_FLAME_ATK:
 				case EM_EL_FLAMEROCK:
 				case EM_EL_AGE_OF_ICE:
 				case EM_EL_STORM_WIND:
@@ -8217,6 +8240,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case HN_BREAKINGLIMIT:
 	case HN_RULEBREAK:
 	case SKE_ENCHANTING_SKY:
+	case HN_OVERCOMING_CRISIS:
 	case NPC_DAMAGE_HEAL:
 	case NPC_RELIEVE_ON:
 	case NPC_RELIEVE_OFF:
@@ -8422,6 +8446,15 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 			status_heal(bl, 0, 0, 10 * skill_lv, 0);
 		} else if (sd)
 			clif_skill_fail( *sd, skill_id, USESKILL_FAIL );
+		break;
+
+	case AG_ENERGY_CONVERSION:
+		{
+			uint16 sp_heal[5] = { 40, 120, 240, 400, 600 };
+
+			clif_skill_nodamage(src, *bl, skill_id, skill_lv);
+			status_heal(bl, 0, sp_heal[skill_lv - 1], 0, 2);
+		}
 		break;
 
 	case SJ_GRAVITYCONTROL: {
@@ -8898,6 +8931,7 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 	case SS_KAGEAKUMU:
 	case SS_HITOUAKUMU:
 	case SS_ANKOKURYUUAKUMU:
+	case SKE_SKY_SUN:
 	case BO_EXPLOSIVE_POWDER:
 	{
 		int starget = BL_CHAR|BL_SKILL;
@@ -9006,6 +9040,14 @@ int skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, ui
 
 		clif_skill_nodamage(src, *bl, skill_id, skill_lv);
 		map_foreachinrange(skill_area_sub, bl, skill_get_splash(skill_id, skill_lv), BL_CHAR|BL_SKILL, src, skill_id, skill_lv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
+		break;
+
+	case ABC_ABYSS_FLAME:
+		skill_area_temp[1] = 0;
+
+		clif_skill_nodamage(src, *src, skill_id, skill_lv);
+		map_foreachinrange(skill_area_sub, src, skill_get_splash(skill_id, skill_lv), BL_CHAR|BL_SKILL, src, skill_id, skill_lv, tick, flag|BCT_ENEMY|SD_SPLASH|1, skill_castend_damage_id);
+		skill_castend_damage_id(src, bl, ABC_ABYSS_FLAME_ATK, skill_lv, tick, 0);
 		break;
 
 	case SHC_DANCING_KNIFE:
@@ -13544,17 +13586,20 @@ static int8 skill_castend_id_check(struct block_list *src, struct block_list *ta
 		case SOA_TALISMAN_OF_WARRIOR:
 		case SOA_TALISMAN_OF_MAGICIAN:
 		case SOA_TALISMAN_OF_FIVE_ELEMENTS:
-		{
-			map_session_data* tsd;
-			short index;
+			if (target->type == BL_PC)
+			{
+				map_session_data* tsd;
+				short index;
 
-			tsd = BL_CAST(BL_PC, target);
-			index = tsd->equip_index[EQI_HAND_R];
+				tsd = BL_CAST(BL_PC, target);
+				index = tsd->equip_index[EQI_HAND_R];
 
-			// Requires targeted player to have a weapon equipped for the buff to be applied.
-			if (!(index >= 0 && tsd->inventory_data[index] && tsd->inventory_data[index]->type == IT_WEAPON))
+				// Requires targeted player to have a weapon equipped for the buff to be applied.
+				if (!(index >= 0 && tsd->inventory_data[index] && tsd->inventory_data[index]->type == IT_WEAPON))
+					return USESKILL_FAIL_LEVEL;
+			}
+			else
 				return USESKILL_FAIL_LEVEL;
-		}
 			break;
 	}
 
@@ -13918,7 +13963,7 @@ TIMER_FUNC(skill_castend_id){
 
 		map_freeblock_lock();
 
-		if (skill_get_casttype(ud->skill_id) == CAST_NODAMAGE)
+		if (skill_get_casttype(ud->skill_id) == CAST_NODAMAGE || ud->skill_id == ABC_ABYSS_FLAME)
 			skill_castend_nodamage_id(src,target,ud->skill_id,ud->skill_lv,tick,flag);
 		else
 			skill_castend_damage_id(src,target,ud->skill_id,ud->skill_lv,tick,flag);
@@ -18891,6 +18936,12 @@ bool skill_check_condition_castbegin( map_session_data& sd, uint16 skill_id, uin
 		case SS_FOUR_CHARM:
 			if (sd.spiritcharm_type == CHARM_TYPE_NONE || sd.spiritcharm < 10) {
 				clif_skill_fail(sd, skill_id, USESKILL_FAIL_SUMMON_NONE);
+				return false;
+			}
+			break;
+		case EM_PSYCHIC_STREAM:
+			if (sc && sc->getSCE(SC_ENERGYCOAT)) {
+				clif_skill_fail(sd, skill_id);
 				return false;
 			}
 			break;

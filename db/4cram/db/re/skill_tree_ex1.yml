@@ -7,6 +7,9 @@ Body:
     Tree:
       - Name: DK_DRAGONIC_PIERCE
         MaxLevel: 5
+        Requires:
+          - Name: DK_HACKANDSLASHER
+            Level: 7
   - Job: Meister
     Tree:
       - Name: MT_RUSH_STRIKE
@@ -37,14 +40,29 @@ Body:
     Tree:
       - Name: AG_ENERGY_CONVERSION
         MaxLevel: 5
+        Requires:
+          - Name: WL_RECOGNIZEDSPELL
+            Level: 2
+          - Name: AG_CLIMAX
+            Level: 1
   - Job: Cardinal
     Tree:
       - Name: CD_DIVINUS_FLOS
         MaxLevel: 5
+        Requires:
+          - Name: AB_ADORAMUS
+            Level: 5
+          - Name: CD_FRAMEN
+            Level: 5
   - Job: Windhawk
     Tree:
       - Name: WH_WILD_WALK
         MaxLevel: 5
+        Requires:
+          - Name: WH_NATUREFRIENDLY
+            Level: 3
+          - Name: WH_HAWKRUSH
+            Level: 3
   - Job: Imperial_Guard
     Tree:
       - Name: IG_RADIANT_SPEAR
@@ -61,6 +79,11 @@ Body:
             Level: 5
       - Name: IG_IMPERIAL_PRESSURE
         MaxLevel: 5
+        Requires:
+          - Name: IG_GUARD_STANCE
+            Level: 3
+          - Name: IG_SPEAR_SWORD_M
+            Level: 7
   - Job: Biolo
     Tree:
       - Name: BO_MYSTERY_POWDER
@@ -92,14 +115,35 @@ Body:
             Level: 3
       - Name: ABC_ABYSS_FLAME
         MaxLevel: 5
+        Requires:
+          - Name: ABC_MAGIC_SWORD_M
+            Level: 5
+          - Name: ABC_FROM_THE_ABYSS
+            Level: 3
   - Job: Elemental_Master
     Tree:
       - Name: EM_PSYCHIC_STREAM
         MaxLevel: 5
+        Requires:
+          - Name: EM_MAGIC_BOOK_M
+            Level: 5
+          - Name: EM_DIAMOND_STORM
+            Level: 3
+          - Name: EM_LIGHTNING_LAND
+            Level: 3
+          - Name: EM_VENOM_SWAMP
+            Level: 3
+          - Name: EM_CONFLAGRATION
+            Level: 3
+          - Name: EM_TERRA_DRIVE
+            Level: 3
   - Job: Inquisitor
     Tree:
       - Name: IQ_BLAZING_FLAME_BLAST
         MaxLevel: 5
+        Requires:
+          - Name: IQ_MASSIVE_F_BLASTER
+            Level: 7
   - Job: Troubadour
     Tree:
       - Name: TR_RHYTHMICAL_WAVE
@@ -118,10 +162,31 @@ Body:
     Tree:
       - Name: SKE_SKY_SUN
         MaxLevel: 5
+        Requires:
+          - Name: SKE_NOON_BLAST
+            Level: 3
+          - Name: SKE_SUNSET_BLAST
+            Level: 3
+          - Name: SKE_ENCHANTING_SKY
+            Level: 7
       - Name: SKE_SKY_MOON
         MaxLevel: 5
+        Requires:
+          - Name: SKE_MIDNIGHT_KICK
+            Level: 3
+          - Name: SKE_DAWN_BREAK
+            Level: 3
+          - Name: SKE_ENCHANTING_SKY
+            Level: 7
       - Name: SKE_STAR_LIGHT_KICK
         MaxLevel: 5
+        Requires:
+          - Name: SKE_STAR_BURST
+            Level: 3
+          - Name: SKE_STAR_CANNON
+            Level: 3
+          - Name: SKE_ENCHANTING_SKY
+            Level: 7
   - Job: Shinkiro
     Tree:
       - Name: SS_FOUR_CHARM
@@ -164,9 +229,24 @@ Body:
     Tree:
       - Name: HN_OVERCOMING_CRISIS
         MaxLevel: 5
+        Requires:
+          - Name: HN_SELFSTUDY_TATICS
+            Level: 5
+          - Name: HN_SELFSTUDY_SOCERY
+            Level: 5
   - Job: Spirit_Handler
     Tree:
       - Name: SH_CHUL_HO_BATTERING
         MaxLevel: 7
+        Requires:
+          - Name: SH_MYSTICAL_CREATURE_MASTERY
+            Level: 7
+          - Name: SH_CHUL_HO_SONIC_CLAW
+            Level: 5
       - Name: SH_HYUN_ROK_SPIRIT_POWER
         MaxLevel: 7
+        Requires:
+          - Name: SH_MYSTICAL_CREATURE_MASTERY
+            Level: 7
+          - Name: SH_HYUN_ROKS_BREEZE
+            Level: 5

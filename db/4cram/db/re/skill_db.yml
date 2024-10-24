@@ -3806,10 +3806,28 @@ Body:
     Name: SKE_SKY_SUN
     Description: Sky Sun
     MaxLevel: 5
+    Type: Weapon
     TargetType: Self
-    Hit: Single
-    HitCount: 1
+    DamageFlags:
+      Splash: true
+      Critical: true
+    Hit: Multi_Hit
+    HitCount: -7
+    Element: Weapon
+    SplashArea:
+      - Level: 1
+        Area: 1
+      - Level: 2
+        Area: 1
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 2
+      - Level: 5
+        Area: 3
+    GiveAp: 2
     CastCancel: true
+    Cooldown: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -3822,15 +3840,35 @@ Body:
           Amount: 84
         - Level: 5
           Amount: 88
+      Status:
+        Sky_Enchant: true
   - Id: 5503
     Name: SKE_SKY_MOON
     Description: Sky Moon
     MaxLevel: 5
+    Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 2
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: 3
+    Element: Weapon
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 3
+      - Level: 4
+        Area: 3
+      - Level: 5
+        Area: 4
+    GiveAp: 2
     CastCancel: true
+    CastTime: 750
+    Cooldown: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -3843,15 +3881,34 @@ Body:
           Amount: 65
         - Level: 5
           Amount: 68
+      Status:
+        Sky_Enchant: true
   - Id: 5504
     Name: SKE_STAR_LIGHT_KICK
     Description: Star Light Kick
     MaxLevel: 5
+    Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 7
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: 7
+    Element: Weapon
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 3
+      - Level: 5
+        Area: 3
+    GiveAp: 2
     CastCancel: true
+    Cooldown: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -3864,14 +3921,20 @@ Body:
           Amount: 67
         - Level: 5
           Amount: 72
+      Status:
+        Sky_Enchant: true
   - Id: 5505
     Name: HN_OVERCOMING_CRISIS
     Description: Overcoming Crisis
     MaxLevel: 5
     TargetType: Self
+    DamageFlags:
+      NoDamage: true
     Hit: Single
     HitCount: 1
     CastCancel: true
+    Duration1: 300000
+    Cooldown: 60000
     Requires:
       SpCost:
         - Level: 1
@@ -3889,11 +3952,34 @@ Body:
     Name: SH_CHUL_HO_BATTERING
     Description: Chul Ho Battering
     MaxLevel: 7
+    Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Splash: true
+      Critical: true
     Range: 7
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: 5
+    Element: Weapon
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 2
+      - Level: 5
+        Area: 3
+      - Level: 6
+        Area: 3
+      - Level: 7
+        Area: 3
+    GiveAp: 1
     CastCancel: true
+    CastTime: 750
+    Cooldown: 650
     Requires:
       SpCost:
         - Level: 1
@@ -3914,11 +4000,33 @@ Body:
     Name: SH_HYUN_ROK_SPIRIT_POWER
     Description: Hyun Rok Spirit Power
     MaxLevel: 7
+    Type: Magic
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 9
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: 7
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 3
+      - Level: 5
+        Area: 3
+      - Level: 6
+        Area: 3
+      - Level: 7
+        Area: 4
+    GiveAp: 1
     CastCancel: true
+    CastTime: 3000
+    AfterCastActDelay: 500
+    Cooldown: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -3939,11 +4047,18 @@ Body:
     Name: DK_DRAGONIC_PIERCE
     Description: Dragonic Pierce
     MaxLevel: 5
+    Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Critical: true
     Range: 7
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: 5
+    Element: Weapon
+    GiveAp: 2
     CastCancel: true
+    CastTime: 1000
+    Cooldown: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -3956,6 +4071,8 @@ Body:
           Amount: 60
         - Level: 5
           Amount: 65
+      Weapon:
+        2hSpear: true
   - Id: 6503
     Name: IG_RADIANT_SPEAR
     Description: Radiant Spear
@@ -4054,11 +4171,28 @@ Body:
     Name: IG_IMPERIAL_PRESSURE
     Description: Imperial Pressure
     MaxLevel: 5
+    Type: Magic
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 9
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -7
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 3
+      - Level: 4
+        Area: 3
+      - Level: 5
+        Area: 4
+    GiveAp: 2
     CastCancel: true
+    CastTime: 3000
+    Cooldown: 750
     Requires:
       SpCost:
         - Level: 1
@@ -4428,11 +4562,28 @@ Body:
     Name: ABC_ABYSS_FLAME
     Description: Abyss Flame
     MaxLevel: 5
+    Type: Magic
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 9
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: 3
+    Element: Fire
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 3
+      - Level: 5
+        Area: 3
+    GiveAp: 2
     CastCancel: true
+    CastTime: 3000
     Requires:
       SpCost:
         - Level: 1
@@ -4450,9 +4601,13 @@ Body:
     Description: Energy Conversion
     MaxLevel: 5
     TargetType: Self
+    DamageFlags:
+      NoDamage: true
     Hit: Single
     HitCount: 1
     CastCancel: true
+    Cooldown: 1000
+    FixedCastTime: 1200
     Requires:
       SpCost: 10
       ApCost:
@@ -4470,11 +4625,27 @@ Body:
     Name: EM_PSYCHIC_STREAM
     Description: Psychic Stream
     MaxLevel: 5
+    Type: Magic
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 9
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -5
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 3
+      - Level: 5
+        Area: 3
     CastCancel: true
+    CastTime: 3000
+    Cooldown: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -4492,11 +4663,19 @@ Body:
     Name: CD_DIVINUS_FLOS
     Description: Divinus Flos
     MaxLevel: 5
+    Type: Magic
     TargetType: Attack
+    DamageFlags:
+      Splash: true
     Range: 9
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -5
+    Element: Holy
+    SplashArea: 3
+    GiveAp: 2
     CastCancel: true
+    CastTime: 3000
+    Cooldown: 1000
     Requires:
       SpCost:
         - Level: 1
@@ -4513,11 +4692,18 @@ Body:
     Name: IQ_BLAZING_FLAME_BLAST
     Description: Blazing Flame Blast
     MaxLevel: 5
+    Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Critical: true
     Range: 7
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: -7
+    Element: Weapon
+    GiveAp: 2
     CastCancel: true
+    CastTime: 2500
+    Cooldown: 2000
     Requires:
       SpCost:
         - Level: 1
@@ -4530,15 +4716,36 @@ Body:
           Amount: 66
         - Level: 5
           Amount: 70
+      Status:
+        Explosionspirits: true
   - Id: 6520
     Name: WH_WILD_WALK
     Description: Wild Walk
     MaxLevel: 5
+    Type: Weapon
     TargetType: Attack
+    DamageFlags:
+      Critical: true
+    Flags:
+      AllowOnWarg: true
     Range: 11
-    Hit: Single
-    HitCount: 1
+    Hit: Multi_Hit
+    HitCount: 3
     CastCancel: true
+    CastTime: 750
+    AfterCastActDelay: 250
+    Duration1:
+      - Level: 1
+        Time: 6000
+      - Level: 2
+        Time: 9000
+      - Level: 3
+        Time: 12000
+      - Level: 4
+        Time: 15000
+      - Level: 5
+        Time: 18000
+    Cooldown: 20000
     Requires:
       SpCost:
         - Level: 1
@@ -4552,6 +4759,7 @@ Body:
         - Level: 5
           Amount: 75
       ApCost: 5
+      State: Falcon
   - Id: 6521
     Name: TR_RHYTHMICAL_WAVE
     Description: Rhythmical Wave
@@ -4602,8 +4810,23 @@ Body:
     Name: ABC_ABYSS_FLAME_ATK
     Description: Abyss Flame Attack
     MaxLevel: 5
-    TargetType: Self
-    Hit: Single
-    HitCount: 1
+    Type: Magic
+    TargetType: Attack
+    DamageFlags:
+      Splash: true
+    Hit: Multi_Hit
+    HitCount: 5
+    Element: Fire
+    SplashArea:
+      - Level: 1
+        Area: 2
+      - Level: 2
+        Area: 2
+      - Level: 3
+        Area: 2
+      - Level: 4
+        Area: 3
+      - Level: 5
+        Area: 3
     Requires:
       SpCost: 1

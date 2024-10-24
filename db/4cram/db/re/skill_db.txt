@@ -197,18 +197,18 @@
 5499,0,6,4,0,0x1,0,1,1,yes,0,0,0,none,0,0,0,	SS_FOUR_CHARM,Four Charm
 5500,9,8,1,-1,0x102,2:2:2:3:3,5,7,yes,0,0,0,weapon,0,0,2,	NW_WILD_SHOT,Wild Shot
 5501,9,8,2,-1,0x20,0,5,3,yes,0,0,0,weapon,0,0,2,	NW_MIDNIGHT_FALLEN,Midnight Fallen
-5502,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SKE_SKY_SUN,Sky Sun
-5503,2,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SKE_SKY_MOON,Sky Moon
-5504,7,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	SKE_STAR_LIGHT_KICK,Star Light Kick
-5505,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,0,	HN_OVERCOMING_CRISIS,Overcoming Crisis
-5506,7,6,1,0,0,0,7,1,yes,0,0,0,none,0,0,0,	SH_CHUL_HO_BATTERING,Chul Ho Battering
-5507,9,6,1,0,0,0,7,1,yes,0,0,0,none,0,0,0,	SH_HYUN_ROK_SPIRIT_POWER,Hyun Rok Spirit Power
+5502,0,8,4,-1,0x102,1:1:2:2:3,5,-7,yes,0,0,0,weapon,0,0,2,	SKE_SKY_SUN,Sky Sun
+5503,2,8,1,-1,0x2,2:2:3:3:4,5,3,yes,0,0,0,weapon,0,0,2,	SKE_SKY_MOON,Sky Moon
+5504,7,8,1,-1,0x2,2:2:2:3:3,5,7,yes,0,0,0,weapon,0,0,2,	SKE_STAR_LIGHT_KICK,Star Light Kick
+5505,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	HN_OVERCOMING_CRISIS,Overcoming Crisis
+5506,7,8,1,-1,0x102,2:2:2:2:3:3:3,7,5,yes,0,0,0,weapon,0,0,1,	SH_CHUL_HO_BATTERING,Chul Ho Battering
+5507,9,8,1,0,0x2,2:2:2:3:3:3:4,7,7,yes,0,0,0,magic,0,0,1,	SH_HYUN_ROK_SPIRIT_POWER,Hyun Rok Spirit Power
 
 //6501,0,0,0,0,0,0,10,0,no,0,0,0,none,0,0,0,	,
-6502,7,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	DK_DRAGONIC_PIERCE,Dragonic Pierce
+6502,7,8,1,-1,0x100,0,5,5,yes,0,0,0,weapon,0,0,2,	DK_DRAGONIC_PIERCE,Dragonic Pierce
 6503,7,8,1,-1,0x102,1:1:1:1:2:2:2:2:3:3,10,-2,yes,0,0,0,weapon,0,0,2,	IG_RADIANT_SPEAR,Radiant Spear
 6504,2,8,1,-1,0,0,5,3,yes,0,0,0,weapon,0,0,2,	IG_IMPERIAL_CROSS,Imperial Cross
-6505,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	IG_IMPERIAL_PRESSURE,Imperial Pressure
+6505,9,8,1,0,0x2,2:2:3:3:4,5,-7,yes,0,0,0,magic,0,0,2,	IG_IMPERIAL_PRESSURE,Imperial Pressure
 6506,7,8,1,-1,0x2,1:2:2:3:3,5,-7,yes,0,0,0,weapon,0,0,2,	MT_RUSH_STRIKE,Rush Strike
 6507,2,8,1,-1,0x2,1:1:2:2:3,5,5,yes,0,0,0,weapon,0,0,2,	MT_POWERFUL_SWING,Powerful Swing
 6508,9,8,1,-1,0x22,2:2:3:3:4,5,7,yes,0,0,0,weapon,0,0x4000,3,	MT_ENERGY_CANNONADE,Energy Cannonade
@@ -218,11 +218,11 @@
 6512,2,8,1,-1,0,0,5,-5,yes,0,0,0,weapon,1:2:3:4:5,0,2,	ABC_HIT_AND_SLIDING,Hit And Sliding
 6513,7,8,1,-1,0x2,2:2:2:3:3,5,5,yes,0,0,0,weapon,0,0,2,	ABC_CHASING_BREAK,Chasing Break// This is usable with a bow right?
 6514,7,8,1,-1,0x102,2:2:2:3:3,5,2,yes,0,0,0,weapon,0,0,2,	ABC_CHASING_SHOT,Chasing Shot
-6515,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	ABC_ABYSS_FLAME,Abyss Flame
-6516,0,6,4,0,0,0,5,1,yes,0,0,0,none,0,0,0,	AG_ENERGY_CONVERSION,Energy Conversion
-6517,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	EM_PSYCHIC_STREAM,Psychic Stream
-6518,9,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	CD_DIVINUS_FLOS,Divinus Flos
-6519,7,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	IQ_BLAZING_FLAME_BLAST,Blazing Flame Blast
-6520,11,6,1,0,0,0,5,1,yes,0,0,0,none,0,0,0,	WH_WILD_WALK,Wild Walk
+6515,9,8,1,3,0x2,2:2:2:3:3,5,3,yes,0,0,0,magic,0,0,2,	ABC_ABYSS_FLAME,Abyss Flame
+6516,0,6,4,0,0x1,0,5,1,yes,0,0,0,none,0,0,0,	AG_ENERGY_CONVERSION,Energy Conversion
+6517,9,8,1,0,0x2,2:2:2:3:3,5,-5,yes,0,0,0,magic,0,0,0,	EM_PSYCHIC_STREAM,Psychic Stream
+6518,9,8,1,6,0x2,3,5,-5,yes,0,0,0,magic,0,0,2,	CD_DIVINUS_FLOS,Divinus Flos
+6519,7,8,1,-1,0x100,0,5,-7,yes,0,0,0,weapon,0,0,2,	IQ_BLAZING_FLAME_BLAST,Blazing Flame Blast
+6520,11,8,1,0,0x100,0,5,3,yes,0,0,0,weapon,0,0x2000,0,	WH_WILD_WALK,Wild Walk
 6521,9,8,1,-1,0x2,2:2:3:3:4,5,-5,yes,0,0,0,magic,0,0,3,	TR_RHYTHMICAL_WAVE,Rhythmical Wave
-6522,0,6,4,0,0,0,5,1,no,0,0,0,none,0,0,0,	ABC_ABYSS_FLAME_ATK,Abyss Flame Attack
+6522,0,8,1,3,0x2,2:2:2:3:3,5,5,no,0,0,0,magic,0,0,0,	ABC_ABYSS_FLAME_ATK,Abyss Flame Attack

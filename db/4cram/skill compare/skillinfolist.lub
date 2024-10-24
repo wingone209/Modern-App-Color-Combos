@@ -16803,5 +16803,190 @@ SKILL_INFO_LIST = {
 			{ SKID.NW_MAGAZINE_FOR_ONE, 3 },
 			{ SKID.NW_WILD_FIRE, 3 }
 		}
+	},
+	[SKID.DK_DRAGONIC_PIERCE] = {
+		"DK_DRAGONIC_PIERCE",
+		SkillName = "드래고닉 피어스",
+		MaxLv = 5,
+		SpAmount = { 45, 50, 55, 60, 65 },
+		bSeperateLv = true,
+		AttackRange = { 7, 7, 7, 7, 7 },
+		_NeedSkillList = {
+			{ SKID.DK_HACKANDSLASHER, 7 }
+		}
+	},
+	[SKID.IG_IMPERIAL_PRESSURE] = {
+		"IG_IMPERIAL_PRESSURE",
+		SkillName = "임페리얼 프레셔",
+		MaxLv = 5,
+		SpAmount = { 89, 93, 97, 101, 105 },
+		bSeperateLv = true,
+		AttackRange = { 9, 9, 9, 9, 9 },
+		_NeedSkillList = {
+			{ SKID.IG_SPEAR_SWORD_M, 7 },
+			{ SKID.IG_GUARD_STANCE, 3 }
+		}
+	},
+	[SKID.ABC_ABYSS_FLAME] = {
+		"ABC_ABYSS_FLAME",
+		SkillName = "어비스 플레임",
+		MaxLv = 5,
+		SpAmount = { 82, 86, 90, 94, 98 },
+		bSeperateLv = true,
+		AttackRange = { 9, 9, 9, 9, 9 },
+		_NeedSkillList = {
+			{ SKID.ABC_MAGIC_SWORD_M, 5 },
+			{ SKID.ABC_FROM_THE_ABYSS, 3 }
+		}
+	},
+	[SKID.ABC_ABYSS_FLAME_ATK] = {
+		"ABC_ABYSS_FLAME_ATK",
+		SkillName = "어비스 플레임",
+		MaxLv = 5,
+		SpAmount = { 0, 0, 0, 0, 0 },
+		bSeperateLv = false,
+		AttackRange = { 1, 1, 1, 1, 1 }
+	},
+	[SKID.AG_ENERGY_CONVERSION] = {
+		"AG_ENERGY_CONVERSION",
+		SkillName = "에너지 컨버전",
+		MaxLv = 5,
+		SpAmount = { 10, 10, 10, 10, 10 },
+		ApAmount = { 22, 19, 16, 13, 10 },
+		bSeperateLv = false,
+		AttackRange = { 1, 1, 1, 1, 1 },
+		_NeedSkillList = {
+			{ SKID.WL_RECOGNIZEDSPELL, 2 },
+			{ SKID.AG_CLIMAX, 1 }
+		}
+	},
+	[SKID.EM_PSYCHIC_STREAM] = {
+		"EM_PSYCHIC_STREAM",
+		SkillName = "사이킥 스트림",
+		MaxLv = 5,
+		SpAmount = { 77, 84, 91, 98, 105 },
+		ApAmount = { 5, 5, 5, 5, 5 },
+		bSeperateLv = false,
+		AttackRange = { 9, 9, 9, 9, 9 },
+		_NeedSkillList = {
+			{ SKID.EM_MAGIC_BOOK_M, 5 },
+			{ SKID.EM_DIAMOND_STORM, 3 },
+			{ SKID.EM_CONFLAGRATION, 3 },
+			{ SKID.EM_LIGHTNING_LAND, 3 },
+			{ SKID.EM_TERRA_DRIVE, 3 },
+			{ SKID.EM_VENOM_SWAMP, 3 }
+		}
+	},
+	[SKID.CD_DIVINUS_FLOS] = {
+		"CD_DIVINUS_FLOS",
+		SkillName = "디비누스 플로스",
+		MaxLv = 5,
+		SpAmount = { 99, 103, 107, 111, 115 },
+		bSeperateLv = true,
+		AttackRange = { 9, 9, 9, 9, 9 },
+		_NeedSkillList = {
+			{ SKID.AB_ADORAMUS, 5 },
+			{ SKID.CD_FRAMEN, 5 }
+		}
+	},
+	[SKID.IQ_BLAZING_FLAME_BLAST] = {
+		"IQ_BLAZING_FLAME_BLAST",
+		SkillName = "열화기탄",
+		MaxLv = 5,
+		SpAmount = { 54, 58, 62, 66, 70 },
+		bSeperateLv = true,
+		AttackRange = { 7, 7, 7, 7, 7 },
+		_NeedSkillList = {
+			{ SKID.IQ_MASSIVE_F_BLASTER, 7 }
+		}
+	},
+	[SKID.WH_WILD_WALK] = {
+		"WH_WILD_WALK",
+		SkillName = "와일드 워크",
+		MaxLv = 5,
+		SpAmount = { 63, 66, 69, 72, 75 },
+		ApAmount = { 5, 5, 5, 5, 5 },
+		bSeperateLv = false,
+		AttackRange = { 11, 11, 11, 11, 11 },
+		_NeedSkillList = {
+			{ SKID.WH_NATUREFRIENDLY, 3 },
+			{ SKID.WH_HAWKRUSH, 3 }
+		}
+	},
+	[SKID.SKE_SKY_SUN] = {
+		"SKE_SKY_SUN",
+		SkillName = "천기신양",
+		MaxLv = 5,
+		SpAmount = { 72, 76, 80, 84, 88 },
+		bSeperateLv = true,
+		AttackRange = { 1, 1, 1, 1, 1 },
+		_NeedSkillList = {
+			{ SKID.SKE_NOON_BLAST, 3 },
+			{ SKID.SKE_SUNSET_BLAST, 3 },
+			{ SKID.SKE_ENCHANTING_SKY, 7 }
+		}
+	},
+	[SKID.SKE_SKY_MOON] = {
+		"SKE_SKY_MOON",
+		SkillName = "천기신월",
+		MaxLv = 5,
+		SpAmount = { 56, 59, 62, 65, 68 },
+		bSeperateLv = true,
+		AttackRange = { 2, 2, 2, 2, 2 },
+		_NeedSkillList = {
+			{ SKID.SKE_MIDNIGHT_KICK, 3 },
+			{ SKID.SKE_DAWN_BREAK, 3 },
+			{ SKID.SKE_ENCHANTING_SKY, 7 }
+		}
+	},
+	[SKID.SKE_STAR_LIGHT_KICK] = {
+		"SKE_STAR_LIGHT_KICK",
+		SkillName = "천성지행",
+		MaxLv = 5,
+		SpAmount = { 52, 57, 62, 67, 72 },
+		bSeperateLv = true,
+		AttackRange = { 7, 7, 7, 7, 7 },
+		_NeedSkillList = {
+			{ SKID.SKE_STAR_BURST, 3 },
+			{ SKID.SKE_STAR_CANNON, 3 },
+			{ SKID.SKE_ENCHANTING_SKY, 7 }
+		}
+	},
+	[SKID.HN_OVERCOMING_CRISIS] = {
+		"HN_OVERCOMING_CRISIS",
+		SkillName = "위기 극복",
+		MaxLv = 5,
+		SpAmount = { 70, 73, 76, 79, 82 },
+		ApAmount = { 50, 50, 50, 50, 50 },
+		bSeperateLv = false,
+		AttackRange = { 1, 1, 1, 1, 1 },
+		_NeedSkillList = {
+			{ SKID.HN_SELFSTUDY_TATICS, 5 },
+			{ SKID.HN_SELFSTUDY_SOCERY, 5 }
+		}
+	},
+	[SKID.SH_CHUL_HO_BATTERING] = {
+		"SH_CHUL_HO_BATTERING",
+		SkillName = "철호 난무",
+		MaxLv = 7,
+		SpAmount = { 64, 66, 68, 70, 72, 74, 76 },
+		bSeperateLv = true,
+		AttackRange = { 7, 7, 7, 7, 7, 7, 7 },
+		_NeedSkillList = {
+			{ SKID.SH_MYSTICAL_CREATURE_MASTERY, 7 },
+			{ SKID.SH_CHUL_HO_SONIC_CLAW, 5 }
+		}
+	},
+	[SKID.SH_HYUN_ROK_SPIRIT_POWER] = {
+		"SH_HYUN_ROK_SPIRIT_POWER",
+		SkillName = "현록의 영력 발휘",
+		MaxLv = 7,
+		SpAmount = { 70, 73, 76, 79, 82, 85, 88 },
+		bSeperateLv = true,
+		AttackRange = { 9, 9, 9, 9, 9, 9, 9 },
+		_NeedSkillList = {
+			{ SKID.SH_MYSTICAL_CREATURE_MASTERY, 7 },
+			{ SKID.SH_HYUN_ROKS_BREEZE, 5 }
+		}
 	}
 }

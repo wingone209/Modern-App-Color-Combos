@@ -2642,6 +2642,7 @@ static int battle_range_type(struct block_list *src, struct block_list *target, 
 		//case ABC_DEFT_STAB: // 2 cell cast range???
 		case SKE_ALL_IN_THE_SKY: // 9 cell cast range.
 		case SS_SHIMIRU: // 11 cell cast range.
+		case SKE_STAR_LIGHT_KICK: // 7 cell cast range.
 		case MT_RUSH_STRIKE: // 7 cell cast range.
 		case ABC_CHASING_BREAK: // 7 cell cast range.
 		case NPC_MAXPAIN_ATK:
@@ -3031,6 +3032,7 @@ static bool is_attack_critical(struct Damage* wd, struct block_list *src, struct
 			case SHC_SAVAGE_IMPACT:
 			case SHC_ETERNAL_SLASH:
 			case SHC_IMPACT_CRATER:
+			case SHC_CROSS_SLASH:
 				cri /= 2;
 				break;
 			case WH_GALESTORM:
@@ -3609,6 +3611,7 @@ int battle_get_magic_element(struct block_list* src, struct block_list* target, 
 		case SU_CN_METEOR2:
 		case SH_HYUN_ROKS_BREEZE:
 		case SH_HYUN_ROK_CANNON:
+		case SH_HYUN_ROK_SPIRIT_POWER:
 			if (sc)
 			{
 				if (sc->getSCE(SC_COLORS_OF_HYUN_ROK_1))
@@ -3629,6 +3632,14 @@ int battle_get_magic_element(struct block_list* src, struct block_list* target, 
 			// Fire element for 2nd hit on targets with nightmare status. [Rytech]
 			if (mflag&SK_SECONDATK)
 				element = ELE_FIRE;
+			break;
+		case IG_IMPERIAL_PRESSURE:
+			if (sc && sc->getSCE(SC_GUARD_STANCE))
+				element = ELE_HOLY;
+			break;
+		case CD_DIVINUS_FLOS:
+			if (sc && sc->getSCE(SC_ANCILLA))
+				element = ELE_NEUTRAL;
 			break;
 	}
 
@@ -6514,6 +6525,38 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 			skillratio += 5 * sstatus->con;
 			RE_LVL_DMOD(100);
 			break;
+		case SKE_SKY_SUN:
+			skillratio += -100 + 1500 * skill_lv;
+			skillratio += 7 * skill_lv * pc_checkskill(sd, SKE_SKY_MASTERY);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_SKY_MOON:
+			skillratio += 1100 + 450 * skill_lv;
+			skillratio += 9 * skill_lv * pc_checkskill(sd, SKE_SKY_MASTERY);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SKE_STAR_LIGHT_KICK:
+			skillratio += 300 + 200 * skill_lv;
+			skillratio += 5 * skill_lv * pc_checkskill(sd, SKE_SKY_MASTERY);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case SH_CHUL_HO_BATTERING:
+			skillratio += 380 + 160 * skill_lv;
+			skillratio += 70 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case DK_DRAGONIC_PIERCE:
+			if (sc && sc->getSCE(SC_DRAGONIC_AURA))
+				skillratio += 850 + 650 * skill_lv;
+			else
+				skillratio += 750 + 600 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
 		case IG_RADIANT_SPEAR:
 			if (sc && sc->getSCE(SC_SPEAR_SCAR))
 				skillratio += 3400 + 1400 * skill_lv;
@@ -6589,6 +6632,20 @@ static int battle_calc_attack_skill_ratio(struct Damage* wd, struct block_list *
 				skillratio += 1650 + 700 * skill_lv;
 			else
 				skillratio += 1400 + 700 * skill_lv;
+			skillratio += 5 * sstatus->con;
+			RE_LVL_DMOD(100);
+			break;
+		case IQ_BLAZING_FLAME_BLAST:
+			if (sc && sc->getSCE(SC_MASSIVE_F_BLASTER))
+				skillratio += 3400 + 4200 * skill_lv;
+			else
+				skillratio += 1900 + 3800 * skill_lv;
+			skillratio += 5 * sstatus->pow;
+			RE_LVL_DMOD(100);
+			break;
+		case WH_WILD_WALK:// How does HT_STEELCROW affect damage?
+			skillratio += 1700 + 2800 * skill_lv;
+			skillratio += skillratio * pc_checkskill(sd, WH_NATUREFRIENDLY) / 10;// Need official increase. [Rytech]
 			skillratio += 5 * sstatus->con;
 			RE_LVL_DMOD(100);
 			break;
@@ -9250,12 +9307,47 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						skillratio += 10 * sstatus->spl;
 						RE_LVL_DMOD(100);
 						break;
+					case SH_HYUN_ROK_SPIRIT_POWER:
+						skillratio += 250 + 200 * skill_lv;
+						skillratio += 30 * pc_checkskill(sd, SH_MYSTICAL_CREATURE_MASTERY);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case IG_IMPERIAL_PRESSURE:
+						skillratio += 5500 + 1850 * skill_lv;
+						skillratio += 50 * pc_checkskill(sd, IG_SPEAR_SWORD_M);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case ABC_ABYSS_FLAME:
+						skillratio += -100 + 820 * skill_lv;
+						skillratio += 30 * skill_lv * pc_checkskill(sd, ABC_MAGIC_SWORD_M);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case EM_PSYCHIC_STREAM:
+						skillratio += 900 + 3500 * skill_lv;
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case CD_DIVINUS_FLOS:
+						skillratio += -100 + 4000 * skill_lv;
+						skillratio += 70 * pc_checkskill(sd, CD_FIDUS_ANIMUS);
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
 					case TR_RHYTHMICAL_WAVE:
 						if (sc && sc->getSCE(SC_MYSTIC_SYMPHONY))
 							skillratio += 350 + 4650 * skill_lv;
 						else
 							skillratio += 150 + 3650 * skill_lv;
 						skillratio += 50 * skill_lv * pc_checkskill(sd, TR_STAGE_MANNER);// Need official increase amount. [Rytech]
+						skillratio += 5 * sstatus->spl;
+						RE_LVL_DMOD(100);
+						break;
+					case ABC_ABYSS_FLAME_ATK:
+						skillratio += -100 + 500 * skill_lv;
+						skillratio += 15 * skill_lv * pc_checkskill(sd, ABC_MAGIC_SWORD_M);
 						skillratio += 5 * sstatus->spl;
 						RE_LVL_DMOD(100);
 						break;
