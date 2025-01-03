@@ -4533,7 +4533,6 @@ void clif_dispchat(struct chat_data* cd, int fd)
 ///     2 = arena (npc waiting room)
 ///     3 = PK zone (non-clickable)
 void clif_changechatstatus(chat_data& cd) {
-
 	if(cd.usersd[0] == nullptr )
 		return;
 
@@ -4547,14 +4546,16 @@ void clif_changechatstatus(chat_data& cd) {
 	PACKET_ZC_CHANGE_CHATROOM* p = reinterpret_cast<PACKET_ZC_CHANGE_CHATROOM*>( packet_buffer );
 
 	p->packetType = HEADER_ZC_CHANGE_CHATROOM;
-	p->packetSize = static_cast<decltype(p->packetSize)>(sizeof(*p) + strlen(cd.title));
+	p->packetSize = sizeof(*p);
 	p->ownerId = cd.owner->id;
 	p->chatId = cd.bl.id;
 	p->limit = cd.limit;
 	p->users = cd.users;
 
 	// not zero-terminated
-	strncpy(p->title, cd.title, strlen(cd.title));
+	size_t max = safestrnlen( cd.title, CHATROOM_TITLE_SIZE );
+	strncpy( p->title, cd.title, max );
+	p->packetSize += static_cast<decltype(p->packetSize)>( max );
 
 	if(cd.owner->type == BL_NPC){
 		// NPC itself counts as additional chat user
@@ -5709,7 +5710,7 @@ void clif_skillinfoblock(map_session_data *sd)
 
 	// adoption fix
 	if (haveCallPartnerSkill) {
-		clif_addskill(sd, WE_CALLPARTNER);
+		clif_addskill(*sd, WE_CALLPARTNER);
 		clif_skillinfo(sd, WE_CALLPARTNER, 0);
 	}
 
@@ -5718,7 +5719,7 @@ void clif_skillinfoblock(map_session_data *sd)
 	{
 		if( (id = sd->status.skill[i].id) != 0 && ( id != WE_CALLPARTNER || !haveCallPartnerSkill ) )
 		{
-			clif_addskill(sd, id);
+			clif_addskill(*sd, id);
 			clif_skillinfo(sd, id, 0);
 		}
 	}
@@ -5727,34 +5728,39 @@ void clif_skillinfoblock(map_session_data *sd)
  * Server tells client 'sd' to add skill of id 'id' to it's skill tree (e.g. with Ice Falcion item)
  **/
 
-/// Adds new skill to the skill tree (ZC_ADD_SKILL).
-/// 0111 <skill id>.W <type>.L <level>.W <sp cost>.W <attack range>.W <skill name>.24B <upgradable>.B
-void clif_addskill(map_session_data *sd, int skill_id)
-{
-	nullpo_retv(sd);
+/// Adds new skill to the skill tree.
+/// 0111 <skill id>.W <type>.L <level>.W <sp cost>.W <attack range>.W <skill name>.24B <upgradable>.B (ZC_ADD_SKILL)
+/// 0b31 <skill id>.W <type>.L <level>.W <sp cost>.W <attack range>.W <upgradable>.B <isnew>.B (ZC_ADD_SKILL2)
+void clif_addskill(map_session_data &sd, uint16 skill_id){
 
-	int fd = sd->fd;
 	uint16 idx = skill_get_index(skill_id);
 
-	if (!session_isActive(fd) || !idx)
+	if (idx == 0)
 		return;
 
-	if( sd->status.skill[idx].id <= 0 )
+	if( sd.status.skill[idx].id <= 0 )
 		return;
 
-	WFIFOHEAD(fd, packet_len(0x111));
-	WFIFOW(fd,0) = 0x111;
-	WFIFOW(fd,2) = skill_id;
-	WFIFOL(fd,4) = skill_get_inf(skill_id);
-	WFIFOW(fd,8) = sd->status.skill[idx].lv;
-	WFIFOW(fd,10) = skill_get_sp(skill_id,sd->status.skill[idx].lv);
-	WFIFOW(fd,12)= skill_get_range2(&sd->bl,skill_id,sd->status.skill[idx].lv,false);
-	safestrncpy(WFIFOCP(fd,14), skill_get_name(skill_id), NAME_LENGTH);
-	if( sd->status.skill[idx].flag == SKILL_FLAG_PERMANENT )
-		WFIFOB(fd,38) = (sd->status.skill[idx].lv < skill_tree_get_max(skill_id, sd->status.class_))? 1:0;
+	PACKET_ZC_ADD_SKILL p{};
+
+	p.packetType = HEADER_ZC_ADD_SKILL;
+	p.skill.id = skill_id;
+	p.skill.inf = skill_get_inf(skill_id);
+	p.skill.level = sd.status.skill[idx].lv;
+	p.skill.sp = static_cast<decltype(p.skill.sp)>( skill_get_sp(skill_id,sd.status.skill[idx].lv) );
+	p.skill.range2 = static_cast<decltype(p.skill.range2)>( skill_get_range2(&sd.bl,skill_id,sd.status.skill[idx].lv,false) );
+#if PACKETVER_RE_NUM >= 20190807 || PACKETVER_ZERO_NUM >= 20190918
+	p.skill.level2 = pc_checkskill(&sd,skill_id);
+#else
+	safestrncpy(p.skill.name, skill_get_name(skill_id), sizeof(p.skill.name));
+#endif
+
+	if( sd.status.skill[idx].flag == SKILL_FLAG_PERMANENT && sd.status.skill[idx].lv < skill_tree_get_max(skill_id, sd.status.class_))
+		p.skill.upFlag = 1;
 	else
-		WFIFOB(fd,38) = 0;
-	WFIFOSET(fd,packet_len(0x111));
+		p.skill.upFlag = 0;
+
+	clif_send(&p,sizeof(p),&sd.bl,SELF);
 }
 
 
@@ -9053,7 +9059,7 @@ void clif_guild_emblem_area(struct block_list* bl)
 	p.emblem_id = status_get_emblem_id(bl);
 	p.AID = bl->id;
 
-	clif_send(&p, sizeof(p), bl, AREA_WOS);
+	clif_send(&p, sizeof(p), bl, AREA);
 }
 
 
@@ -9369,6 +9375,30 @@ void clif_guild_broken( map_session_data& sd, int flag ){
 	p.result = flag;
 
 	clif_send( &p, sizeof( p ), &sd.bl, SELF );
+}
+
+void clif_guild_position_selected(map_session_data& sd)
+{
+#if PACKETVER_MAIN_NUM >= 20180605 || PACKETVER_RE_NUM >= 20180605 || PACKETVER_ZERO_NUM >= 20180605
+	PACKET_ZC_GUILD_POSITION* p = reinterpret_cast<PACKET_ZC_GUILD_POSITION*>(packet_buffer);
+
+	p->packetType = HEADER_ZC_GUILD_POSITION;
+	p->packetLength = sizeof( PACKET_ZC_GUILD_POSITION );
+	p->AID = sd.bl.id;
+
+	if( sd.guild != nullptr ){
+		const auto& g = sd.guild->guild;
+
+		if( int ps = guild_getposition( sd ); ps != -1 ){
+			safestrncpy( p->position, g.position[ps].name, NAME_LENGTH );
+			p->packetLength += static_cast<decltype(p->packetLength)>( NAME_LENGTH );
+		}
+	}
+
+	clif_send( p, p->packetLength, &sd.bl, AREA );
+#else
+	clif_name_area(&sd.bl);
+#endif
 }
 
 
