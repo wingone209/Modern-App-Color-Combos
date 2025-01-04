@@ -1908,6 +1908,14 @@
 	export_constant(SC_CONTENTS_31);
 	export_constant(SC_CONTENTS_32);
 	export_constant(SC_CONTENTS_33);
+	export_constant(SC_RETURN_TO_ELDICASTES);
+	export_constant(SC_GUARDIAN_RECALL);
+	export_constant(SC_ECLAGE_RECALL);
+	export_constant(SC_ALL_NIFLHEIM_RECALL);
+	export_constant(SC_ALL_PRONTERA_RECALL);
+	export_constant(SC_ALL_GLASTHEIM_RECALL);
+	export_constant(SC_ALL_THANATOS_RECALL);
+	export_constant(SC_ALL_LIGHTHALZEN_RECALL);
 
 	// Hyper Novice
 	export_constant(SC_SHIELDCHAINRUSH);
@@ -4817,7 +4825,7 @@
 	export_constant(IG_LASTANGEL_LUCKYSCROLL);
 	export_constant(IG_VALKYRIE_LUCKY_SCROLL);
 	export_constant(IG_SPLASH_RAINBOW_LUCKY_SCROLL);
-	export_constant(IG_SHAPESHIFTER_COSTUME);
+	export_constant(IG_COSTAMA_EGG22);
 	export_constant(IG_JULY_LUCKY_SCROLL);
 	export_constant(IG_COSTAMA_EGG23);
 	export_constant(IG_COSTAMA_EGG28);
