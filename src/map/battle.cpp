@@ -1824,40 +1824,6 @@ int64 battle_calc_damage(struct block_list *src,struct block_list *bl,struct Dam
 		if (tsc->getSCE(SC_SHADOW_CLOCK))
 			damage -= damage * 60 / 100;
 
-		// Compressed code, fixed by map.hpp [Epoque]
-		if (src->type == BL_MOB) {
-			std::vector<e_race2> race2 = status_get_race2(src);
-
-			for (const auto &raceit : race2) {
-				switch (raceit) {
-					case RC2_MANUK:
-						if (sce = tsc->getSCE(SC_MANU_DEF))
-							damage -= damage * sce->val1 / 100;
-						break;
-					case RC2_SPLENDIDE:
-						if (sce = tsc->getSCE(SC_SPL_DEF))
-							damage -= damage * sce->val1 / 100;
-						break;
-					case RC2_BIO5_ACOLYTE_MERCHANT:
-						if (sce = tsc->getSCE(SC_LHZ_DUN_N1))
-							damage -= damage * sce->val2 / 100;
-						break;
-					case RC2_BIO5_MAGE_ARCHER:
-						if (sce = tsc->getSCE(SC_LHZ_DUN_N2))
-							damage -= damage * sce->val2 / 100;
-						break;
-					case RC2_BIO5_SWORDMAN_THIEF:
-						if (sce = tsc->getSCE(SC_LHZ_DUN_N3))
-							damage -= damage * sce->val2 / 100;
-						break;
-					case RC2_BIO5_MVP:
-						if (sce = tsc->getSCE(SC_LHZ_DUN_N4))
-							damage -= damage * sce->val2 / 100;
-						break;
-				}
-			}
-		}
-
 		if((sce=tsc->getSCE(SC_ARMOR)) && //NPC_DEFENDER
 			sce->val3&flag && sce->val4&flag)
 			damage /= tsc->getSCE(SC_ARMOR)->val2;
