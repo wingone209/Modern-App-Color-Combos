@@ -8787,7 +8787,10 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 						break;
 					case SU_CN_METEOR:
 					case SU_CN_METEOR2:
-						skillratio += 100 + 100 * skill_lv + sstatus->int_ * 5; // !TODO: Confirm INT bonus
+						skillratio += -100 + 200 + 100 * skill_lv;
+						if (status_get_lv(src) > 99) {
+							skillratio += sstatus->int_ * 5;
+						}
 						RE_LVL_DMOD(100);
 						if (sc && sc->getSCE(SC_COLORS_OF_HYUN_ROK_BUFF))
 							skillratio += skillratio * 50 / 100;
