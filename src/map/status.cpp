@@ -58,20 +58,20 @@ short current_equip_opt_index; /// Contains random option index of an equipped i
 
 uint16 SCDisabled[SC_MAX]; ///< List of disabled SC on map zones. [Cydh]
 
-static unsigned short status_calc_str(struct block_list *,status_change *,int32);
-static unsigned short status_calc_agi(struct block_list *,status_change *,int32);
-static unsigned short status_calc_vit(struct block_list *,status_change *,int32);
-static unsigned short status_calc_int(struct block_list *,status_change *,int32);
-static unsigned short status_calc_dex(struct block_list *,status_change *,int32);
-static unsigned short status_calc_luk(struct block_list *,status_change *,int32);
-static unsigned short status_calc_pow(struct block_list *, status_change *, int32);
-static unsigned short status_calc_sta(struct block_list *, status_change *, int32);
-static unsigned short status_calc_wis(struct block_list *, status_change *, int32);
-static unsigned short status_calc_spl(struct block_list *, status_change *, int32);
-static unsigned short status_calc_con(struct block_list *, status_change *, int32);
-static unsigned short status_calc_crt(struct block_list *, status_change *, int32);
-static unsigned short status_calc_batk(struct block_list *,status_change *,int32);
-static unsigned short status_calc_watk(struct block_list *,status_change *,int32);
+static uint16 status_calc_str(struct block_list *,status_change *,int32);
+static uint16 status_calc_agi(struct block_list *,status_change *,int32);
+static uint16 status_calc_vit(struct block_list *,status_change *,int32);
+static uint16 status_calc_int(struct block_list *,status_change *,int32);
+static uint16 status_calc_dex(struct block_list *,status_change *,int32);
+static uint16 status_calc_luk(struct block_list *,status_change *,int32);
+static uint16 status_calc_pow(struct block_list *, status_change *, int32);
+static uint16 status_calc_sta(struct block_list *, status_change *, int32);
+static uint16 status_calc_wis(struct block_list *, status_change *, int32);
+static uint16 status_calc_spl(struct block_list *, status_change *, int32);
+static uint16 status_calc_con(struct block_list *, status_change *, int32);
+static uint16 status_calc_crt(struct block_list *, status_change *, int32);
+static uint16 status_calc_batk(struct block_list *,status_change *,int32);
+static uint16 status_calc_watk(struct block_list *,status_change *,int32);
 static signed short status_calc_hit(struct block_list *,status_change *,int32);
 static signed short status_calc_critical(struct block_list *,status_change *,int32);
 static signed short status_calc_flee(struct block_list *,status_change *,int32);
@@ -80,9 +80,9 @@ static defType status_calc_def(struct block_list *bl, status_change *sc, int32);
 static signed short status_calc_def2(struct block_list *,status_change *,int32);
 static defType status_calc_mdef(struct block_list *bl, status_change *sc, int32);
 static signed short status_calc_mdef2(struct block_list *,status_change *,int32);
-static unsigned short status_calc_speed(struct block_list *,status_change *,int32);
+static uint16 status_calc_speed(struct block_list *,status_change *,int32);
 static short status_calc_aspd_rate(struct block_list *,status_change *,int32);
-static unsigned short status_calc_dmotion(struct block_list *bl, status_change *sc, int32 dmotion);
+static uint16 status_calc_dmotion(struct block_list *bl, status_change *sc, int32 dmotion);
 #ifdef RENEWAL_ASPD
 static short status_calc_aspd(struct block_list *bl, status_change *sc, bool fixed);
 #endif
@@ -500,7 +500,7 @@ uint64 SizeFixDatabase::parseBodyNode(const ryml::NodeRef& node) {
 		return 0;
 	}
 
-	int32 weapon_id = static_cast<int>(constant);
+	int32 weapon_id = static_cast<int32>(constant);
 	std::shared_ptr<s_sizefix_db> size = this->find(weapon_id);
 	bool exists = size != nullptr;
 
@@ -2370,7 +2370,7 @@ int32 status_base_amotion_pc(map_session_data* sd, struct status_data* status)
  * @param status: Object status
  * @return base attack
  */
-unsigned short status_base_atk(const struct block_list *bl, const struct status_data *status, int32 level)
+uint16 status_base_atk(const struct block_list *bl, const struct status_data *status, int32 level)
 {
 	int32 flag = 0, str, dex, dstr;
 
@@ -2458,14 +2458,14 @@ uint32 status_weapon_atk(weapon_atk &wa)
 #endif
 
 #ifndef RENEWAL
-unsigned short status_base_matk_min(const struct status_data* status) { return status->int_ + (status->int_ / 7) * (status->int_ / 7); }
-unsigned short status_base_matk_max(const struct status_data* status) { return status->int_ + (status->int_ / 5) * (status->int_ / 5); }
+uint16 status_base_matk_min(const struct status_data* status) { return status->int_ + (status->int_ / 7) * (status->int_ / 7); }
+uint16 status_base_matk_max(const struct status_data* status) { return status->int_ + (status->int_ / 5) * (status->int_ / 5); }
 #else
 /*
 * Calculates minimum attack variance 80% from db's ATK1 for non BL_PC
 * status->batk (base attack) will be added in battle_calc_base_damage
 */
-unsigned short status_base_atk_min(struct block_list *bl, const struct status_data* status, int32 level)
+uint16 status_base_atk_min(struct block_list *bl, const struct status_data* status, int32 level)
 {
 	switch (bl->type) {
 		case BL_PET:
@@ -2484,7 +2484,7 @@ unsigned short status_base_atk_min(struct block_list *bl, const struct status_da
 * Calculates maximum attack variance 120% from db's ATK1 for non BL_PC
 * status->batk (base attack) will be added in battle_calc_base_damage
 */
-unsigned short status_base_atk_max(struct block_list *bl, const struct status_data* status, int32 level)
+uint16 status_base_atk_max(struct block_list *bl, const struct status_data* status, int32 level)
 {
 	switch (bl->type) {
 		case BL_PET:
@@ -2502,7 +2502,7 @@ unsigned short status_base_atk_max(struct block_list *bl, const struct status_da
 /*
 * Calculates minimum magic attack
 */
-unsigned short status_base_matk_min(struct block_list *bl, const struct status_data* status, int32 level)
+uint16 status_base_matk_min(struct block_list *bl, const struct status_data* status, int32 level)
 {
 	switch (bl->type) {
 		case BL_PET:
@@ -2521,7 +2521,7 @@ unsigned short status_base_matk_min(struct block_list *bl, const struct status_d
 /*
 * Calculates maximum magic attack
 */
-unsigned short status_base_matk_max(struct block_list *bl, const struct status_data* status, int32 level)
+uint16 status_base_matk_max(struct block_list *bl, const struct status_data* status, int32 level)
 {
 	switch (bl->type) {
 		case BL_PET:
@@ -6435,14 +6435,14 @@ void status_calc_bl_(struct block_list* bl, std::bitset<SCB_MAX> flag, uint8 opt
  * @param str: Initial str
  * @return modified str with cap_value(str,0,USHRT_MAX)
  */
-static unsigned short status_calc_str(struct block_list *bl, status_change *sc, int32 str)
+static uint16 status_calc_str(struct block_list *bl, status_change *sc, int32 str)
 {
 	if(sc == nullptr || sc->empty())
 		return cap_value(str,0,USHRT_MAX);
 
 	if(sc->getSCE(SC_HARMONIZE)) {
 		str -= sc->getSCE(SC_HARMONIZE)->val2;
-		return (unsigned short)cap_value(str,0,USHRT_MAX);
+		return (uint16)cap_value(str,0,USHRT_MAX);
 	}
 	if(sc->getSCE(SC_INCALLSTATUS))
 		str += sc->getSCE(SC_INCALLSTATUS)->val1;
@@ -6500,7 +6500,7 @@ static unsigned short status_calc_str(struct block_list *bl, status_change *sc, 
 		str -= sc->getSCE(SC_ALL_STAT_DOWN)->val2;
 
 	//TODO: Stat points should be able to be decreased below 0
-	return (unsigned short)cap_value(str,0,USHRT_MAX);
+	return (uint16)cap_value(str,0,USHRT_MAX);
 }
 
 /**
@@ -6510,14 +6510,14 @@ static unsigned short status_calc_str(struct block_list *bl, status_change *sc, 
  * @param agi: Initial agi
  * @return modified agi with cap_value(agi,0,USHRT_MAX)
  */
-static unsigned short status_calc_agi(struct block_list *bl, status_change *sc, int32 agi)
+static uint16 status_calc_agi(struct block_list *bl, status_change *sc, int32 agi)
 {
 	if(sc == nullptr || sc->empty())
 		return cap_value(agi,0,USHRT_MAX);
 
 	if(sc->getSCE(SC_HARMONIZE)) {
 		agi -= sc->getSCE(SC_HARMONIZE)->val2;
-		return (unsigned short)cap_value(agi,0,USHRT_MAX);
+		return (uint16)cap_value(agi,0,USHRT_MAX);
 	}
 	if(sc->getSCE(SC_CONCENTRATE) && !sc->getSCE(SC_QUAGMIRE))
 		agi += (agi-sc->getSCE(SC_CONCENTRATE)->val3)*sc->getSCE(SC_CONCENTRATE)->val2/100;
@@ -6573,7 +6573,7 @@ static unsigned short status_calc_agi(struct block_list *bl, status_change *sc, 
 		agi -= sc->getSCE(SC_ALL_STAT_DOWN)->val2;
 
 	//TODO: Stat points should be able to be decreased below 0
-	return (unsigned short)cap_value(agi,0,USHRT_MAX);
+	return (uint16)cap_value(agi,0,USHRT_MAX);
 }
 
 /**
@@ -6583,14 +6583,14 @@ static unsigned short status_calc_agi(struct block_list *bl, status_change *sc, 
  * @param vit: Initial vit
  * @return modified vit with cap_value(vit,0,USHRT_MAX)
  */
-static unsigned short status_calc_vit(struct block_list *bl, status_change *sc, int32 vit)
+static uint16 status_calc_vit(struct block_list *bl, status_change *sc, int32 vit)
 {
 	if(sc == nullptr || sc->empty())
 		return cap_value(vit,0,USHRT_MAX);
 
 	if(sc->getSCE(SC_HARMONIZE)) {
 		vit -= sc->getSCE(SC_HARMONIZE)->val2;
-		return (unsigned short)cap_value(vit,0,USHRT_MAX);
+		return (uint16)cap_value(vit,0,USHRT_MAX);
 	}
 	if(sc->getSCE(SC_INCALLSTATUS))
 		vit += sc->getSCE(SC_INCALLSTATUS)->val1;
@@ -6634,7 +6634,7 @@ static unsigned short status_calc_vit(struct block_list *bl, status_change *sc, 
 		vit -= sc->getSCE(SC_ALL_STAT_DOWN)->val2;
 
 	//TODO: Stat points should be able to be decreased below 0
-	return (unsigned short)cap_value(vit,0,USHRT_MAX);
+	return (uint16)cap_value(vit,0,USHRT_MAX);
 }
 
 /**
@@ -6644,14 +6644,14 @@ static unsigned short status_calc_vit(struct block_list *bl, status_change *sc, 
  * @param int_: Initial int32
  * @return modified int32 with cap_value(int_,0,USHRT_MAX)
  */
-static unsigned short status_calc_int(struct block_list *bl, status_change *sc, int32 int_)
+static uint16 status_calc_int(struct block_list *bl, status_change *sc, int32 int_)
 {
 	if(sc == nullptr || sc->empty())
 		return cap_value(int_,0,USHRT_MAX);
 
 	if(sc->getSCE(SC_HARMONIZE)) {
 		int_ -= sc->getSCE(SC_HARMONIZE)->val2;
-		return (unsigned short)cap_value(int_,0,USHRT_MAX);
+		return (uint16)cap_value(int_,0,USHRT_MAX);
 	}
 	if(sc->getSCE(SC_INCALLSTATUS))
 		int_ += sc->getSCE(SC_INCALLSTATUS)->val1;
@@ -6712,7 +6712,7 @@ static unsigned short status_calc_int(struct block_list *bl, status_change *sc, 
 		int_ -= sc->getSCE(SC_ALL_STAT_DOWN)->val2;
 
 	//TODO: Stat points should be able to be decreased below 0
-	return (unsigned short)cap_value(int_,0,USHRT_MAX);
+	return (uint16)cap_value(int_,0,USHRT_MAX);
 }
 
 /**
@@ -6722,14 +6722,14 @@ static unsigned short status_calc_int(struct block_list *bl, status_change *sc, 
  * @param dex: Initial dex
  * @return modified dex with cap_value(dex,0,USHRT_MAX)
  */
-static unsigned short status_calc_dex(struct block_list *bl, status_change *sc, int32 dex)
+static uint16 status_calc_dex(struct block_list *bl, status_change *sc, int32 dex)
 {
 	if(sc == nullptr || sc->empty())
 		return cap_value(dex,0,USHRT_MAX);
 
 	if(sc->getSCE(SC_HARMONIZE)) {
 		dex -= sc->getSCE(SC_HARMONIZE)->val2;
-		return (unsigned short)cap_value(dex,0,USHRT_MAX);
+		return (uint16)cap_value(dex,0,USHRT_MAX);
 	}
 	if(sc->getSCE(SC_CONCENTRATE) && !sc->getSCE(SC_QUAGMIRE))
 		dex += (dex-sc->getSCE(SC_CONCENTRATE)->val4)*sc->getSCE(SC_CONCENTRATE)->val2/100;
@@ -6787,7 +6787,7 @@ static unsigned short status_calc_dex(struct block_list *bl, status_change *sc, 
 		dex -= sc->getSCE(SC_ALL_STAT_DOWN)->val2;
 
 	//TODO: Stat points should be able to be decreased below 0
-	return (unsigned short)cap_value(dex,0,USHRT_MAX);
+	return (uint16)cap_value(dex,0,USHRT_MAX);
 }
 
 /**
@@ -6797,14 +6797,14 @@ static unsigned short status_calc_dex(struct block_list *bl, status_change *sc, 
  * @param luk: Initial luk
  * @return modified luk with cap_value(luk,0,USHRT_MAX)
  */
-static unsigned short status_calc_luk(struct block_list *bl, status_change *sc, int32 luk)
+static uint16 status_calc_luk(struct block_list *bl, status_change *sc, int32 luk)
 {
 	if(sc == nullptr || sc->empty())
 		return cap_value(luk,0,USHRT_MAX);
 
 	if(sc->getSCE(SC_HARMONIZE)) {
 		luk -= sc->getSCE(SC_HARMONIZE)->val2;
-		return (unsigned short)cap_value(luk,0,USHRT_MAX);
+		return (uint16)cap_value(luk,0,USHRT_MAX);
 	}
 	if(sc->getSCE(SC_CURSE))
 		return 0;
@@ -6848,7 +6848,7 @@ static unsigned short status_calc_luk(struct block_list *bl, status_change *sc, 
 		luk -= sc->getSCE(SC_ALL_STAT_DOWN)->val2;
 
 	//TODO: Stat points should be able to be decreased below 0
-	return (unsigned short)cap_value(luk,0,USHRT_MAX);
+	return (uint16)cap_value(luk,0,USHRT_MAX);
 }
 
 /**
@@ -6858,7 +6858,7 @@ static unsigned short status_calc_luk(struct block_list *bl, status_change *sc, 
 * @param pow: Initial pow
 * @return modified pow with cap_value(pow,0,USHRT_MAX)
 */
-static unsigned short status_calc_pow(struct block_list *bl, status_change *sc, int32 pow)
+static uint16 status_calc_pow(struct block_list *bl, status_change *sc, int32 pow)
 {
 	if (sc == nullptr || sc->empty())
 		return cap_value(pow, 0, USHRT_MAX);
@@ -6868,7 +6868,7 @@ static unsigned short status_calc_pow(struct block_list *bl, status_change *sc, 
 	if (sc->getSCE(SC_MARINE_FESTIVAL))
 		pow += sc->getSCE(SC_MARINE_FESTIVAL)->val2;
 
-	return (unsigned short)cap_value(pow, 0, USHRT_MAX);
+	return (uint16)cap_value(pow, 0, USHRT_MAX);
 }
 
 /**
@@ -6878,7 +6878,7 @@ static unsigned short status_calc_pow(struct block_list *bl, status_change *sc, 
 * @param sta: Initial sta
 * @return modified sta with cap_value(sta,0,USHRT_MAX)
 */
-static unsigned short status_calc_sta(struct block_list *bl, status_change *sc, int32 sta)
+static uint16 status_calc_sta(struct block_list *bl, status_change *sc, int32 sta)
 {
 	if (sc == nullptr || sc->empty())
 		return cap_value(sta, 0, USHRT_MAX);
@@ -6888,7 +6888,7 @@ static unsigned short status_calc_sta(struct block_list *bl, status_change *sc, 
 	if (sc->getSCE(SC_SANDY_FESTIVAL))
 		sta += sc->getSCE(SC_SANDY_FESTIVAL)->val2;
 
-	return (unsigned short)cap_value(sta, 0, USHRT_MAX);
+	return (uint16)cap_value(sta, 0, USHRT_MAX);
 }
 
 /**
@@ -6898,7 +6898,7 @@ static unsigned short status_calc_sta(struct block_list *bl, status_change *sc, 
 * @param wis: Initial wis
 * @return modified wis with cap_value(wis,0,USHRT_MAX)
 */
-static unsigned short status_calc_wis(struct block_list *bl, status_change *sc, int32 wis)
+static uint16 status_calc_wis(struct block_list *bl, status_change *sc, int32 wis)
 {
 	if (sc == nullptr || sc->empty())
 		return cap_value(wis, 0, USHRT_MAX);
@@ -6908,7 +6908,7 @@ static unsigned short status_calc_wis(struct block_list *bl, status_change *sc, 
 	if (sc->getSCE(SC_SANDY_FESTIVAL))
 		wis += sc->getSCE(SC_SANDY_FESTIVAL)->val2;
 
-	return (unsigned short)cap_value(wis, 0, USHRT_MAX);
+	return (uint16)cap_value(wis, 0, USHRT_MAX);
 }
 
 /**
@@ -6918,7 +6918,7 @@ static unsigned short status_calc_wis(struct block_list *bl, status_change *sc, 
 * @param spl: Initial spl
 * @return modified spl with cap_value(spl,0,USHRT_MAX)
 */
-static unsigned short status_calc_spl(struct block_list *bl, status_change *sc, int32 spl)
+static uint16 status_calc_spl(struct block_list *bl, status_change *sc, int32 spl)
 {
 	if (sc == nullptr || sc->empty())
 		return cap_value(spl, 0, USHRT_MAX);
@@ -6928,7 +6928,7 @@ static unsigned short status_calc_spl(struct block_list *bl, status_change *sc, 
 	if (sc->getSCE(SC_SANDY_FESTIVAL))
 		spl += sc->getSCE(SC_SANDY_FESTIVAL)->val2;
 
-	return (unsigned short)cap_value(spl, 0, USHRT_MAX);
+	return (uint16)cap_value(spl, 0, USHRT_MAX);
 }
 
 /**
@@ -6938,7 +6938,7 @@ static unsigned short status_calc_spl(struct block_list *bl, status_change *sc, 
 * @param con: Initial con
 * @return modified con with cap_value(con,0,USHRT_MAX)
 */
-static unsigned short status_calc_con(struct block_list *bl, status_change *sc, int32 con)
+static uint16 status_calc_con(struct block_list *bl, status_change *sc, int32 con)
 {
 	if (sc == nullptr || sc->empty())
 		return cap_value(con, 0, USHRT_MAX);
@@ -6948,7 +6948,7 @@ static unsigned short status_calc_con(struct block_list *bl, status_change *sc, 
 	if (sc->getSCE(SC_MARINE_FESTIVAL))
 		con += sc->getSCE(SC_MARINE_FESTIVAL)->val2;
 
-	return (unsigned short)cap_value(con, 0, USHRT_MAX);
+	return (uint16)cap_value(con, 0, USHRT_MAX);
 }
 
 /**
@@ -6958,7 +6958,7 @@ static unsigned short status_calc_con(struct block_list *bl, status_change *sc, 
 * @param crt: Initial crt
 * @return modified crt with cap_value(crt,0,USHRT_MAX)
 */
-static unsigned short status_calc_crt(struct block_list *bl, status_change *sc, int32 crt)
+static uint16 status_calc_crt(struct block_list *bl, status_change *sc, int32 crt)
 {
 	if (sc == nullptr || sc->empty())
 		return cap_value(crt, 0, USHRT_MAX);
@@ -6968,7 +6968,7 @@ static unsigned short status_calc_crt(struct block_list *bl, status_change *sc, 
 	if (sc->getSCE(SC_MARINE_FESTIVAL))
 		crt += sc->getSCE(SC_MARINE_FESTIVAL)->val2;
 
-	return (unsigned short)cap_value(crt, 0, USHRT_MAX);
+	return (uint16)cap_value(crt, 0, USHRT_MAX);
 }
 
 /**
@@ -6978,7 +6978,7 @@ static unsigned short status_calc_crt(struct block_list *bl, status_change *sc, 
  * @param batk: Initial batk
  * @return modified batk with cap_value(batk,0,USHRT_MAX)
  */
-static unsigned short status_calc_batk(struct block_list *bl, status_change *sc, int32 batk)
+static uint16 status_calc_batk(struct block_list *bl, status_change *sc, int32 batk)
 {
 	if(sc == nullptr || sc->empty())
 		return cap_value(batk,0,USHRT_MAX);
@@ -7010,7 +7010,7 @@ static unsigned short status_calc_batk(struct block_list *bl, status_change *sc,
 	if (sc->getSCE(SC_SUNSTANCE))
 		batk += batk * sc->getSCE(SC_SUNSTANCE)->val2 / 100;
 
-	return (unsigned short)cap_value(batk,0,USHRT_MAX);
+	return (uint16)cap_value(batk,0,USHRT_MAX);
 }
 
 /**
@@ -7020,7 +7020,7 @@ static unsigned short status_calc_batk(struct block_list *bl, status_change *sc,
  * @param watk: Initial watk
  * @return modified watk with cap_value(watk,0,USHRT_MAX)
  */
-static unsigned short status_calc_watk(struct block_list *bl, status_change *sc, int32 watk)
+static uint16 status_calc_watk(struct block_list *bl, status_change *sc, int32 watk)
 {
 	if(sc == nullptr || sc->empty())
 		return cap_value(watk,0,USHRT_MAX);
@@ -7104,7 +7104,7 @@ static unsigned short status_calc_watk(struct block_list *bl, status_change *sc,
 	if (sc->getSCE(SC_INTENSIVE_AIM))
 		watk += 150;
 
-	return (unsigned short)cap_value(watk,0,USHRT_MAX);
+	return (uint16)cap_value(watk,0,USHRT_MAX);
 }
 
 /**
@@ -7705,13 +7705,13 @@ static signed short status_calc_mdef2(struct block_list *bl, status_change *sc, 
  * @param speed: Initial speed
  * @return modified speed with cap_value(speed,10,USHRT_MAX)
  */
-static unsigned short status_calc_speed(struct block_list *bl, status_change *sc, int32 speed)
+static uint16 status_calc_speed(struct block_list *bl, status_change *sc, int32 speed)
 {
 	TBL_PC* sd = BL_CAST(BL_PC, bl);
 	int32 speed_rate = 100;
 
 	if (sc == nullptr || (sd && sd->state.permanent_speed))
-		return (unsigned short)cap_value(speed, MIN_WALK_SPEED, MAX_WALK_SPEED);
+		return (uint16)cap_value(speed, MIN_WALK_SPEED, MAX_WALK_SPEED);
 
 	if (sd && pc_ismadogear(sd)) { // Mado speed is not affected by other statuses
 		int32 val = 0;
@@ -7724,7 +7724,7 @@ static unsigned short status_calc_speed(struct block_list *bl, status_change *sc
 			val -= 25;
 		speed += speed * val / 100;
 
-		return (unsigned short)cap_value(speed, MIN_WALK_SPEED, MAX_WALK_SPEED);
+		return (uint16)cap_value(speed, MIN_WALK_SPEED, MAX_WALK_SPEED);
 	}
 
 	if( sd && sd->ud.skilltimer != INVALID_TIMER && (pc_checkskill(sd,SA_FREECAST) > 0 || sd->ud.skill_id == LG_EXEEDBREAK) ) {
@@ -7912,7 +7912,7 @@ static unsigned short status_calc_speed(struct block_list *bl, status_change *sc
 	if( sc->getSCE(SC_WALKSPEED) && sc->getSCE(SC_WALKSPEED)->val1 > 0 ) // ChangeSpeed
 		speed = speed * 100 / sc->getSCE(SC_WALKSPEED)->val1;
 
-	return (unsigned short)cap_value(speed, MIN_WALK_SPEED, MAX_WALK_SPEED);
+	return (uint16)cap_value(speed, MIN_WALK_SPEED, MAX_WALK_SPEED);
 }
 
 #ifdef RENEWAL_ASPD
@@ -8241,7 +8241,7 @@ static short status_calc_aspd_rate(struct block_list *bl, status_change *sc, int
  * @param dmotion: Object's current damage delay
  * @return modified delay rate
  */
-static unsigned short status_calc_dmotion(struct block_list *bl, status_change *sc, int32 dmotion)
+static uint16 status_calc_dmotion(struct block_list *bl, status_change *sc, int32 dmotion)
 {
 	/// It has been confirmed on official servers that MvP mobs have no dmotion even without endure
 	if( bl->type == BL_MOB && status_get_class_(bl) == CLASS_BOSS )
@@ -8249,7 +8249,7 @@ static unsigned short status_calc_dmotion(struct block_list *bl, status_change *
 
 	if (bl->type == BL_PC) {
 		if (map_flag_gvg2(bl->m) || map_getmapflag(bl->m, MF_BATTLEGROUND))
-			return (unsigned short)cap_value(dmotion, 0, USHRT_MAX);
+			return (uint16)cap_value(dmotion, 0, USHRT_MAX);
 
 		if (((TBL_PC *)bl)->special_state.no_walk_delay)
 			return 0;
@@ -8258,7 +8258,7 @@ static unsigned short status_calc_dmotion(struct block_list *bl, status_change *
 	if (sc != nullptr && !sc->empty() && (sc->getSCE(SC_ENDURE) || sc->getSCE(SC_RUN) || sc->getSCE(SC_WUGDASH)))
 		return 0;
 
-	return (unsigned short)cap_value(dmotion,0,USHRT_MAX);
+	return (uint16)cap_value(dmotion,0,USHRT_MAX);
 }
 
 /**
@@ -8812,7 +8812,7 @@ defType status_get_def(struct block_list *bl)
  * @param bl: Object whose speed to get [PC|MOB|PET|HOM|MER|ELEM|NPC]
  * @return speed
  */
-unsigned short status_get_speed(struct block_list *bl)
+uint16 status_get_speed(struct block_list *bl)
 {
 	// TODO: is the statement of Skotlex still true? And would it not be better to check for dummy_status instead? [Lemongrass]
 	if(bl->type==BL_NPC)// Only BL with speed data but no status_data [Skotlex]
@@ -11273,7 +11273,7 @@ int32 status_change_start(struct block_list* src, struct block_list* bl,enum sc_
 					int32 pos =  (bl->x&0xFFFF)|(bl->y<<16), // Current Coordinates
 					map_idx =  sd->mapindex; // Current Map
 					// 1. Place in Jail (val2 -> Jail Map, val3 -> x, val4 -> y
-					pc_setpos(sd,(unsigned short)val2,val3,val4, CLR_TELEPORT);
+					pc_setpos(sd,(uint16)val2,val3,val4, CLR_TELEPORT);
 					// 2. Set restore point (val3 -> return map, val4 return coords
 					val3 = map_idx;
 					val4 = pos;
@@ -13328,7 +13328,7 @@ int32 status_change_end(struct block_list* bl, enum sc_type type, int32 tid)
 			break;
 		case SC_JAILED:
 			if(sd && sd->mapindex == sce->val2)
-				pc_setpos(sd,(unsigned short)sce->val3,sce->val4&0xFFFF, sce->val4>>16, CLR_TELEPORT);
+				pc_setpos(sd,(uint16)sce->val3,sce->val4&0xFFFF, sce->val4>>16, CLR_TELEPORT);
 			break; // Guess hes not in jail :P
 		case SC_CHANGE:
 			if (tid == INVALID_TIMER)
