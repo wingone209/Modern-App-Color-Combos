@@ -582,7 +582,7 @@ ACMD_FUNC(mapmove)
 {
 	char map_name[MAP_NAME_LENGTH_EXT];
 	uint16 mapindex;
-	short x = 0, y = 0;
+	int16 x = 0, y = 0;
 	int16 m = -1;
 
 	nullpo_retr(-1, sd);
@@ -714,7 +714,7 @@ ACMD_FUNC(jumpto)
  *------------------------------------------*/
 ACMD_FUNC(jump)
 {
-	short x = 0, y = 0;
+	int16 x = 0, y = 0;
 
 	nullpo_retr(-1, sd);
 
@@ -988,7 +988,7 @@ ACMD_FUNC(load){
  *------------------------------------------*/
 ACMD_FUNC(speed)
 {
-	short speed;
+	int16 speed;
 
 	nullpo_retr(-1, sd);
 
@@ -2285,7 +2285,7 @@ ACMD_FUNC(monster)
 	int32 number = 0;
 	int32 count;
 	int32 i, range;
-	short mx, my;
+	int16 mx, my;
 	uint32 size;
 	nullpo_retr(-1, sd);
 
@@ -3020,7 +3020,7 @@ ACMD_FUNC(stat_all)
 	
 	count = 0;
 	for (i = PARAM_STR; i < PARAM_POW; i++) {
-		short new_value;
+		int16 new_value;
 
 		if (value > 0 && status[i] + value >= max_status[i])
 			new_value = max_status[i];
@@ -3094,7 +3094,7 @@ ACMD_FUNC(trait_all) {
 	uint8 count = 0;
 
 	for (i = PARAM_POW; i < PARAM_MAX; i++) {
-		short new_value;
+		int16 new_value;
 
 		if (value > 0 && status[i] + value >= max_status[i])
 			new_value = max_status[i];
@@ -3132,7 +3132,7 @@ ACMD_FUNC(trait_all) {
  *------------------------------------------*/
 ACMD_FUNC(guildlevelup) {
 	int32 level = 0;
-	short added_level;
+	int16 added_level;
 	nullpo_retr(-1, sd);
 
 	if (!message || !*message || sscanf(message, "%11d", &level) < 1 || level == 0) {
@@ -3151,9 +3151,9 @@ ACMD_FUNC(guildlevelup) {
 	//	return -1;
 	//}
 
-	added_level = (short)level;
-	if (level > 0 && (level > MAX_GUILDLEVEL || added_level > ((short)MAX_GUILDLEVEL - guild_info->guild.guild_lv))) // fix positive overflow
-		added_level = (short)MAX_GUILDLEVEL - guild_info->guild.guild_lv;
+	added_level = (int16)level;
+	if (level > 0 && (level > MAX_GUILDLEVEL || added_level > ((int16)MAX_GUILDLEVEL - guild_info->guild.guild_lv))) // fix positive overflow
+		added_level = (int16)MAX_GUILDLEVEL - guild_info->guild.guild_lv;
 	else if (level < 0 && (level < -MAX_GUILDLEVEL || added_level < (1 - guild_info->guild.guild_lv))) // fix negative overflow
 		added_level = 1 - guild_info->guild.guild_lv;
 
@@ -5976,7 +5976,7 @@ ACMD_FUNC(skilloff)
  *------------------------------------------*/
 ACMD_FUNC(npcmove)
 {
-	short x = 0, y = 0;
+	int16 x = 0, y = 0;
 	struct npc_data *nd = 0;
 	char npc_name[NPC_NAME_LENGTH];
 
@@ -6011,7 +6011,7 @@ ACMD_FUNC(npcmove)
 ACMD_FUNC(addwarp)
 {
 	char mapname[MAP_NAME_LENGTH_EXT], warpname[NPC_NAME_LENGTH];
-	short x,y;
+	int16 x,y;
 	uint16 m;
 	struct npc_data* nd;
 
@@ -7409,7 +7409,7 @@ ACMD_FUNC(cleanmap)
 
 ACMD_FUNC(cleanarea)
 {
-	short x0 = 0, y0 = 0, x1 = 0, y1 = 0;
+	int16 x0 = 0, y0 = 0, x1 = 0, y1 = 0;
 
 	if (!message || !*message || sscanf(message, "%6hd %6hd %6hd %6hd", &x0, &y0, &x1, &y1) < 1) {
 		map_foreachinallarea(atcommand_cleanfloor_sub, sd->bl.m, sd->bl.x - (AREA_SIZE * 2), sd->bl.y - (AREA_SIZE * 2), sd->bl.x + (AREA_SIZE * 2), sd->bl.y + (AREA_SIZE * 2), BL_ITEM);
@@ -8985,7 +8985,7 @@ ACMD_FUNC(fakename)
  *------------------------------------------*/
 ACMD_FUNC(mapflag) {
 	char flag_name[50];
-	short flag = 0, i, j;
+	int16 flag = 0, i, j;
 	std::string buf;
 
 	nullpo_retr(-1, sd);
@@ -10771,7 +10771,7 @@ ACMD_FUNC(cloneequip) {
 	else {
 		int8 i;
 		for (i = 0; i < EQI_MAX; i++) {
-			short idx;
+			int16 idx;
 			char flag = 0;
 			struct item tmp_item;
 			if ((idx = pl_sd->equip_index[i]) < 0)
@@ -10843,7 +10843,7 @@ ACMD_FUNC(clonestat) {
 	}
 	else {
 		uint8 i;
-		short max_status[PARAM_MAX] = {};
+		int16 max_status[PARAM_MAX] = {};
 
 		pc_resetstate(sd);
 		if (pc_has_permission(sd, PC_PERM_BYPASS_STAT_ONCLONE)) {
