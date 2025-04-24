@@ -43,7 +43,7 @@
 
 using namespace rathena;
 
-#define ACTIVE_AI_RANGE 2	//Distance added on top of 'AREA_SIZE' at which mobs enter active AI mode.
+#define ACTIVE_AI_RANGE 4	//Distance added on top of 'AREA_SIZE' at which mobs enter active AI mode.
 
 const t_tick MOB_MAX_DELAY = 24 * 3600 * 1000;
 #define RUDE_ATTACKED_COUNT 1	//After how many rude-attacks should the skill be used?
@@ -1031,7 +1031,6 @@ int32 mob_linksearch(struct block_list *bl,va_list ap)
 		md->last_linktime = tick;
 		if( mob_can_reach(md,target,md->db->range2) ){	// Reachability judging
 			md->target_id = target->id;
-			md->min_chase=md->db->range3;
 			return 1;
 		}
 	}
@@ -1282,7 +1281,6 @@ int32 mob_target(struct mob_data *md,struct block_list *bl,int32 dist)
 	// When an angry monster is provoked, it will switch to retaliate AI
 	if (md->state.provoke_flag && md->state.aggressive)
 		md->state.aggressive = 0;
-	md->min_chase = cap_value(dist + md->db->range3 - md->status.rhw.range, md->db->range3, MAX_MINCHASE);
 	return 0;
 }
 
@@ -1335,7 +1333,6 @@ static int32 mob_ai_sub_hard_activesearch(struct block_list *bl,va_list ap)
 #endif
 		(*target) = bl;
 		md->target_id=bl->id;
-		md->min_chase = cap_value(dist + md->db->range3 - md->status.rhw.range, md->db->range3, MAX_MINCHASE);
 		return 1;
 
 	}
@@ -1364,7 +1361,6 @@ static int32 mob_ai_sub_hard_changechase(struct block_list *bl,va_list ap)
 	{
 		(*target) = bl;
 		md->target_id=bl->id;
-		md->min_chase= md->db->range3;
 	}
 	return 1;
 }
@@ -1399,7 +1395,7 @@ static int32 mob_ai_sub_hard_lootsearch(struct block_list *bl,va_list ap)
 	target = va_arg(ap,struct block_list**);
 
 	dist = distance_bl(&md->bl, bl);
-	if (mob_can_reach(md, bl, md->db->range3) && (
+	if (mob_can_reach(md, bl, battle_config.loot_range) && (
 		(*target) == nullptr ||
 		(battle_config.monster_loot_search_type && md->target_id > bl->id) ||
 		(!battle_config.monster_loot_search_type && !check_distance_bl(&md->bl, *target, dist)) // New target closer than previous one.
@@ -1407,10 +1403,12 @@ static int32 mob_ai_sub_hard_lootsearch(struct block_list *bl,va_list ap)
 	{
 		(*target) = bl;
 		md->target_id = bl->id;
-		md->min_chase = md->db->range3;
 	}
-	else if (!battle_config.monster_loot_search_type)
-		mob_stop_walking(md, 1); // Stop walking immediately if item is no longer on the ground.
+	else if( !battle_config.monster_loot_search_type ){
+		// Stop walking immediately if item is no longer on the ground.
+		unit_stop_walking( &md->bl, USW_FIXPOS );
+	}
+
 	return 0;
 }
 
@@ -1460,14 +1458,12 @@ static int32 mob_ai_sub_hard_slavemob(struct mob_data *md,t_tick tick)
 
 	if(status_has_mode(&md->status,MD_CANMOVE))
 	{	//If the mob can move, follow around. [Check by Skotlex]
-		int32 old_dist = md->master_dist;
-
 		// Distance with between slave and master is measured.
 		md->master_dist = distance_bl(&md->bl, bl);
 
 		if (battle_config.slave_stick_with_master || md->special_state.ai == AI_ABR || md->special_state.ai == AI_BIONIC) {
-			// Since the master was in near immediately before, teleport is carried out and it pursues.
-			if (bl->m != md->bl.m || (old_dist < 10 && md->master_dist > 18) || md->master_dist > MAX_MINCHASE) {
+			// Teleport to master if further away than 15 cells (official value for AI_ABR and AI_BIONIC)
+			if (bl->m != md->bl.m || md->master_dist > AREA_SIZE+1) {
 				md->master_dist = 0;
 				unit_warp(&md->bl, bl->m, bl->x, bl->y, CLR_TELEPORT);
 				return 1;
@@ -1492,10 +1488,10 @@ static int32 mob_ai_sub_hard_slavemob(struct mob_data *md,t_tick tick)
 
 			if (map_search_freecell(&md->bl, bl->m, &x, &y, MOB_SLAVEDISTANCE, MOB_SLAVEDISTANCE, 1)) {
 				if (unit_walktoxy(&md->bl, x, y, 0) == 0) { // Slave is too far from master (outside of battle_config.max_walk_path range), stay put
-					mob_stop_walking(md, USW_FIXPOS);
+					unit_stop_walking( &md->bl, USW_FIXPOS );
 					return 0; // Fail here so target will be picked back up when in range
 				} else { // Slave will walk back to master if in range
-					mob_stop_attack(md);
+					unit_stop_attack( &md->bl );
 					return 1;
 				}
 			}
@@ -1526,7 +1522,6 @@ static int32 mob_ai_sub_hard_slavemob(struct mob_data *md,t_tick tick)
 			}
 			if (tbl && status_check_skilluse(&md->bl, tbl, 0, 0)) {
 				md->target_id=tbl->id;
-				md->min_chase = cap_value(distance_bl(&md->bl, tbl) + md->db->range3 - md->status.rhw.range, md->db->range3, MAX_MINCHASE);
 				return 1;
 			}
 		}
@@ -1573,7 +1568,7 @@ int32 mob_unlocktarget(struct mob_data *md, t_tick tick)
 				md->next_walktime = tick+rnd()%1000;
 		break;
 	default:
-		mob_stop_attack(md);
+		unit_stop_attack( &md->bl );
 		unit_stop_walking_soon(md->bl); //Stop chasing.
 		if (status_has_mode(&md->status,MD_ANGRY) && !md->state.aggressive)
 			md->state.aggressive = 1; //Restore angry state when switching to idle
@@ -1619,6 +1614,9 @@ int32 mob_randomwalk(struct mob_data *md,t_tick tick)
 	   !unit_can_move(&md->bl) ||
 	   !status_has_mode(&md->status,MD_CANMOVE))
 		return 0;
+
+	// Make sure the monster has no target anymore, otherwise the walkpath will check for it
+	md->ud.target_to = 0;
 
 	r=rnd();
 	rdir=rnd()%4; // Randomize direction in which we iterate to prevent monster cluttering up in one corner
@@ -1723,8 +1721,8 @@ int32 mob_warpchase(struct mob_data *md, struct block_list *target)
 static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 {
 	struct block_list *tbl = nullptr, *abl = nullptr;
-	int32 mode;
-	int32 view_range, can_move;
+	bool can_move;
+	int32 view_range, mode;
 
 	if(md->bl.prev == nullptr || md->status.hp == 0)
 		return false;
@@ -1748,7 +1746,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 	}
 
 	if (md->sc.getSCE(SC_BLIND))
-		view_range = 3;
+		view_range = 1;
 	else
 		view_range = md->db->range2;
 	mode = status_get_mode(&md->bl);
@@ -1762,7 +1760,6 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 		tbl = map_id2bl(md->target_id);
 		if (!tbl || tbl->m != md->bl.m ||
 			(md->ud.attacktimer == INVALID_TIMER && !status_check_skilluse(&md->bl, tbl, 0, 0)) ||
-			(md->ud.walktimer != INVALID_TIMER && !(battle_config.mob_ai&0x1) && !check_distance_bl(&md->bl, tbl, md->min_chase)) ||
 			(
 				tbl->type == BL_PC &&
 				((((TBL_PC*)tbl)->state.gangsterparadise && !(mode&MD_STATUSIMMUNE)) ||
@@ -1789,7 +1786,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 						|| md->sc.getSCE(SC__MANHOLE) // Not yet confirmed if boss will teleport once it can't reach target.
 						|| md->walktoxy_fail_count > 0)
 					)
-					|| !mob_can_reach(md, tbl, md->min_chase)
+					|| !mob_can_reach(md, tbl, md->db->range3)
 				)
 			&&  md->state.attacked_count++ >= RUDE_ATTACKED_COUNT
 			&&  !mobskill_use(md, tick, MSC_RUDEATTACKED) // If can't rude Attack
@@ -1804,7 +1801,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 		{
 			int32 dist;
 			if( md->bl.m != abl->m || abl->prev == nullptr
-				|| (dist = distance_bl(&md->bl, abl)) >= MAX_MINCHASE // Attacker longer than visual area
+				|| (dist = distance_bl(&md->bl, abl)) > AREA_SIZE // Attacker longer than visual area
 				|| battle_check_target(&md->bl, abl, BCT_ENEMY) <= 0 // Attacker is not enemy of mob
 				|| (battle_config.mob_ai&0x2 && !status_check_skilluse(&md->bl, abl, 0, 0)) // Cannot normal attack back to Attacker
 				|| (!battle_check_range(&md->bl, abl, md->status.rhw.range) // Not on Melee Range and ...
@@ -1839,7 +1836,6 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 				md->target_id = md->attacked_id; // set target
 				if (md->state.attacked_count)
 					md->state.attacked_count--; //Should we reset rude attack count?
-				md->min_chase = cap_value(dist + md->db->range3 - md->status.rhw.range, md->db->range3, MAX_MINCHASE);
 				tbl = abl; //Set the new target
 			}
 		}
@@ -1861,7 +1857,7 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 	if (!tbl && can_move && mode&MD_LOOTER && md->lootitems && DIFF_TICK(tick, md->ud.canact_tick) > 0 &&
 		(md->lootitem_count < LOOTITEM_SIZE || battle_config.monster_loot_type != 1))
 	{	// Scan area for items to loot, avoid trying to loot if the mob is full and can't consume the items.
-		map_foreachinshootrange (mob_ai_sub_hard_lootsearch, &md->bl, view_range, BL_ITEM, md, &tbl);
+		map_foreachinshootrange (mob_ai_sub_hard_lootsearch, &md->bl, battle_config.loot_range, BL_ITEM, md, &tbl);
 	}
 
 	if ((mode&MD_AGGRESSIVE && (!tbl || slave_lost_target)) || md->state.skillstate == MSS_FOLLOW)
@@ -1992,7 +1988,6 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 					tbl = battle_getenemy(&md->bl, DEFAULT_ENEMY_TYPE(md), search_size);
 					if (tbl != nullptr) {
 						md->target_id = tbl->id;
-						md->min_chase = md->db->range3;
 					}
 				}
 			}
@@ -2006,12 +2001,9 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 				md->ud.attackabletime = tick + md->status.adelay;
 			}
 		}
+		//Target still in attack range, no need to chase the target
 		return true;
 	}
-
-	//Target still in attack range, no need to chase the target
-	if(battle_check_range(&md->bl, tbl, md->status.rhw.range))
-		return true;
 
 	//Only update target cell / drop target after having moved at least "mob_chase_refresh" cells
 	if(md->ud.walktimer != INVALID_TIMER && (!can_move || md->ud.walkpath.path_pos <= battle_config.mob_chase_refresh)
@@ -2037,18 +2029,39 @@ static bool mob_ai_sub_hard(struct mob_data *md, t_tick tick)
 		return true;
 	}
 
-	if (md->ud.walktimer != INVALID_TIMER && md->ud.target == tbl->id &&
+	// Officially we can stop here if monster is still chasing its target.
+	// If setting to update the chase path is set, we continue if current target tile not within attack range.
+	// In this case, we should also stop updating the chase path when target no longer in chase range.
+	if (md->ud.walktimer != INVALID_TIMER && md->ud.target_to == tbl->id &&
 		(
 			!(battle_config.mob_ai&0x1) ||
-			check_distance_blxy(tbl, md->ud.to_x, md->ud.to_y, md->status.rhw.range)
-	)) //Current target tile is still within attack range.
+			check_distance_blxy(tbl, md->ud.to_x, md->ud.to_y, md->status.rhw.range) ||
+			!check_distance_bl(&md->bl, tbl, md->db->range3)
+	))
 		return true;
 
-	//Follow up if possible.
-	if (!mob_can_reach(md, tbl, md->min_chase)) {
+	// Follow up if possible.
+
+	// Officially when a monster cannot act, move or attack, the AI isn't processed at all.
+	// The attacked ID remains unprocessed, so that once the monster can act again it will process it at this point.
+	// Our code works quite different from that and we try to plan a chase ahead of time.
+	// If we would go ahead now and initiate a chase, it will kill the attack timer which is not good because we
+	// need to check for visibility at the end of it for monsters because that's when they actually drop target.
+	// However, we only process a monster's AI every 100ms instead of every 20ms like on official servers, so
+	// without planning a chase, a monster is easy to hitlock.
+	// For now we prevent processing this part of the code if an attack timer is still running and the monster
+	// cannot move yet.
+	if (md->ud.walktimer == INVALID_TIMER
+		&& md->ud.attacktimer != INVALID_TIMER
+		&& DIFF_TICK(md->ud.canmove_tick, tick) > 0)
+		return true;
+
+	// Monsters in Angry state only start chasing when target is in chase range
+	if (md->state.skillstate == MSS_ANGRY && !mob_can_reach(md, tbl, md->db->range3)) {
 		mob_unlocktarget(md, tick);
 		return true;
 	}
+
 	// Monsters can use chase skills before starting to walk
 	// So we need to change the state and check for a skill here already
 	// But only use skill if able to walk on next tick and not attempted a skill the last second
@@ -3515,8 +3528,8 @@ int32 mob_class_change (struct mob_data *md, int32 mob_id)
 
 	status_change_end(&md->bl,SC_KEEPING); // End before calling status_calc_mob().
 	status_change_end(&md->bl,SC_BARRIER);
-	mob_stop_attack(md);
-	mob_stop_walking(md, 0);
+	unit_stop_attack( &md->bl );
+	unit_stop_walking( &md->bl, USW_NONE );
 	unit_skillcastcancel(&md->bl, 0);
 	status_set_viewdata(&md->bl, mob_id);
 	clif_class_change( md->bl, md->vd->class_ );

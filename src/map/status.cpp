@@ -1607,7 +1607,7 @@ int32 status_damage(struct block_list *src,struct block_list *target,int64 dhp, 
 		mob_log_damage(reinterpret_cast<mob_data*>(src), target, 0, dhp);
 
 	if( src && target->type == BL_PC && ((TBL_PC*)target)->disguise ) { // Stop walking when attacked in disguise to prevent walk-delay bug
-		unit_stop_walking( target, 1 );
+		unit_stop_walking( target, USW_FIXPOS );
 	}
 
 	if( status->hp || (flag&8) ) { // Still lives or has been dead before this damage.
@@ -1699,7 +1699,7 @@ int32 status_damage(struct block_list *src,struct block_list *target,int64 dhp, 
 		unit_remove_map(target,CLR_DEAD);
 	else { // Some death states that would normally be handled by unit_remove_map
 		unit_stop_attack(target);
-		unit_stop_walking(target,1);
+		unit_stop_walking(target,USW_FIXPOS|USW_RELEASE_TARGET);
 		unit_skillcastcancel(target,0);
 		clif_clearunit_area( *target, CLR_DEAD );
 		skill_unit_move(target,gettick(),4);
@@ -2239,16 +2239,17 @@ bool status_check_skilluse(struct block_list *src, struct block_list *target, ui
  * Checks whether the src can see the target
  * @param src:	Object using skill on target [PC|MOB|PET|HOM|MER|ELEM]
  * @param target: Object being targeted by src [PC|MOB|HOM|MER|ELEM]
- * @return src can see (1) or target is invisible (0)
+ * @param checkblind: Whether blind condition should be considered (sets view range to 1)
+ * @return src can see (true) or target is invisible (false)
  * @author [Skotlex]
  */
-int32 status_check_visibility(struct block_list *src, struct block_list *target)
+bool status_check_visibility(block_list* src, block_list* target, bool checkblind)
 {
 	int32 view_range;
 	status_change* tsc = status_get_sc(target);
 	switch (src->type) {
 		case BL_MOB:
-			view_range = ((TBL_MOB*)src)->min_chase;
+			view_range = ((TBL_MOB*)src)->db->range3;
 			break;
 		case BL_PET:
 			view_range = ((TBL_PET*)src)->db->range2;
@@ -2257,11 +2258,17 @@ int32 status_check_visibility(struct block_list *src, struct block_list *target)
 			view_range = AREA_SIZE;
 	}
 
+	if (checkblind) {
+		status_change* sc = status_get_sc(src);
+		if (sc != nullptr && sc->getSCE(SC_BLIND) != nullptr)
+			view_range = 1;
+	}
+
 	if (src->m != target->m || !check_distance_bl(src, target, view_range))
-		return 0;
+		return false;
 
 	if ( src->type == BL_NPC) // NPCs don't care for the rest
-		return 1;
+		return true;
 
 	if (tsc) {
 		bool is_boss = (status_get_class_(src) == CLASS_BOSS);
@@ -2272,24 +2279,24 @@ int32 status_check_visibility(struct block_list *src, struct block_list *target)
 					map_session_data *tsd = (TBL_PC*)target;
 
 					if (((tsc->option&(OPTION_HIDE|OPTION_CLOAK|OPTION_CHASEWALK)) || tsc->getSCE(SC_CAMOUFLAGE) || tsc->getSCE(SC_STEALTHFIELD) || tsc->getSCE(SC_SUHIDE)) && !is_boss && (tsd->special_state.perfect_hiding || !is_detector))
-						return 0;
+						return false;
 					if ((tsc->getSCE(SC_CLOAKINGEXCEED) || tsc->getSCE(SC_NEWMOON)) && !is_boss && ((tsd && tsd->special_state.perfect_hiding) || is_detector))
-						return 0;
+						return false;
 					if (tsc->getSCE(SC__FEINTBOMB) && !is_boss && !is_detector)
-						return 0;
+						return false;
 				}
 				break;
 			case BL_ELEM:
 				if (tsc->getSCE(SC_ELEMENTAL_VEIL) && !is_boss && !is_detector)
-					return 0;
+					return false;
 				break;
 			default:
 				if (((tsc->option&(OPTION_HIDE|OPTION_CLOAK|OPTION_CHASEWALK)) || tsc->getSCE(SC_CAMOUFLAGE) || tsc->getSCE(SC_STEALTHFIELD) || tsc->getSCE(SC_SUHIDE)) && !is_boss && !is_detector)
-					return 0;
+					return false;
 		}
 	}
 
-	return 1;
+	return true;
 }
 
 /**
@@ -5880,7 +5887,7 @@ void status_calc_bl_main(struct block_list& bl, std::bitset<SCB_MAX> flag)
 		if (!status_has_mode(status,MD_CANATTACK))
 			unit_stop_attack(&bl);
 		if (!status_has_mode(status,MD_CANMOVE))
-			unit_stop_walking(&bl,1);
+			unit_stop_walking( &bl, USW_FIXPOS );
 	}
 
 	/**
@@ -10613,7 +10620,7 @@ int32 status_change_start(struct block_list* src, struct block_list* bl,enum sc_
 			if (val1 > 4) val2--;
 			//Suiton is a special case, stop effect is forced and only happens when target enters it
 			if (!unit_blown_immune(bl, 0x1))
-				unit_stop_walking(bl, 9);
+				unit_stop_walking( bl, USW_FIXPOS|USW_FORCE_STOP );
 			break;
 		case SC_ONEHAND:
 		case SC_TWOHANDQUICKEN:
@@ -12676,11 +12683,11 @@ int32 status_change_start(struct block_list* src, struct block_list* bl,enum sc_
 		switch (type) {
 			case SC__MANHOLE:
 				if (bl->type == BL_PC || !unit_blown_immune(bl,0x1))
-					unit_stop_walking(bl,1);
+					unit_stop_walking( bl, USW_FIXPOS );
 				break;
 			case SC_VACUUM_EXTREME:
 				if (bl->type != BL_PC && unit_blown_immune(bl, 0x1) == UB_KNOCKABLE) {
-					unit_stop_walking(bl,1);
+					unit_stop_walking( bl, USW_FIXPOS );
 					unit_stop_attack(bl);
 				}
 				break;
@@ -12688,13 +12695,13 @@ int32 status_change_start(struct block_list* src, struct block_list* bl,enum sc_
 			case SC_STUN:
 			case SC_STONE:
 				if (sc->getSCE(SC_DANCING)) {
-					unit_stop_walking(bl, 1);
+					unit_stop_walking( bl, USW_FIXPOS );
 					status_change_end(bl, SC_DANCING);
 				}
 				break;
 			default:
 				if (!unit_blown_immune(bl,0x1))
-					unit_stop_walking(bl,1);
+					unit_stop_walking( bl, USW_FIXPOS );
 				break;
 		}
 	}
@@ -13104,7 +13111,7 @@ int32 status_change_end(struct block_list* bl, enum sc_type type, int32 tid)
 					begin_spurt = false;
 				ud->state.running = 0;
 				if (ud->walktimer != INVALID_TIMER)
-					unit_stop_walking(bl,1);
+					unit_stop_walking( bl, USW_FIXPOS );
 			}
 			if (begin_spurt && sce->val1 >= 7 &&
 				DIFF_TICK(gettick(), starttick) <= 1000 &&
@@ -13386,7 +13393,7 @@ int32 status_change_end(struct block_list* bl, enum sc_type type, int32 tid)
 				if (ud) {
 					ud->state.running = 0;
 					if (ud->walktimer != INVALID_TIMER)
-						unit_stop_walking(bl,1);
+						unit_stop_walking( bl, USW_FIXPOS );
 				}
 			}
 			break;

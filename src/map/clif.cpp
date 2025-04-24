@@ -10643,6 +10643,7 @@ void clif_parse_WantToConnection(int32 fd, map_session_data* sd)
 	}
 
 	cmd = RFIFOW(fd, 0);
+	// TODO: shuffle packet
 	account_id = RFIFOL(fd, packet_db[cmd].pos[0]);
 	char_id = RFIFOL(fd, packet_db[cmd].pos[1]);
 	login_id1 = RFIFOL(fd, packet_db[cmd].pos[2]);
@@ -11162,6 +11163,7 @@ void clif_notify_time(map_session_data* sd, t_tick time)
 /// There are various variants of this packet, some of them have padding between fields.
 void clif_parse_TickSend(int32 fd, map_session_data *sd)
 {
+	// TODO: shuffle packet
 	sd->client_tick = RFIFOL(fd,packet_db[RFIFOW(fd,0)].pos[0]);
 
 	clif_notify_time(sd, gettick());
@@ -11355,6 +11357,7 @@ void clif_parse_WalkToXY(int32 fd, map_session_data *sd)
 	if(sd->sc.getSCE(SC_RUN) || sd->sc.getSCE(SC_WUGDASH))
 		return;
 
+	// TODO: shuffle packet
 	RFIFOPOS(fd, packet_db[RFIFOW(fd,0)].pos[0], &x, &y, nullptr);
 
 	//A move command one cell west is only valid if the target cell is free
@@ -11427,6 +11430,7 @@ void clif_parse_QuitGame(int32 fd, map_session_data *sd)
 /// There are various variants of this packet, some of them have padding between fields.
 void clif_parse_GetCharNameRequest(int32 fd, map_session_data *sd)
 {
+	// TODO: shuffle packet
 	int32 id = RFIFOL(fd,packet_db[RFIFOW(fd,0)].pos[0]);
 	struct block_list* bl;
 	//status_change *sc;
@@ -11565,6 +11569,7 @@ void clif_changed_dir(block_list& bl, enum send_target target){
 void clif_parse_ChangeDir(int32 fd, map_session_data *sd)
 {
 	unsigned char headdir, dir;
+	// TODO: shuffle packet
 	struct s_packet_db* info = &packet_db[RFIFOW(fd,0)];
 
 	headdir = RFIFOB(fd,info->pos[0]);
@@ -11655,9 +11660,11 @@ void clif_parse_ActionRequest_sub( map_session_data& sd, uint8 action_type, int3
 	if (action_type != DMG_NORMAL && action_type != DMG_REPEAT) {
 		if (sd.sc.cant.interact)
 			return;
-		pc_stop_walking(&sd, 1);
+
+		unit_stop_walking( &sd.bl, USW_FIXPOS );
 	}
-	pc_stop_attack(&sd);
+
+	unit_stop_attack( &sd.bl );
 
 	if(target_id<0 && -target_id == sd.bl.id) // for disguises [Valaris]
 		target_id = sd.bl.id;
@@ -11770,6 +11777,7 @@ void clif_parse_ActionRequest(int32 fd, map_session_data *sd)
 		return;
 	}
 
+	// TODO: shuffle packet
 	struct s_packet_db* info = &packet_db[RFIFOW(fd,0)];
 	clif_parse_ActionRequest_sub( *sd,
 		RFIFOB(fd,info->pos[1]),
@@ -11956,6 +11964,7 @@ void clif_parse_TakeItem(int32 fd, map_session_data *sd)
 	struct flooritem_data *fitem;
 	int32 map_object_id;
 
+	// TODO: shuffle packet
 	map_object_id = RFIFOL(fd,packet_db[RFIFOW(fd,0)].pos[0]);
 
 	fitem = (struct flooritem_data*)map_id2bl(map_object_id);
@@ -11987,6 +11996,7 @@ void clif_parse_TakeItem(int32 fd, map_session_data *sd)
 /// 0363 <index>.W <amount>.W (CZ_ITEM_THROW2)
 /// There are various variants of this packet, some of them have padding between fields.
 void clif_parse_DropItem(int32 fd, map_session_data *sd){
+	// TODO: shuffle packet
 	struct s_packet_db* info = &packet_db[RFIFOW(fd,0)];
 	int32 item_index  = RFIFOW(fd,info->pos[0]) -2;
 	int32 item_amount = RFIFOW(fd,info->pos[1]) ;
@@ -12526,8 +12536,8 @@ void clif_parse_TradeCommit(int32 fd,map_session_data *sd)
 /// 0118
 void clif_parse_StopAttack(int32 fd,map_session_data *sd)
 {
-	pc_stop_attack(sd);
-	if (sd) sd->ud.state.attack_continue = 0;
+	unit_stop_attack( &sd->bl );
+	sd->ud.state.attack_continue = 0;
 }
 
 
@@ -12941,6 +12951,7 @@ void clif_parse_skill_toid( map_session_data* sd, uint16 skill_id, uint16 skill_
 /// 0438 <skill lv>.W <skill id>.W <target id>.L (CZ_USE_SKILL2)
 /// There are various variants of this packet, some of them have padding between fields.
 void clif_parse_UseSkillToId( int32 fd, map_session_data *sd ){
+	// TODO: shuffle packet
 	struct s_packet_db* info = &packet_db[RFIFOW(fd, 0)];
 
 	clif_parse_skill_toid( sd, RFIFOW(fd, info->pos[1]), RFIFOW(fd, info->pos[0]), RFIFOL(fd, info->pos[2]) );
@@ -13052,6 +13063,7 @@ void clif_parse_UseSkillToPos(int32 fd, map_session_data *sd)
 		return;
 	}
 
+	// TODO: shuffle packet
 	struct s_packet_db* info = &packet_db[RFIFOW(fd,0)];
 	if (pc_cant_act(sd))
 		return;
@@ -13080,6 +13092,7 @@ void clif_parse_UseSkillToPosMoreInfo(int32 fd, map_session_data *sd)
 		return;
 	}
 
+	// TODO: shuffle packet
 	struct s_packet_db* info = &packet_db[RFIFOW(fd,0)];
 	if (pc_cant_act(sd))
 		return;
@@ -13462,6 +13475,7 @@ void clif_parse_SolveCharName(int32 fd, map_session_data *sd)
 {
 	int32 charid;
 
+	// TODO: shuffle packet
 	charid = RFIFOL(fd,packet_db[RFIFOW(fd,0)].pos[0]);
 	map_reqnickdb(sd, charid);
 }
@@ -13510,6 +13524,7 @@ void clif_parse_LocalBroadcast(int32 fd, map_session_data* sd)
 void clif_parse_MoveToKafra(int32 fd, map_session_data *sd)
 {
 	int32 item_index, item_amount;
+	// TODO: shuffle packet
 	struct s_packet_db* info = &packet_db[RFIFOW(fd,0)];
 
 	if (pc_istrading(sd))
@@ -13541,6 +13556,7 @@ void clif_parse_MoveToKafra(int32 fd, map_session_data *sd)
 void clif_parse_MoveFromKafra(int32 fd,map_session_data *sd)
 {
 	int32 item_index, item_amount;
+	// TODO: shuffle packet
 	struct s_packet_db* info = &packet_db[RFIFOW(fd,0)];
 
 	item_index = RFIFOW(fd,info->pos[0])-1;
@@ -13650,6 +13666,7 @@ void clif_storagepassword(map_session_data* sd, short info)
 ///     3 = check password
 /// NOTE: This packet is only available on certain non-kRO clients.
 void clif_parse_StoragePassword(int32 fd, map_session_data *sd){ //@TODO
+	// TODO: shuffle packet
 //	struct s_packet_db* info = &packet_db[RFIFOW(fd,0)];
 //	int32 type = RFIFOW(fd,info->pos[0]);
 //	char* password = RFIFOP(fd,info->pos[1]);
@@ -13877,6 +13894,7 @@ void clif_parse_PartyChangeLeader(int32 fd, map_session_data* sd){
 /// Request to register a party booking advertisment (CZ_PARTY_BOOKING_REQ_REGISTER).
 /// 0802 <level>.W <map id>.W { <job>.W }*6
 void clif_parse_PartyBookingRegisterReq(int32 fd, map_session_data* sd){
+	// TODO: shuffle packet
 	struct s_packet_db* info = &packet_db[RFIFOW(fd,0)];
 	short level = RFIFOW(fd,info->pos[0]);
 	short mapid = RFIFOW(fd,info->pos[1]);
@@ -15303,6 +15321,7 @@ void clif_parse_FriendsListAdd(int32 fd, map_session_data *sd)
 	map_session_data *f_sd;
 	int32 i;
 
+	// TODO: shuffle packet
 	f_sd = map_nick2sd(RFIFOCP(fd,packet_db[RFIFOW(fd,0)].pos[0]),false);
 
 	// Friend doesn't exist (no player with this name)
@@ -15642,6 +15661,7 @@ void clif_parse_HomMenu(int32 fd, map_session_data *sd)
 	if(!hom_is_active(sd->hd))
 		return;
 
+	// TODO: shuffle packet
 	hom_menu(sd,RFIFOB(fd,packet_db[cmd].pos[1]));
 }
 
@@ -18894,6 +18914,7 @@ void clif_parse_ItemListWindowSelected(int32 fd, map_session_data* sd) {
 		return;
 	}
 
+	// TODO: shuffle packet
 	struct s_packet_db* info = &packet_db[RFIFOW(fd,0)];
 	int32 n = (RFIFOW(fd,info->pos[0])-12) / 4;
 	int32 type = RFIFOL(fd,info->pos[1]);
@@ -19145,6 +19166,7 @@ static void clif_parse_ReqClickBuyingStore(int32 fd, map_session_data* sd)
 {
 	uint32 account_id;
 
+	// TODO: shuffle packet
 	account_id = RFIFOL(fd,packet_db[RFIFOW(fd,0)].pos[0]);
 
 	buyingstore_open(sd, account_id);
