@@ -6059,26 +6059,21 @@ void clif_skill_damage( block_list& src, block_list& dst, t_tick tick, int32 sde
 
 
 /// Animation for Huuma Shuriken - Construct Blasting.
-int clif_fuumakouchiku_blasting(struct block_list* dst, t_tick tick, uint16 skill_lv)
-{
-	unsigned char buf[64];
+void clif_fuumakouchiku_blasting(block_list& dst, t_tick tick, uint16 skill_lv) {
+	PACKET_ZC_NOTIFY_SKILL packet{};
 
-	nullpo_ret(dst);
-
-	WBUFW(buf, 0) = 0x1de;
-	WBUFW(buf, 2) = SS_FUUMAKOUCHIKU_BLASTING;
-	WBUFL(buf, 4) = 0;
-	WBUFL(buf, 8) = dst->id;
-	WBUFL(buf, 12) = client_tick(tick);
-	WBUFL(buf, 16) = 0;
-	WBUFL(buf, 20) = 0;
-	WBUFL(buf, 24) = 0;
-	WBUFW(buf, 28) = skill_lv;
-	WBUFW(buf, 30) = 1;
-	WBUFB(buf, 32) = DMG_ENDURE;
-	clif_send(buf, packet_len(0x1de), dst, AREA);
-
-	return 1;
+	packet.PacketType = HEADER_ZC_NOTIFY_SKILL;
+	packet.SKID = SS_FUUMAKOUCHIKU_BLASTING;
+	packet.AID = 0;
+	packet.targetID = dst.id;
+	packet.startTime = client_tick(tick);
+	packet.attackMT = 0;
+	packet.attackedMT = 0;
+	packet.damage = 0;
+	packet.level = skill_lv;
+	packet.count = 1;
+	packet.action = DMG_ENDURE;
+	clif_send(&packet, sizeof(packet), &dst, AREA);
 }
 
 

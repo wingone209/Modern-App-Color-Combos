@@ -293,9 +293,9 @@ int32 skill_frostjoke_scream(struct block_list *bl,va_list ap);
 int32 skill_attack_area(struct block_list *bl,va_list ap);
 std::shared_ptr<s_skill_unit_group> skill_locate_element_field(struct block_list *bl); // [Skotlex]
 int32 skill_graffitiremover(struct block_list *bl, va_list ap); // [Valaris]
-int skill_fuumakouchiku_blasting(struct block_list* bl, va_list ap);
-int skill_kunaikussetsu(struct block_list* bl, va_list ap);
-int skill_shinkirou(struct block_list* bl, va_list ap);
+int32 skill_fuumakouchiku_blasting(struct block_list* bl, va_list ap);
+int32 skill_kunaikussetsu(struct block_list* bl, va_list ap);
+int32 skill_shinkirou(struct block_list* bl, va_list ap);
 int32 skill_greed(struct block_list *bl, va_list ap);
 static int32 skill_cell_overlap(struct block_list *bl, va_list ap);
 static int32 skill_trap_splash(struct block_list *bl, va_list ap);
@@ -2246,7 +2246,7 @@ int32 skill_additional_effect( struct block_list* src, struct block_list *bl, ui
 		break;
 	case SOA_TALISMAN_OF_SOUL_STEALING:
 	{// Im guessing the SP recovery only happens when you hit your target since it wouldn't makes since if you didn't. Need confirm. [Rytech]
-		short sp_recover = 50 * skill_lv * status_get_lv(src) / 100;
+		int16 sp_recover = 50 * skill_lv * status_get_lv(src) / 100;
 		clif_skill_nodamage(nullptr, *src, skill_id, sp_recover);
 		status_heal(src, 0, sp_recover, 0);
 	}
@@ -3730,7 +3730,7 @@ int64 skill_attack (int32 attack_type, struct block_list* src, struct block_list
 			if( dmg.dmg_lv != ATK_MISS && type == 1 ) //Wiz SL cancelled and consumed fragment
 #endif
 			{
-				short s_ele = skill_get_ele(skill_id, skill_lv);
+				int16 s_ele = skill_get_ele(skill_id, skill_lv);
 
 				if (s_ele == ELE_WEAPON) // the skill takes the weapon's element
 					s_ele = sstatus->rhw.ele;
@@ -5376,7 +5376,7 @@ int32 skill_castend_damage_id (struct block_list* src, struct block_list *bl, ui
 
 	case SKE_ALL_IN_THE_SKY:
 	{
-		short x, y;
+		int16 x, y;
 		map_search_freecell(bl, 0, &x, &y, 1, 1, 0);
 		// Jump to the enemy before attacking but only if not in GvG area's.
 		if (skill_check_unit_movepos(5, src, x, y, 1, 1))
@@ -5393,7 +5393,7 @@ int32 skill_castend_damage_id (struct block_list* src, struct block_list *bl, ui
 		break;
 
 	case SS_SHIMIRU:
-		short x, y;
+		int16 x, y;
 
 		sc_start(src, src, SC_SHADOW_CLOCK, 100, skill_lv, skill_get_time(skill_id, skill_lv));
 
@@ -8371,7 +8371,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 
 	case SOA_TALISMAN_OF_PROTECTION:
 		{
-			int heal_amount = 500 * skill_lv;
+			int32 heal_amount = 500 * skill_lv;
 			heal_amount += 50 * skill_lv * pc_checkskill(sd, SOA_TALISMAN_MASTERY);
 			heal_amount += 3 * sstatus->crt;
 			heal_amount = heal_amount * status_get_lv(src) / 100;
@@ -8772,7 +8772,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 	case SOA_SOUL_GATHERING:
 		if (sd)
 		{
-			short soulball_max = 5 + 3 * pc_checkskill(sd, SP_SOULENERGY);
+			int16 soulball_max = 5 + 3 * pc_checkskill(sd, SP_SOULENERGY);
 			clif_skill_nodamage(src, *bl, skill_id, skill_lv);
 			for (i = 0; i < soulball_max; i++)
 				pc_addsoulball(*sd, soulball_max, soulball_max);
@@ -8970,7 +8970,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 
 	case NW_THE_VIGILANTE_AT_NIGHT:
 	{
-		short splash_size = skill_get_splash(skill_id, skill_lv);
+		int16 splash_size = skill_get_splash(skill_id, skill_lv);
 
 		skill_area_temp[1] = 0;
 
@@ -8989,7 +8989,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 
 	case SH_HOWLING_OF_CHUL_HO:
 	{
-		short splash_size = skill_get_splash(skill_id, skill_lv);
+		int16 splash_size = skill_get_splash(skill_id, skill_lv);
 
 		skill_area_temp[1] = 0;
 
@@ -9269,7 +9269,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 	case SH_SANDY_FESTIVAL_OF_KI_SUL:
 		if (sd == nullptr || sd->status.party_id == 0 || (flag&1))
 		{
-			int duration = skill_get_time(skill_id, skill_lv);
+			int32 duration = skill_get_time(skill_id, skill_lv);
 
 			if (src == bl)
 			{// Display animation only on caster. Also check for commune skill if not in party.
@@ -9283,7 +9283,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 		}
 		else if (sd)
 		{
-			short splash_size = skill_get_splash(skill_id, skill_lv);
+			int16 splash_size = skill_get_splash(skill_id, skill_lv);
 
 			if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_KI_SUL))// Commune check for if in a party.
 			{// Increase AoE size and sets flag to double status duration.
@@ -9297,7 +9297,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 	case SH_KI_SUL_WATER_SPRAYING:
 		if (sd == nullptr || sd->status.party_id == 0 || (flag&1))
 		{
-			int heal = skill_calc_heal(src, bl, skill_id, skill_lv, true);
+			int32 heal = skill_calc_heal(src, bl, skill_id, skill_lv, true);
 
 			if (src == bl)// Display animation only on caster.
 				clif_skill_nodamage(src, *bl, skill_id, skill_lv);
@@ -9307,7 +9307,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 		}
 		else if (sd)
 		{
-			short splash_size = skill_get_splash(skill_id, skill_lv);
+			int16 splash_size = skill_get_splash(skill_id, skill_lv);
 
 			if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_KI_SUL))// Commune check for if in a party.
 			{// Increase AoE size and sets flag to increase healing.
@@ -9321,7 +9321,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 	case SH_KI_SUL_RAMPAGE:
 		if (sd == nullptr || sd->status.party_id == 0 || (flag&2))
 		{
-			short ap_heal = 2;
+			int16 ap_heal = 2;
 
 			if (src == bl)
 			{// Display animation only on caster. Also check for commune skill if not in party.
@@ -9338,7 +9338,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 		}
 		else if (sd && flag&1)// Skill triggered by status.
 		{
-			short splash_size = skill_get_splash(skill_id, skill_lv);
+			int16 splash_size = skill_get_splash(skill_id, skill_lv);
 
 			if (sd && pc_checkskill(sd, SH_COMMUNE_WITH_KI_SUL))// Commune check for if in a party.
 			{// Increase AoE size and sets flag to increase AP recovery.
@@ -13607,7 +13607,7 @@ static int8 skill_castend_id_check(struct block_list *src, struct block_list *ta
 			if (target->type == BL_PC)
 			{
 				map_session_data* tsd;
-				short index;
+				int16 index;
 
 				tsd = BL_CAST(BL_PC, target);
 				index = tsd->equip_index[EQI_HAND_R];
@@ -15286,8 +15286,8 @@ int32 skill_castend_pos2(struct block_list* src, int32 x, int32 y, uint16 skill_
 	case SKE_TWINKLING_GALAXY:
 	case SKE_STAR_CANNON:
 		{
-			int area = skill_get_splash(skill_id, skill_lv);
-			short tmpx = 0, tmpy = 0, drop_group_max = 1, drop_group_num;
+			int32 area = skill_get_splash(skill_id, skill_lv);
+			int16 tmpx = 0, tmpy = 0, drop_group_max = 1, drop_group_num;
 
 			// Sets the drop_group_max which is how many impacts will happen on each interval.
 			// Note: skill_clear_unitgroup clears all skill units placed by the caster.
@@ -16923,7 +16923,7 @@ int32 skill_unit_onplace_timer(struct skill_unit *unit, struct block_list *bl, t
 
 		case UNT_TOTEM_OF_TUTELARY:
 			{
-				int hp, sp;
+				int32 hp, sp;
 				struct mob_data* md = BL_CAST(BL_MOB, bl);
 
 				// Skill only checks for party members but since this is a healing skill its best
@@ -21053,12 +21053,12 @@ int32 skill_graffitiremover(struct block_list *bl, va_list ap)
 /// src = The caster.
 /// unit_id = Unit ID to check for.
 /// remove = Removes the unit if its yours and is the same unit ID.
-int skill_unit_rangecheck(struct block_list* bl, va_list ap)
+int32 skill_unit_rangecheck(struct block_list* bl, va_list ap)
 {
 	struct skill_unit* unit = nullptr;
 	struct block_list* src = va_arg(ap, struct block_list*);
 	uint16 unit_id = va_arg(ap, int);
-	int remove = va_arg(ap, int);
+	int32 remove = va_arg(ap, int);
 
 	nullpo_retr(0, bl);
 	nullpo_retr(0, src);
@@ -21077,7 +21077,7 @@ int skill_unit_rangecheck(struct block_list* bl, va_list ap)
 }
 
 /// Huuma Shuriken - Construct Blasting
-int skill_fuumakouchiku_blasting(struct block_list* bl, va_list ap)
+int32 skill_fuumakouchiku_blasting(struct block_list* bl, va_list ap)
 {
 	struct skill_unit *unit = nullptr;
 	struct block_list *src = va_arg(ap, struct block_list*);
@@ -21092,7 +21092,7 @@ int skill_fuumakouchiku_blasting(struct block_list* bl, va_list ap)
 
 	if ((unit->group) && (unit->group->unit_id == UNT_FUUMASHOUAKU) && (unit->group->src_id == src->id))
 	{
-		clif_fuumakouchiku_blasting(bl, tick, skill_lv);
+		clif_fuumakouchiku_blasting(*bl, tick, skill_lv);
 		skill_unitsetting(src, SS_FUUMAKOUCHIKU, skill_lv, unit->bl.x, unit->bl.y, SK_SECONDATK);
 		skill_delunit(unit);
 		return 1;
@@ -21102,7 +21102,7 @@ int skill_fuumakouchiku_blasting(struct block_list* bl, va_list ap)
 }
 
 /// Kunai - Refraction
-int skill_kunaikussetsu(struct block_list* bl, va_list ap)
+int32 skill_kunaikussetsu(struct block_list* bl, va_list ap)
 {
 	struct skill_unit* unit = nullptr;
 	struct block_list* src = va_arg(ap, struct block_list*);
@@ -21130,7 +21130,7 @@ int skill_kunaikussetsu(struct block_list* bl, va_list ap)
 /// src = The caster.
 /// target = The target if its a enemy targeted skill. If its self or ground casted it should be the caster.
 /// x, y = Gives the cords for ground targeted skills. If enemy target or self cast, set to 0.
-int skill_shinkirou(struct block_list* bl, va_list ap)
+int32 skill_shinkirou(struct block_list* bl, va_list ap)
 {
 	map_session_data* sd;
 	struct skill_unit* unit = nullptr;

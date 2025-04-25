@@ -11085,12 +11085,12 @@ enum damage_lv battle_weapon_attack(struct block_list* src, struct block_list* t
 
 			if (sc->getSCE(SC_AUTO_FIRING_LAUNCHEREFST))
 			{
-				int i, j = sc->getSCE(SC_AUTO_FIRING_LAUNCHEREFST)->val1 - 1;
-				const short skill_id[3] = { NW_BASIC_GRENADE, NW_HASTY_FIRE_IN_THE_HOLE, NW_GRENADES_DROPPING };
-				const short auto_fire_1[5] = { 6, 7, 8, 9, 10 };// NW_BASIC_GRENADE
-				const short auto_fire_2[5] = { 0, 0, 3, 5, 7 };//  NW_HASTY_FIRE_IN_THE_HOLE
-				const short auto_fire_3[5] = { 0, 0, 0, 0, 3 };//  NW_GRENADES_DROPPING
-				int auto_chance[3] = { auto_fire_1[j], auto_fire_2[j], auto_fire_3[j] };
+				int32 i, j = sc->getSCE(SC_AUTO_FIRING_LAUNCHEREFST)->val1 - 1;
+				const int16 skill_id[3] = { NW_BASIC_GRENADE, NW_HASTY_FIRE_IN_THE_HOLE, NW_GRENADES_DROPPING };
+				const int16 auto_fire_1[5] = { 6, 7, 8, 9, 10 };// NW_BASIC_GRENADE
+				const int16 auto_fire_2[5] = { 0, 0, 3, 5, 7 };//  NW_HASTY_FIRE_IN_THE_HOLE
+				const int16 auto_fire_3[5] = { 0, 0, 0, 0, 3 };//  NW_GRENADES_DROPPING
+				int32 auto_chance[3] = { auto_fire_1[j], auto_fire_2[j], auto_fire_3[j] };
 
 				for (i = 0; i <= 2; i++)
 				{

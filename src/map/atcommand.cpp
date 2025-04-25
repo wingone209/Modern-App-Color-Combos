@@ -6553,12 +6553,12 @@ ACMD_FUNC(displayskillunit)
 ACMD_FUNC(calchpsp)
 {
 	double base_amount = 0;
-	short level;
-	short factor;
-	short increase;
-	short calc_flag;
-	short vitint;
-	short rebirth;
+	int16 level;
+	int16 factor;
+	int16 increase;
+	int16 calc_flag;
+	int16 vitint;
+	int16 rebirth;
 
 	nullpo_retr(-1, sd);
 

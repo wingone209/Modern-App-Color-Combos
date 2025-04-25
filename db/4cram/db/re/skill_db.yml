@@ -1,16 +1,18 @@
 Header:
   Type: SKILL_DB
-  Version: 3
+  Version: 4
 
 Body:
   - Id: 5401
     Name: NW_P_F_I
     Description: P.F.I
     MaxLevel: 10
+    CastCancel: false
   - Id: 5402
     Name: NW_GRENADE_MASTERY
     Description: Grenade Mastery
     MaxLevel: 10
+    CastCancel: false
   - Id: 5403
     Name: NW_INTENSIVE_AIM
     Description: Intensive Aim
@@ -20,7 +22,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     Duration1: 500
     Cooldown: 500
     Requires:
@@ -34,7 +35,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     Duration1: 300000
     Cooldown: 2000
     Requires:
@@ -62,7 +62,6 @@ Body:
       - Level: 5
         Area: 5
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 1000
     Cooldown: 500
     FixedCastTime: 1500
@@ -97,7 +96,6 @@ Body:
     HitCount: 1
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 500
     Cooldown: 350
     FixedCastTime: 1000
@@ -144,7 +142,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 1000
     Cooldown: 500
     FixedCastTime: 1500
@@ -179,7 +176,6 @@ Body:
     HitCount: 6
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 1000
     Cooldown: 500
     FixedCastTime: 1000
@@ -212,7 +208,6 @@ Body:
     HitCount: -3
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 1000
     Duration1: 100
     Cooldown: 500
@@ -262,7 +257,6 @@ Body:
     Hit: Multi_Hit
     HitCount: -2
     GiveAp: 2
-    CastCancel: true
     Duration1: 100
     Cooldown: 300
     FixedCastTime: 1000
@@ -308,7 +302,6 @@ Body:
     Hit: Multi_Hit
     HitCount: -2
     GiveAp: 3
-    CastCancel: true
     Duration1: 900
     Cooldown: 1000
     FixedCastTime: 1000
@@ -355,7 +348,6 @@ Body:
       - Level: 5
         Area: 4
     GiveAp: 5
-    CastCancel: true
     Duration1: 4000
     Cooldown: 4500
     FixedCastTime: 1000
@@ -401,7 +393,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     Duration1:
       - Level: 1
         Time: 120000
@@ -436,7 +427,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     Duration1: 300000
     Cooldown: 60000
     FixedCastTime: 2000
@@ -453,7 +443,6 @@ Body:
     Hit: Multi_Hit
     HitCount: -5
     SplashArea: 4
-    CastCancel: true
     Duration1: 10000
     Cooldown: 10000
     FixedCastTime: 1000
@@ -472,10 +461,12 @@ Body:
     Name: SOA_TALISMAN_MASTERY
     Description: Talisman Mastery
     MaxLevel: 10
+    CastCancel: false
   - Id: 5417
     Name: SOA_SOUL_MASTERY
     Description: Soul Mastery
     MaxLevel: 10
+    CastCancel: false
   - Id: 5418
     Name: SOA_TALISMAN_OF_PROTECTION
     Description: Talisman Of Protection
@@ -489,7 +480,6 @@ Body:
     Hit: Single
     HitCount: 1
     GiveAp: 2
-    CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
     Duration1:
@@ -533,7 +523,6 @@ Body:
     Hit: Single
     HitCount: 1
     GiveAp: 2
-    CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
     Duration1:
@@ -576,7 +565,6 @@ Body:
     Hit: Single
     HitCount: 1
     GiveAp: 2
-    CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
     Duration1:
@@ -615,7 +603,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     CastTime: 1500
     Cooldown:
       - Level: 1
@@ -653,7 +640,6 @@ Body:
     Range: 9
     Hit: Single
     HitCount: 1
-    CastCancel: true
     CastTime: 5000
     Duration1: 30000
     Cooldown: 15000
@@ -703,7 +689,6 @@ Body:
     Range: 9
     Hit: Single
     HitCount: 1
-    CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
     Duration1:
@@ -743,7 +728,6 @@ Body:
     Hit: Single
     HitCount: 1
     Element: Endowed
-    CastCancel: true
     CastTime: 3000
     Cooldown: 1000
     FixedCastTime: 1500
@@ -775,7 +759,6 @@ Body:
       - Level: 5
         Area: 6
     GiveAp: 2
-    CastCancel: true
     CastTime: 3000
     Cooldown: 1000
     FixedCastTime: 1500
@@ -803,7 +786,6 @@ Body:
     HitCount: 1
     Element: Endowed
     GiveAp: 2
-    CastCancel: true
     CastTime: 1000
     Duration1:
       - Level: 1
@@ -856,7 +838,6 @@ Body:
       - Level: 5
         Area: 6
     GiveAp: 2
-    CastCancel: true
     CastTime: 1000
     Duration1:
       - Level: 1
@@ -910,7 +891,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 3
-    CastCancel: true
     CastTime: 1000
     Duration1:
       - Level: 1
@@ -951,7 +931,6 @@ Body:
     HitCount: -3
     Element: Endowed
     GiveAp: 3
-    CastCancel: true
     CastTime: 1000
     Duration1: 100
     Duration2:
@@ -1023,7 +1002,6 @@ Body:
       - Level: 5
         Area: 5
     GiveAp: 3
-    CastCancel: true
     CastTime: 2000
     Cooldown: 1000
     FixedCastTime: 1500
@@ -1065,7 +1043,6 @@ Body:
         Area: 4
       - Level: 5
         Area: 5
-    CastCancel: true
     CastTime: 2000
     Duration1:
       - Level: 1
@@ -1104,7 +1081,6 @@ Body:
     Hit: Single
     HitCount: 1
     SplashArea: 11
-    CastCancel: true
     CastTime: 4000
     AfterCastActDelay: 1000
     Duration1: 300000
@@ -1137,10 +1113,12 @@ Body:
     Name: SH_MYSTICAL_CREATURE_MASTERY
     Description: Mystical Creature Mastery
     MaxLevel: 10
+    CastCancel: false
   - Id: 5434
     Name: SH_COMMUNE_WITH_CHUL_HO
     Description: Commune With Chul Ho
     MaxLevel: 1
+    CastCancel: false
   - Id: 5435
     Name: SH_CHUL_HO_SONIC_CLAW
     Description: Chul Ho Sonic Claw
@@ -1154,7 +1132,6 @@ Body:
     HitCount: -2
     Element: Weapon
     GiveAp: 1
-    CastCancel: true
     AfterCastActDelay: 500
     Cooldown:
       - Level: 1
@@ -1214,7 +1191,6 @@ Body:
       - Level: 7
         Area: 4
     GiveAp: 2
-    CastCancel: true
     Duration1: 10000
     Cooldown: 1000
     FixedCastTime: 1000
@@ -1248,7 +1224,6 @@ Body:
       - Level: 7
         Area: 5
     GiveAp: 1
-    CastCancel: true
     Cooldown: 350
     FixedCastTime: 1000
     Requires:
@@ -1271,6 +1246,7 @@ Body:
     Name: SH_COMMUNE_WITH_KI_SUL
     Description: Commune With Ki Sul
     MaxLevel: 1
+    CastCancel: false
   - Id: 5439
     Name: SH_KI_SUL_WATER_SPRAYING
     Description: Ki Sul Water Spraying
@@ -1297,7 +1273,6 @@ Body:
       - Level: 7
         Area: 6
     GiveAp: 1
-    CastCancel: true
     CastTime: 1000
     AfterCastActDelay: 1000
     Cooldown: 300
@@ -1340,7 +1315,6 @@ Body:
       - Level: 5
         Area: 6
     GiveAp: 4
-    CastCancel: true
     CastTime: 1000
     AfterCastActDelay: 1000
     Duration1:
@@ -1390,7 +1364,6 @@ Body:
       - Level: 5
         Area: 6
     GiveAp: 4
-    CastCancel: true
     CastTime: 1000
     AfterCastActDelay: 1000
     Duration1:
@@ -1429,7 +1402,6 @@ Body:
     Hit: Single
     HitCount: 1
     SplashArea: 3
-    CastCancel: true
     CastTime: 3000
     AfterCastActDelay: 1000
     Duration1:
@@ -1469,6 +1441,7 @@ Body:
     Name: SH_COMMUNE_WITH_HYUN_ROK
     Description: Commune With Hyun Rok
     MaxLevel: 1
+    CastCancel: false
   - Id: 5444
     Name: SH_COLORS_OF_HYUN_ROK
     Description: Colors Of Hyun Rok
@@ -1478,7 +1451,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     CastTime: 1000
     Duration1: 300000
     FixedCastTime: 1500
@@ -1494,7 +1466,6 @@ Body:
     Hit: Single
     HitCount: 1
     GiveAp: 4
-    CastCancel: true
     CastTime: 3000
     AfterCastActDelay: 500
     Duration1: 4500
@@ -1548,7 +1519,6 @@ Body:
     Hit: Single
     HitCount: 1
     GiveAp: 1
-    CastCancel: true
     CastTime: 2000
     Cooldown: 300
     FixedCastTime: 1500
@@ -1577,7 +1547,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
     Duration1:
@@ -1609,7 +1578,6 @@ Body:
     Range: 9
     Hit: Single
     HitCount: 1
-    CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
     Duration1: 10000
@@ -1623,10 +1591,12 @@ Body:
     Name: HN_SELFSTUDY_TATICS
     Description: Self Study Tatics
     MaxLevel: 10
+    CastCancel: false
   - Id: 5450
     Name: HN_SELFSTUDY_SOCERY
     Description: Self Study Socery
     MaxLevel: 10
+    CastCancel: false
   - Id: 5451
     Name: HN_DOUBLEBOWLINGBASH
     Description: Double Bowling Bash
@@ -1642,6 +1612,7 @@ Body:
     SplashArea: 4
     Knockback: 1
     GiveAp: 3
+    CastCancel: false
     AfterCastActDelay: 1000
     Duration2: 1000
     Cooldown: 700
@@ -1681,7 +1652,6 @@ Body:
     HitCount: -8
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 500
     Duration2: 4500
     Cooldown: 350
@@ -1721,7 +1691,6 @@ Body:
     Element: Weapon
     SplashArea: 4
     GiveAp: 2
-    CastCancel: true
     CastTime: 1200
     AfterCastActDelay: 500
     Duration1: 5000
@@ -1762,7 +1731,6 @@ Body:
     HitCount: -5
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     CastTime: 1000
     AfterCastActDelay: 500
     Duration2: 2000
@@ -1802,7 +1770,6 @@ Body:
     Element: Fire
     SplashArea: 4
     GiveAp: 3
-    CastCancel: true
     CastTime: 4000
     AfterCastActDelay: 300
     Duration1:
@@ -1932,7 +1899,6 @@ Body:
       - Level: 10
         Area: 4
     GiveAp: 2
-    CastCancel: true
     CastTime:
       - Level: 1
         Time: 1100
@@ -1990,7 +1956,6 @@ Body:
     HitCount: 1
     Element: Water
     GiveAp: 3
-    CastCancel: true
     CastTime:
       - Level: 1
         Time: 1600
@@ -2121,7 +2086,6 @@ Body:
       - Level: 10
         Area: 4
     GiveAp: 2
-    CastCancel: true
     CastTime: 1200
     AfterCastActDelay: 1000
     Cooldown:
@@ -2177,7 +2141,6 @@ Body:
     Hit: Multi_Hit
     HitCount: -2
     GiveAp: 5
-    CastCancel: true
     CastTime:
       - Level: 1
         Time: 3000
@@ -2289,7 +2252,6 @@ Body:
     Element: Ghost
     SplashArea: 3
     GiveAp: 2
-    CastCancel: true
     CastTime: 500
     AfterCastActDelay: 500
     Duration2: 18000
@@ -2326,7 +2288,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     Duration1: 300000
     Cooldown: 60000
     FixedCastTime: 1000
@@ -2342,7 +2303,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     Duration1: 300000
     Cooldown: 60000
     FixedCastTime: 1000
@@ -2353,10 +2313,12 @@ Body:
     Name: SKE_SKY_MASTERY
     Description: Sky Mastery
     MaxLevel: 10
+    CastCancel: false
   - Id: 5464
     Name: SKE_WAR_BOOK_MASTERY
     Description: War Book Mastery
     MaxLevel: 10
+    CastCancel: false
   - Id: 5465
     Name: SKE_RISING_SUN
     Description: Rising Sun
@@ -2367,7 +2329,6 @@ Body:
     Hit: Multi_Hit
     HitCount: -2
     Element: Weapon
-    CastCancel: true
     AfterCastActDelay: 500
     Duration1:
       - Level: 1
@@ -2408,7 +2369,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 3
-    CastCancel: true
     AfterCastActDelay: 500
     Cooldown: 700
     Requires:
@@ -2448,7 +2408,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 3
-    CastCancel: true
     AfterCastActDelay: 500
     Cooldown: 300
     Requires:
@@ -2485,7 +2444,6 @@ Body:
         Area: 3
       - Level: 5
         Area: 4
-    CastCancel: true
     AfterCastActDelay: 500
     Duration1:
       - Level: 1
@@ -2524,7 +2482,6 @@ Body:
       - Level: 5
         Area: 4
     GiveAp: 3
-    CastCancel: true
     CastTime: 1000
     Cooldown: 700
     FixedCastTime: 500
@@ -2563,7 +2520,6 @@ Body:
       - Level: 5
         Area: 4
     GiveAp: 3
-    CastCancel: true
     CastTime: 1000
     Cooldown: 300
     FixedCastTime: 500
@@ -2599,7 +2555,6 @@ Body:
         Area: 5
       - Level: 5
         Area: 4
-    CastCancel: true
     CastTime: 1000
     Duration1: 3500
     Cooldown: 5000
@@ -2639,7 +2594,6 @@ Body:
     Element: Weapon
     SplashArea: 2
     GiveAp: 3
-    CastCancel: true
     AfterCastActDelay: 500
     Duration1: 4500
     Cooldown: 1000
@@ -2682,7 +2636,6 @@ Body:
       - Level: 5
         Area: 4
     GiveAp: 3
-    CastCancel: true
     Duration1: 2500
     Cooldown: 3500
     FixedCastTime: 500
@@ -2728,7 +2681,6 @@ Body:
     Hit: Multi_Hit
     HitCount: 1
     Element: Weapon
-    CastCancel: true
     Cooldown: 2000
     FixedCastTime: 1000
     Requires:
@@ -2743,7 +2695,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     CastTime: 1000
     Duration1:
       - Level: 1
@@ -2784,7 +2735,6 @@ Body:
     HitCount: -2
     Element: Dark
     SplashArea: 2
-    CastCancel: true
     Duration1: 2000
     Cooldown:
       - Level: 1
@@ -2810,7 +2760,6 @@ Body:
     HitCount: -2
     Element: Weapon
     SplashArea: 15
-    CastCancel: true
     Duration1: 2000
     Cooldown:
       - Level: 1
@@ -2836,7 +2785,6 @@ Body:
     Hit: Single
     HitCount: 1
     SplashArea: 7
-    CastCancel: true
     CastTime: 1000
     AfterCastActDelay: 250
     Cooldown: 15000
@@ -2854,7 +2802,6 @@ Body:
     Hit: Single
     HitCount: 1
     ActiveInstance: 3
-    CastCancel: true
     CastTime: 2000
     Duration1: 20000
     Cooldown: 3000
@@ -2879,7 +2826,6 @@ Body:
     HitCount: 1
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 150
     Duration1: 100
     Duration2: 5000
@@ -2946,7 +2892,6 @@ Body:
       - Level: 10
         Area: 3
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 250
     Cooldown: 400
     Requires:
@@ -3005,7 +2950,6 @@ Body:
         Area: 3
       - Level: 10
         Area: 3
-    CastCancel: true
     AfterCastActDelay: 250
     Cooldown: 500
     Requires:
@@ -3042,7 +2986,6 @@ Body:
     Element: Weapon
     ActiveInstance: 2
     GiveAp: 3
-    CastCancel: true
     CastTime: 1200
     Duration1: 5000
     Duration2: 5000
@@ -3109,7 +3052,6 @@ Body:
     HitCount: -3
     Element: Weapon
     SplashArea: 4
-    CastCancel: true
     CastTime: 1200
     Duration1: 100
     Cooldown: 700
@@ -3154,7 +3096,6 @@ Body:
     HitCount: -2
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     CastTime: 200
     AfterCastActDelay: 500
     Duration1: 5000
@@ -3201,7 +3142,6 @@ Body:
     Hit: Multi_Hit
     HitCount: -3
     Element: Weapon
-    CastCancel: true
     AfterCastActDelay: 500
     Duration1: 2000
     Duration2: 2000
@@ -3249,7 +3189,6 @@ Body:
     HitCount: 1
     Element: Weapon
     SplashArea: 7
-    CastCancel: true
     CastTime: 1500
     AfterCastActDelay: 500
     Duration1: 2000
@@ -3321,7 +3260,6 @@ Body:
         Area: 3
       - Level: 10
         Area: 3
-    CastCancel: true
     CastTime: 2000
     Cooldown: 700
     FixedCastTime: 1000
@@ -3360,7 +3298,6 @@ Body:
     Hit: Multi_Hit
     HitCount: -6
     Element: Water
-    CastCancel: true
     CastTime: 3000
     Duration1: 100
     Cooldown: 500
@@ -3450,7 +3387,6 @@ Body:
         Area: 3
       - Level: 10
         Area: 3
-    CastCancel: true
     CastTime: 2000
     Cooldown: 700
     FixedCastTime: 1000
@@ -3512,7 +3448,6 @@ Body:
         Area: 2
       - Level: 10
         Area: 2
-    CastCancel: true
     CastTime: 3000
     Cooldown: 300
     FixedCastTime: 1000
@@ -3574,7 +3509,6 @@ Body:
       - Level: 10
         Area: 3
     GiveAp: 2
-    CastCancel: true
     CastTime: 3000
     Duration2: 5000
     Cooldown: 500
@@ -3616,7 +3550,6 @@ Body:
     HitCount: -4
     Element: Weapon
     SplashArea: 6
-    CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
     Cooldown: 1000
@@ -3636,7 +3569,6 @@ Body:
     HitCount: -8
     Element: Weapon
     SplashArea: 6
-    CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
     Cooldown: 1000
@@ -3656,7 +3588,6 @@ Body:
     HitCount: -4
     Element: Dark
     SplashArea: 5
-    CastCancel: true
     CastTime: 2000
     AfterCastActDelay: 500
     Cooldown: 1000
@@ -3670,6 +3601,7 @@ Body:
     MaxLevel: 5
     Hit: Single
     HitCount: 1
+    CastCancel: false
     Requires:
       SpCost: 1
   - Id: 5497
@@ -3678,6 +3610,7 @@ Body:
     MaxLevel: 5
     Hit: Single
     HitCount: 1
+    CastCancel: false
     Requires:
       SpCost: 1
   - Id: 5498
@@ -3686,6 +3619,7 @@ Body:
     MaxLevel: 10
     Hit: Single
     HitCount: 1
+    CastCancel: false
     Requires:
       SpCost: 1
   - Id: 5499
@@ -3697,7 +3631,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     Duration1: 300000
     Cooldown: 3000
     Requires:
@@ -3728,7 +3661,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     Cooldown: 1000
     FixedCastTime: 1500
     Requires:
@@ -3762,7 +3694,6 @@ Body:
     HitCount: 3
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     Duration1: 100
     Cooldown: 1000
     FixedCastTime: 1000
@@ -3826,7 +3757,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     Cooldown: 1000
     Requires:
       SpCost:
@@ -3866,7 +3796,6 @@ Body:
       - Level: 5
         Area: 4
     GiveAp: 2
-    CastCancel: true
     CastTime: 750
     Cooldown: 1000
     Requires:
@@ -3907,7 +3836,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     Cooldown: 1000
     Requires:
       SpCost:
@@ -3932,7 +3860,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     Duration1: 300000
     Cooldown: 60000
     Requires:
@@ -3977,7 +3904,6 @@ Body:
       - Level: 7
         Area: 3
     GiveAp: 1
-    CastCancel: true
     CastTime: 750
     Cooldown: 650
     Requires:
@@ -4023,7 +3949,6 @@ Body:
       - Level: 7
         Area: 4
     GiveAp: 1
-    CastCancel: true
     CastTime: 3000
     AfterCastActDelay: 500
     Cooldown: 1000
@@ -4056,7 +3981,6 @@ Body:
     HitCount: 5
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     CastTime: 1000
     Cooldown: 1000
     Requires:
@@ -4108,7 +4032,6 @@ Body:
       - Level: 10
         Area: 3
     GiveAp: 2
-    CastCancel: true
     CastTime: 500
     AfterCastActDelay: 1000
     Cooldown: 650
@@ -4150,7 +4073,6 @@ Body:
     HitCount: 3
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 500
     Cooldown: 350
     Requires:
@@ -4190,7 +4112,6 @@ Body:
       - Level: 5
         Area: 4
     GiveAp: 2
-    CastCancel: true
     CastTime: 3000
     Cooldown: 750
     Requires:
@@ -4229,7 +4150,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 1000
     Requires:
       SpCost:
@@ -4269,7 +4189,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 500
     Requires:
       SpCost:
@@ -4312,7 +4231,6 @@ Body:
       - Level: 5
         Area: 4
     GiveAp: 3
-    CastCancel: true
     CastTime: 500
     AfterCastActDelay: 300
     Cooldown: 1000
@@ -4353,7 +4271,6 @@ Body:
         Area: 3
       - Level: 5
         Area: 3
-    CastCancel: true
     AfterCastActDelay: 300
     Duration1: 60000
     Cooldown: 1000
@@ -4383,7 +4300,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 500
     Requires:
       SpCost:
@@ -4424,7 +4340,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 500
     Duration1: 10000
     Cooldown: 1000
@@ -4462,7 +4377,6 @@ Body:
       - Level: 5
         Amount: 5
     GiveAp: 2
-    CastCancel: true
     Duration1: 60000
     Cooldown: 1000
     Requires:
@@ -4501,7 +4415,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     Cooldown: 1000
     Requires:
       SpCost:
@@ -4540,7 +4453,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     AfterCastActDelay: 300
     Cooldown: 750
     FixedCastTime: 1000
@@ -4582,7 +4494,6 @@ Body:
       - Level: 5
         Area: 3
     GiveAp: 2
-    CastCancel: true
     CastTime: 3000
     Requires:
       SpCost:
@@ -4605,7 +4516,6 @@ Body:
       NoDamage: true
     Hit: Single
     HitCount: 1
-    CastCancel: true
     Cooldown: 1000
     FixedCastTime: 1200
     Requires:
@@ -4643,7 +4553,6 @@ Body:
         Area: 3
       - Level: 5
         Area: 3
-    CastCancel: true
     CastTime: 3000
     Cooldown: 1000
     Requires:
@@ -4673,7 +4582,6 @@ Body:
     Element: Holy
     SplashArea: 3
     GiveAp: 2
-    CastCancel: true
     CastTime: 3000
     Cooldown: 1000
     Requires:
@@ -4701,7 +4609,6 @@ Body:
     HitCount: -7
     Element: Weapon
     GiveAp: 2
-    CastCancel: true
     CastTime: 2500
     Cooldown: 2000
     Requires:
@@ -4731,7 +4638,6 @@ Body:
     Range: 11
     Hit: Multi_Hit
     HitCount: 3
-    CastCancel: true
     CastTime: 750
     AfterCastActDelay: 250
     Duration1:
@@ -4784,7 +4690,6 @@ Body:
       - Level: 5
         Area: 4
     GiveAp: 3
-    CastCancel: true
     CastTime: 1000
     AfterCastActDelay: 1000
     FixedCastTime: 1000
@@ -4828,5 +4733,6 @@ Body:
         Area: 3
       - Level: 5
         Area: 3
+    CastCancel: false
     Requires:
       SpCost: 1
