@@ -76,9 +76,8 @@
 	packet(0x00cd,3);
 	parseable_packet(0x00ce,2,clif_parse_GMKickAll,0);
 	parseable_packet(0x00cf,27,clif_parse_PMIgnore,2,26);
-	parseable_packet(0x00d0,3,clif_parse_PMIgnoreAll,2);
+	parseable_packet( HEADER_CZ_SETTING_WHISPER_STATE, sizeof( PACKET_CZ_SETTING_WHISPER_STATE ), clif_parse_PMIgnoreAll, 0 );
 	parseable_packet(0x00d3,2,clif_parse_PMIgnoreList,0);
-	packet(0x00d4,-1);
 	parseable_packet( HEADER_CZ_CREATE_CHATROOM, -1, clif_parse_CreateChatRoom, 0 );
 	parseable_packet( HEADER_CZ_REQ_ENTER_ROOM, sizeof( PACKET_CZ_REQ_ENTER_ROOM ), clif_parse_ChatAddMember, 0 );
 	parseable_packet( HEADER_CZ_CHANGE_CHATROOM, -1, clif_parse_ChatRoomStatusChange, 0 );
@@ -1653,8 +1652,6 @@
 	packet(0x0979,50); //ackworldinfo
 	packet(0x099b,8); //maptypeproperty2
 	// New Packets
-	packet(0x08ff,24); // ZC_EFST_SET_ENTER
-	packet(0x0984,28); // ZC_EFST_SET_ENTER2
 	packet(0x099f,22); // ZC_SKILL_ENTRY4
 #endif
 
@@ -2036,8 +2033,20 @@
 	parseable_packet( HEADER_CZ_RESET_SKILL, sizeof( struct PACKET_CZ_RESET_SKILL ), clif_parse_reset_skill, 0 );
 #endif
 
+#if PACKETVER_MAIN_NUM >= 20230607
+	parseable_packet( HEADER_CZ_ALLY_CHAT, -1, clif_parse_dull, 0 );
+#endif
+
 #if PACKETVER_MAIN_NUM >= 20230705
 	parseable_packet( HEADER_CZ_REQ_EMOTION_EXPANSION, sizeof( struct PACKET_CZ_REQ_EMOTION_EXPANSION ), clif_parse_dull, 0 );
+#endif
+
+#if PACKETVER_MAIN_NUM >= 20230802
+	parseable_packet( HEADER_CZ_QUEST_STATUS_REQ, -1, clif_parse_dull, 0 );
+#endif
+
+#if PACKETVER_MAIN_NUM >= 20230830
+	parseable_packet( HEADER_CZ_REQ_REPORT_USER, sizeof( struct PACKET_CZ_REQ_REPORT_USER ), clif_parse_dull, 0 );
 #endif
 
 #if PACKETVER_MAIN_NUM >= 20240502

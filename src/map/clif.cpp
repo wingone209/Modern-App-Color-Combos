@@ -3647,7 +3647,7 @@ static void clif_longlongpar_change(map_session_data& sd, uint16 varId, int64 am
 void clif_updatestatus( map_session_data& sd, enum _sp type ){
 	switch(type){
 		case SP_WEIGHT:
-			pc_updateweightstatus(&sd);
+			pc_updateweightstatus(sd);
 			clif_par_change(sd, type, sd.weight);
 			break;
 		case SP_MAXWEIGHT:
@@ -5119,14 +5119,12 @@ void clif_getareachar_unit( map_session_data* sd,struct block_list *bl ){
 
 //Modifies the type of damage according to target status changes [Skotlex]
 //Aegis data specifies that: 4 endure against single hit sources, 9 against multi-hit.
-static enum e_damage_type clif_calc_delay(block_list& bl, e_damage_type type, int32 div, int64 damage, int32 delay) {
+static enum e_damage_type clif_calc_delay(block_list& bl, e_damage_type type, int32 div, int64 damage, int32 delay, t_tick tick) {
 	if (damage < 1)
 		return type;
 
-	// Currently we set dmotion to 0 to mark situations that should use the endure effect
-	// However, this also impacts units that naturally have 0 dmotion
-	// TODO: Collect all possible situations that create the endure effect and implement function
-	if (delay != 0)
+	// Check if unit has endure
+	if (!status_isendure(bl, tick, true))
 		return type;
 
 	// General change of type based on div against target with endure effect
@@ -5153,33 +5151,6 @@ static enum e_damage_type clif_calc_delay(block_list& bl, e_damage_type type, in
 
 	// Custom, unknown result of endure with types not listed
 	return (div > 1 ? DMG_MULTI_HIT_ENDURE : DMG_ENDURE);
-}
-
-/*==========================================
- * Estimates walk delay based on the damage criteria. [Skotlex]
- *------------------------------------------*/
-static int32 clif_calc_walkdelay( block_list &bl, int32 delay, e_damage_type type, int64 damage, int32 div_ ) {
-	if (damage < 1)
-		return 0;
-
-	switch( type ) {
-		case DMG_ENDURE:
-		case DMG_MULTI_HIT_ENDURE:
-		case DMG_SPLASH_ENDURE:
-			return 0;
-	}
-
-	if (bl.type == BL_PC) {
-		if (battle_config.pc_walk_delay_rate != 100)
-			delay = delay*battle_config.pc_walk_delay_rate/100;
-	} else
-		if (battle_config.walk_delay_rate != 100)
-			delay = delay*battle_config.walk_delay_rate/100;
-
-	if (div_ > 1) //Multi-hit skills mean higher delays.
-		delay += battle_config.multihit_delay*(div_-1);
-
-	return (delay > 0) ? delay : 1; //Return 1 to specify there should be no noticeable delay, but you should stop walking.
 }
 
 /*========================================== [Playtester]
@@ -5240,12 +5211,11 @@ static int64 clif_hallucination_damage( block_list& bl, int64 damage ){
 ///     11 = lucky dodge
 ///     12 = (touch skill?)
 ///     13 = multi-hit critical
-int32 clif_damage(block_list& src, block_list& dst, t_tick tick, int32 sdelay, int32 ddelay, int64 sdamage, int32 div, enum e_damage_type type, int64 sdamage2, bool spdamage){
+void clif_damage(block_list& src, block_list& dst, t_tick tick, int32 sdelay, int32 ddelay, int64 sdamage, int16 div, enum e_damage_type type, int64 sdamage2, bool spdamage){
 	int32 damage = (int32)cap_value(sdamage,INT_MIN,INT_MAX);
 	int32 damage2 = (int32)cap_value(sdamage2,INT_MIN,INT_MAX);
 
-	if (type != DMG_MULTI_HIT_CRITICAL)
-		type = clif_calc_delay( dst, type, div, damage+damage2, ddelay );
+	type = clif_calc_delay(dst, type, div, damage+damage2, ddelay, tick);
 
 	damage = static_cast<decltype(damage)>(clif_hallucination_damage(dst, damage));
 	damage2 = static_cast<decltype(damage2)>(clif_hallucination_damage(dst, damage2));
@@ -5315,14 +5285,6 @@ int32 clif_damage(block_list& src, block_list& dst, t_tick tick, int32 sdelay, i
 
 	if(&src == &dst) 
 		unit_setdir(&src, unit_getdir(&src));
-
-	// In case this assignment is bypassed by DMG_MULTI_HIT_CRITICAL
-	if( type == DMG_MULTI_HIT_CRITICAL ){
-		type = clif_calc_delay( dst, type, div, damage+damage2, ddelay );
-	}
-
-	//Return adjusted can't walk delay for further processing.
-	return clif_calc_walkdelay(dst, ddelay, type, damage+damage2, div);
 }
 
 /*==========================================
@@ -5853,7 +5815,7 @@ void clif_skillup( map_session_data& sd, uint16 skill_id, uint16 lv, uint16 rang
 /// Updates a skill in the skill tree
 /// 07e1 <skill id>.W <type>.L <level>.W <sp cost>.W <attack range>.W <upgradable>.B (ZC_SKILLINFO_UPDATE2)
 /// 0b33 <skill id>.W <type>.L <level>.W <sp cost>.W <attack range>.W <upgradable>.B <level2>.W (ZC_SKILLINFO_UPDATE3)
-void clif_skillinfo( map_session_data& sd, uint16 skill_id ){
+void clif_skillinfo( map_session_data& sd, uint16 skill_id, int32 inf ){
 #if PACKETVER >= 20090715
 	uint16 idx = skill_get_index(skill_id);
 
@@ -5868,7 +5830,11 @@ void clif_skillinfo( map_session_data& sd, uint16 skill_id ){
 	p.level = sd.status.skill[idx].lv;
 	p.sp = static_cast<decltype(p.sp)>( skill_get_sp( skill_id,sd.status.skill[idx].lv ) );
 	p.range2 = static_cast<decltype(p.range2)>( skill_get_range2( &sd.bl,skill_id,sd.status.skill[idx].lv,false ) );
-	p.inf = skill_get_inf( skill_id );
+	if( inf == INF_PASSIVE_SKILL ){
+		p.inf = skill_get_inf( skill_id );
+	}else{
+		p.inf = inf;
+	}
 
 	if( sd.status.skill[idx].flag == SKILL_FLAG_PERMANENT && sd.status.skill[idx].lv < skill_tree_get_max( skill_id, sd.status.class_ ) ){
 		p.upFlag = true;
@@ -6037,8 +6003,8 @@ void clif_skill_cooldown( map_session_data &sd, uint16 skill_id, t_tick tick ){
 /// Skill attack effect and damage.
 /// 0114 <skill id>.W <src id>.L <dst id>.L <tick>.L <src delay>.L <dst delay>.L <damage>.W <level>.W <div>.W <type>.B (ZC_NOTIFY_SKILL)
 /// 01de <skill id>.W <src id>.L <dst id>.L <tick>.L <src delay>.L <dst delay>.L <damage>.L <level>.W <div>.W <type>.B (ZC_NOTIFY_SKILL2)
-int32 clif_skill_damage( block_list& src, block_list& dst, t_tick tick, int32 sdelay, int32 ddelay, int64 sdamage, int32 div, uint16 skill_id, uint16 skill_lv, e_damage_type type ){
-	type = clif_calc_delay( dst, type, div, sdamage, ddelay );
+void clif_skill_damage( block_list& src, block_list& dst, t_tick tick, int32 sdelay, int32 ddelay, int64 sdamage, int16 div, uint16 skill_id, uint16 skill_lv, e_damage_type type ){
+	type = clif_calc_delay(dst, type, div, sdamage, ddelay, tick);
 	sdamage = clif_hallucination_damage( dst, sdamage );
 
 	PACKET_ZC_NOTIFY_SKILL packet{};
@@ -6089,9 +6055,6 @@ int32 clif_skill_damage( block_list& src, block_list& dst, t_tick tick, int32 sd
 		}
 		clif_send( &packet, sizeof( packet ), &src, SELF );
 	}
-
-	//Because the damage delay must be synced with the client, here is where the can-walk tick must be updated. [Skotlex]
-	return clif_calc_walkdelay( dst, ddelay, type, damage, div );
 }
 
 
@@ -6577,6 +6540,34 @@ void clif_status_change(struct block_list *bl, int32 type, int32 flag, t_tick ti
 	clif_status_change_sub(bl, bl->id, type, flag, tick, val1, val2, val3, ((sd ? (pc_isinvisible(sd) ? SELF : AREA) : AREA_WOS)));
 }
 
+/// Notifies the client when a player enters the screen with an active EFST.
+/// 08ff <id>.L <index>.W <remain msec>.L { <val>.L }*3  (ZC_EFST_SET_ENTER) (PACKETVER >= 20111108)
+/// 0984 <id>.L <index>.W <total msec>.L <remain msec>.L { <val>.L }*3 (ZC_EFST_SET_ENTER2) (PACKETVER >= 20120618)
+void clif_efst_status_change( block_list& bl, block_list& tbl, enum send_target target, efst_type type, t_tick tick, int32 val1, int32 val2, int32 val3 ){
+#if PACKETVER >= 20111108
+	if (type == EFST_BLANK)
+		return;
+
+	if (tick <= 0)
+		tick = 9999;
+
+	PACKET_ZC_EFST_SET_ENTER p{};
+
+	p.packetType = HEADER_ZC_EFST_SET_ENTER;
+	p.targetID = tbl.id;
+	p.type = type;
+	p.duration = client_tick( tick );
+#if PACKETVER >= 20120618
+	p.duration2 = p.duration;
+#endif
+	p.val1 = val1;
+	p.val2 = val2;
+	p.val3 = val3;
+
+	clif_send( &p, sizeof( p ), &bl, target );
+#endif
+}
+
 /**
  * Send any active EFST to those around.
  * @param tbl: Unit to send the packet to
@@ -6640,49 +6631,11 @@ void clif_efst_status_change_sub(struct block_list *tbl, struct block_list *bl, 
 		}
 
 #if PACKETVER > 20120418
-		clif_efst_status_change(tbl, bl->id, target, status_db.getIcon(type), tick, sc_display[i]->val1, sc_display[i]->val2, sc_display[i]->val3);
+		clif_efst_status_change( *tbl, *bl, target, status_db.getIcon( type ), tick, sc_display[i]->val1, sc_display[i]->val2, sc_display[i]->val3 );
 #else
 		clif_status_change_sub(tbl, bl->id, status_db.getIcon(type), 1, tick, sc_display[i]->val1, sc_display[i]->val2, sc_display[i]->val3, target);
 #endif
 	}
-}
-
-/// Notifies the client when a player enters the screen with an active EFST.
-/// 08ff <id>.L <index>.W <remain msec>.L { <val>.L }*3  (ZC_EFST_SET_ENTER) (PACKETVER >= 20111108)
-/// 0984 <id>.L <index>.W <total msec>.L <remain msec>.L { <val>.L }*3 (ZC_EFST_SET_ENTER2) (PACKETVER >= 20120618)
-void clif_efst_status_change(struct block_list *bl, int32 tid, enum send_target target, int32 type, t_tick tick, int32 val1, int32 val2, int32 val3) {
-#if PACKETVER >= 20111108
-	unsigned char buf[32];
-#if PACKETVER >= 20120618
-	const int32 cmd = 0x984;
-#elif PACKETVER >= 20111108
-	const int32 cmd = 0x8ff;
-#endif
-	int32 offset = 0;
-
-	if (type == EFST_BLANK)
-		return;
-
-	nullpo_retv(bl);
-
-	if (tick <= 0)
-		tick = 9999;
-
-	WBUFW(buf,offset + 0) = cmd;
-	WBUFL(buf,offset + 2) = tid;
-	WBUFW(buf,offset + 6) = type;
-#if PACKETVER >= 20111108
-	WBUFL(buf,offset + 8) = client_tick(tick); // Set remaining status duration [exneval]
-#if PACKETVER >= 20120618
-	WBUFL(buf,offset + 12) = client_tick(tick);
-	offset += 4;
-#endif
-	WBUFL(buf,offset + 12) = val1;
-	WBUFL(buf,offset + 16) = val2;
-	WBUFL(buf,offset + 20) = val3;
-#endif
-	clif_send(buf,packet_len(cmd),bl,target);
-#endif
 }
 
 /// Send message (modified by [Yor]) (ZC_NOTIFY_PLAYERCHAT).
@@ -9648,12 +9601,12 @@ void clif_wisexin( map_session_data& sd, uint8 type, uint8 flag ){
 /// result:
 ///     0 = success
 ///     1 = failure
-void clif_wisall( map_session_data& sd, uint8 type, uint8 flag ){
+void clif_wisall( map_session_data& sd, uint8 type, bool failure ){
 	PACKET_ZC_SETTING_WHISPER_STATE p{};
 
 	p.packetType = HEADER_ZC_SETTING_WHISPER_STATE;
 	p.type = type;
-	p.result = flag;
+	p.result = failure;
 
 	clif_send( &p, sizeof( p ), &sd.bl, SELF );
 }
@@ -12804,12 +12757,10 @@ static void clif_parse_UseSkillToPos_homun(struct homun_data *hd, map_session_da
 		return;
 	}
 
-#ifdef RENEWAL
-	if (hd->sc.getSCE(SC_BASILICA_CELL))
-#else
+#ifndef RENEWAL
 	if (hd->sc.getSCE(SC_BASILICA))
-#endif
 		return;
+#endif
 	lv = hom_checkskill(hd, skill_id);
 	if( skill_lv > lv )
 		skill_lv = lv;
@@ -12857,12 +12808,10 @@ static void clif_parse_UseSkillToPos_mercenary(s_mercenary_data *md, map_session
 		return;
 	}
 
-#ifdef RENEWAL
-	if (md->sc.getSCE(SC_BASILICA_CELL))
-#else
+#ifndef RENEWAL
 	if (md->sc.getSCE(SC_BASILICA))
-#endif
 		return;
+#endif
 	lv = mercenary_checkskill(md, skill_id);
 	if( skill_lv > lv )
 		skill_lv = lv;
@@ -15187,57 +15136,59 @@ void clif_parse_PMIgnore(int32 fd, map_session_data* sd)
 }
 
 
-/// /inall /exall (CZ_SETTING_WHISPER_STATE).
+/// /inall /exall.
 /// Request to allow/deny all whispers.
-/// 00d0 <type>.B
+/// 00d0 <type>.B (CZ_SETTING_WHISPER_STATE)
 /// type:
 ///     0 = (/exall) deny all speech
 ///     1 = (/inall) allow all speech
-void clif_parse_PMIgnoreAll(int32 fd, map_session_data *sd)
-{
-	uint8 type = RFIFOB(fd,packet_db[RFIFOW(fd,0)].pos[0]), flag;
+void clif_parse_PMIgnoreAll( int32 fd, map_session_data* sd ){
+	const PACKET_CZ_SETTING_WHISPER_STATE* p = reinterpret_cast<PACKET_CZ_SETTING_WHISPER_STATE*>( RFIFOP( fd, 0 ) );
+	bool failure;
 
-	if( type == 0 ) {// Deny all
+	if( p->type == 0 ) {// Deny all
 		if( sd->state.ignoreAll ) {
-			flag = 1; // fail
+			failure = true;
 		} else {
 			sd->state.ignoreAll = 1;
-			flag = 0; // success
+			failure = false;
 		}
 	} else {//Unblock everyone
 		if( sd->state.ignoreAll ) {
 			sd->state.ignoreAll = 0;
-			flag = 0; // success
+			failure = false;
 		} else {
 			if (sd->ignore[0].name[0] != '\0')
 			{  //Wipe the ignore list.
 				memset(sd->ignore, 0, sizeof(sd->ignore));
-				flag = 0; // success
+				failure = false;
 			} else {
-				flag = 1; // fail
+				failure = true;
 			}
 		}
 	}
 
-	clif_wisall( *sd, type, flag );
+	clif_wisall( *sd, p->type, failure );
 }
 
 
-/// Whisper ignore list (ZC_WHISPER_LIST).
-/// 00d4 <packet len>.W { <char name>.24B }*
-void clif_PMIgnoreList(map_session_data* sd)
-{
-	int32 i, fd = sd->fd;
+/// Whisper ignore list.
+/// 00d4 <packet len>.W { <char name>.24B }* (ZC_WHISPER_LIST)
+void clif_PMIgnoreList( map_session_data& sd ){
+	PACKET_ZC_WHISPER_LIST* p = reinterpret_cast<PACKET_ZC_WHISPER_LIST*>( packet_buffer );
 
-	WFIFOHEAD(fd,4+ARRAYLENGTH(sd->ignore)*NAME_LENGTH);
-	WFIFOW(fd,0) = 0xd4;
+	p->packetType = HEADER_ZC_WHISPER_LIST;
+	p->packetSize = sizeof( *p );
 
-	for( i = 0; i < ARRAYLENGTH(sd->ignore) && sd->ignore[i].name[0]; i++ ) {
-		safestrncpy(WFIFOCP(fd,4+i*NAME_LENGTH), sd->ignore[i].name, NAME_LENGTH);
+	for( size_t i = 0; i < ARRAYLENGTH( sd.ignore ) && sd.ignore[i].name[0]; i++ ){
+		PACKET_ZC_WHISPER_LIST_sub& entry = p->names[i];
+
+		safestrncpy( entry.name, sd.ignore[i].name, sizeof( entry.name ) );
+
+		p->packetSize += static_cast<decltype(p->packetSize)>( sizeof( entry ) );
 	}
 
-	WFIFOW(fd,2) = 4+i*NAME_LENGTH;
-	WFIFOSET(fd,WFIFOW(fd,2));
+	clif_send( p, p->packetSize, &sd.bl, SELF );
 }
 
 
@@ -15245,7 +15196,11 @@ void clif_PMIgnoreList(map_session_data* sd)
 /// 00d3
 void clif_parse_PMIgnoreList(int32 fd,map_session_data *sd)
 {
-	clif_PMIgnoreList(sd);
+	if( sd == nullptr ){
+		return;
+	}
+
+	clif_PMIgnoreList( *sd );
 }
 
 
@@ -22026,11 +21981,7 @@ void clif_weight_limit( map_session_data* sd ){
 
 	WFIFOHEAD(fd, packet_len(0xADE));
 	WFIFOW(fd, 0) = 0xADE;
-#ifdef RENEWAL
-	WFIFOL(fd, 2) = battle_config.natural_heal_weight_rate_renewal;
-#else
 	WFIFOL(fd, 2) = battle_config.natural_heal_weight_rate;
-#endif
 	WFIFOSET(fd, packet_len(0xADE));
 #endif
 }
@@ -24462,7 +24413,7 @@ void clif_parse_item_reform_start( int32 fd, map_session_data* sd ){
 void clif_enchantwindow_open( map_session_data& sd, uint64 clientLuaIndex ){
 #if PACKETVER_RE_NUM >= 20211103 || PACKETVER_MAIN_NUM >= 20220330
 	// Hardcoded clientside check
-	if( sd.weight > ( ( sd.max_weight * 70 ) / 100 ) ){
+	if( pc_getpercentweight(sd) >= 70 ){
 		clif_msg_color( sd, MSI_ENCHANT_FAILED_OVER_WEIGHT, color_table[COLOR_RED] );
 		sd.state.item_enchant_index = 0;
 		return;
