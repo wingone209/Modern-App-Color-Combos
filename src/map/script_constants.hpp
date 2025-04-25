@@ -787,6 +787,7 @@
 	export_constant2("bMagicHPGainValue",SP_MAGIC_HP_GAIN_VALUE);
 	export_constant2("bAddMonsterIdDropItem",SP_ADD_MONSTER_ID_DROP_ITEM);
 	export_constant2("bMatk",SP_EMATK);
+	export_constant2("bMatk2",SP_EMATK_HIDDEN);
 	export_constant2("bComaClass",SP_COMA_CLASS);
 	export_constant2("bComaRace",SP_COMA_RACE);
 	export_constant2("bSkillUseSPrate",SP_SKILL_USE_SP_RATE);
@@ -1992,6 +1993,8 @@
 	export_constant(SC_WIND_CHARM_POWER);
 	export_constant(SC_GROUND_CHARM_POWER);
 	export_constant(SC_OVERCOMING_CRISIS);
+	export_constant(SC_CONTENTS_34);
+	export_constant(SC_CONTENTS_35);
 
 /// Do not modify code below this, until the end of the API hook, since it will be automatically generated again
 /// @APIHOOK_START(EFST_CONST)
@@ -3438,6 +3441,8 @@
 	export_constant(EFST_CONTENTS_31);
 	export_constant(EFST_CONTENTS_32);
 	export_constant(EFST_CONTENTS_33);
+	export_constant(EFST_CONTENTS_34);
+	export_constant(EFST_CONTENTS_35);
 	export_constant(EFST_C_BUFF_1);
 	export_constant(EFST_C_BUFF_2);
 	export_constant(EFST_CHASING);
@@ -3520,6 +3525,8 @@
 	export_constant(RC2_ILLUSION_MOONLIGHT);
 	export_constant(RC2_EP16_DEF);
 	export_constant(RC2_EDDA_ARUNAFELTZ);
+	export_constant(RC2_LASAGNA);
+	export_constant(RC2_GLAST_HEIM_ABYSS);
 	export_constant(RC2_MAX);
 
 	/* monster ai */
@@ -7102,6 +7109,61 @@
 	export_constant(IG_REGIA_HUNTING_SET);
 	export_constant(IG_MYSTERIOUS_FRUIT_BOX);
 	export_constant(IG_ZONDA_SUPPORT_PACKAGE);
+	export_constant(IG_AEGIS_103871);
+	export_constant(IG_AEGIS_103872);
+	export_constant(IG_IFRIT_SCROLL);
+	export_constant(IG_IF_COSTUME_SCROLL);
+	export_constant(IG_AEGIS_103891);
+	export_constant(IG_AEGIS_103909);
+	export_constant(IG_AEGIS_103991);
+	export_constant(IG_NEWSERVER_PACKAGE_1);
+	export_constant(IG_NEWSERVER_PACKAGE_2);
+	export_constant(IG_NEWSERVER_PACKAGE_3);
+	export_constant(IG_NEWSERVER_GROWTHPACK1);
+	export_constant(IG_NEWSERVER_GROWTHPACK2);
+	export_constant(IG_NEWSERVER_REFINEPACK1);
+	export_constant(IG_NEWSERVER_REFINEPACK2);
+	export_constant(IG_NEWSERVER_NYANGVINEPACK);
+	export_constant(IG_COSTUMEMILEPACK_37_1);
+	export_constant(IG_COSTUMEMILEPACK_37_2);
+	export_constant(IG_COSTUMEMILEPACK_37_3);
+	export_constant(IG_IF_COSTUME_BOX);
+	export_constant(IG_IF_ALMIGHTY100_BOX);
+	export_constant(IG_IF_ALMIGHTY_BOX);
+	export_constant(IG_IF_REFINE_ORE_BOX_SET);
+	export_constant(IG_IF_REFINE_ORE_BOX);
+	export_constant(IG_IF_HD_REFINE_ORE_BOX);
+	export_constant(IG_IF_HD_ELUNIUM_BOX);
+	export_constant(IG_IF_HD_ORIDECON_BOX);
+	export_constant(IG_IF_INFINITY_10_BOX);
+	export_constant(IG_IF_INFINITY_BOX);
+	export_constant(IG_IF_UNLIMITED_10_BOX);
+	export_constant(IG_IF_UNLIMITED_BOX);
+	export_constant(IG_EYPGT_COSTUME_BOX1);
+	export_constant(IG_EYPGT_COSTUME_BOX2);
+	export_constant(IG_EYPGT_COSTUME_BOX3);
+	export_constant(IG_IF_SPEED_BOOSTER_10_BOX);
+	export_constant(IG_IF_SPEED_BOOSTER_BOX);
+	export_constant(IG_IF_FORCE_BOOSTER_10_BOX);
+	export_constant(IG_IF_FORCE_BOOSTER_BOX);
+	export_constant(IG_IF_3_LIFE_POTION_10PACK);
+	export_constant(IG_IF_3_LIFE_POTION_PACK);
+	export_constant(IG_IF_HD_HIGH_REFINE_BOX);
+	export_constant(IG_IF_HD_CARNIUM_BOX);
+	export_constant(IG_IF_HD_BRADIUM_BOX);
+	export_constant(IG_IF_LIMITPOWERBOOSTER100);
+	export_constant(IG_IF_LIMITPOWERBOOSTER);
+	export_constant(IG_CLB_KP_PACK1);
+	export_constant(IG_CLB_KP_PACK2);
+	export_constant(IG_2025_COSTUME_BOX1);
+	export_constant(IG_2025_COSTUME_BOX2);
+	export_constant(IG_IF_CLB_KP_PACK1);
+	export_constant(IG_IF_CLB_KP_PACK2);
+	export_constant(IG_IF_2025_COSTUME_BOX1);
+	export_constant(IG_IF_2025_COSTUME_BOX2);
+	export_constant(IG_LI_NYANGVINE_BOX1_38);
+	export_constant(IG_LI_NYANGVINE_BOX2_38);
+	export_constant(IG_LI_NYANGVINE_BOX3_38);
 
 	/* unit stop walking */
 	export_constant(USW_NONE);
@@ -8441,6 +8503,11 @@
 	export_constant_npc(JT_4_CLB_SS_AJ);
 	export_constant_npc(JT_4_CLB_SS_LK);
 	export_constant_npc(JT_4_SMART_ANDRE);
+	export_constant_npc(JT_4_ALEXSANDER);
+	export_constant_npc(JT_4_KASANDRA);
+	export_constant_npc(JT_4_CLB_KP_P1);
+	export_constant_npc(JT_4_CLB_KP_SF);
+	export_constant_npc(JT_4_CLB_KP_ZH);
 	export_constant_npc(JT_ROZ_MQ_XAVIER);
 	export_constant_npc(JT_ROZ_MQ_MOCLORD);
 	export_constant_npc(JT_ROZ_MQ_SKULD);
@@ -9822,6 +9889,19 @@
 	export_constant(FOOTPRINT_EF_DOGFOOT);
 	export_constant(HAT_EF_C_AUSPICLOUD);
 	export_constant(HAT_EF_AURA_OF_GHOST_S);
+	export_constant(HAT_EF_C_ROS2024_WING_1);
+	export_constant(FOOTPRINT_EF_DUMPLING);
+	export_constant(FOOTPRINT_EF_PANDA_BASIC);
+	export_constant(FOOTPRINT_EF_PANDA_COLOR);
+	export_constant(HAT_EF_ATQUE_POENITENTIA);
+	export_constant(HAT_EF_PERM_FROST_OBLIVION);
+	export_constant(HAT_EF_ATQUE_POENITENTIA2);
+	export_constant(HAT_EF_GUIDE_OF_DEAD_TEXT);
+	export_constant(HAT_EF_MEDJED_TEXT);
+	export_constant(HAT_EF_INKPAINTING_DAY);
+	export_constant(HAT_EF_INKPAINTING_NIGHT);
+	export_constant(HAT_EF_KUNG_FU_PANDA);
+	export_constant(HAT_EF_C_MGSGPH_POTARL);
 
 	/* pet catch */
 	export_constant(PET_CATCH_UNIVERSAL_NO_BOSS);

@@ -911,7 +911,6 @@ void clif_standing(block_list& bl);
 void clif_sprite_change(struct block_list *bl, int32 id, int32 type, int32 val, int32 val2, enum send_target target);
 void clif_changelook(struct block_list *bl,int32 type,int32 val);	// area
 void clif_changetraplook(struct block_list *bl,int32 val); // area
-void clif_refreshlook(struct block_list *bl,int32 id,int32 type,int32 val,enum send_target target); //area specified in 'target'
 void clif_arrowequip( map_session_data& sd );
 void clif_arrow_fail( map_session_data& sd, e_action_failure type );
 void clif_arrow_create_list( map_session_data& sd );
@@ -1054,7 +1053,7 @@ void clif_changed_dir(block_list& bl, enum send_target target);
 // vending
 void clif_openvendingreq( map_session_data& sd, uint16 num );
 void clif_showvendingboard( map_session_data& sd, enum send_target target = AREA_WOS, struct block_list* tbl = nullptr );
-void clif_closevendingboard(struct block_list* bl, int32 fd);
+void clif_closevendingboard( block_list& bl, send_target target, block_list* tbl );
 void clif_vendinglist( map_session_data& sd, map_session_data& vsd );
 void clif_buyvending( map_session_data& sd, uint16 index, uint16 amount, e_pc_purchase_result_frommc result );
 void clif_openvending( map_session_data& sd );
