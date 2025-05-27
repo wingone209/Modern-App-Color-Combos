@@ -1921,6 +1921,7 @@
 	export_constant(SC_ALL_LIGHTHALZEN_RECALL);
 	export_constant(SC_CONTENTS_34);
 	export_constant(SC_CONTENTS_35);
+	export_constant(SC_NOACTION);
 
 	// Hyper Novice
 	export_constant(SC_SHIELDCHAINRUSH);

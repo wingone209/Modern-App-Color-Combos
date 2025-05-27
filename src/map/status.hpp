@@ -1356,6 +1356,7 @@ enum sc_type : int16 {
 	SC_ALL_LIGHTHALZEN_RECALL,
 	SC_CONTENTS_34,
 	SC_CONTENTS_35,
+	SC_NOACTION,
 
 	// Hyper Novice
 	SC_SHIELDCHAINRUSH = 1001,
@@ -3349,8 +3350,8 @@ struct status_data {
 		str, agi, vit, int_, dex, luk,
 		pow, sta, wis, spl, con, crt,
 		eatk;
+	int32 batk;
 	uint16
-		batk,
 #ifdef RENEWAL
 		watk,
 		watk2,
