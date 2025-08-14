@@ -3483,6 +3483,7 @@ private:
 public:
 	status_change();
 
+	bool hasSCE( enum sc_type type );
 	status_change_entry* getSCE( enum sc_type type );
 	status_change_entry* getSCE( uint32 type );
 	status_change_entry* createSCE( enum sc_type type );
