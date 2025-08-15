@@ -5408,7 +5408,7 @@ int32 skill_castend_damage_id (struct block_list* src, struct block_list *bl, ui
 		// Enemy players have their AP reduced down to 0.
 		// Note: Does it reduce the enemy players AP reguardless if the caster hits or not? [Rytech]
 		if (bl->type == BL_PC)
-			status_fix_apdamage(src, bl, tstatus->max_ap, 0, skill_id);
+			status_zap(bl, 0, 0, tstatus->max_ap);
 	}
 		break;
 
@@ -5599,46 +5599,47 @@ int32 skill_castend_damage_id (struct block_list* src, struct block_list *bl, ui
 		break;
 
 	case RG_BACKSTAP:
-		{
-			if (!check_distance_bl(src, bl, 0)) {
+	{
 #ifdef RENEWAL
-				uint8 dir = map_calc_dir(src, bl->x, bl->y);
-				int16 x, y;
+		uint8 dir = map_calc_dir(src, bl->x, bl->y);
+		int16 x, y;
 
-				if (dir > 0 && dir < 4)
-					x = -1;
-				else if (dir > 4)
-					x = 1;
-				else
-					x = 0;
+		if (dir > 0 && dir < 4)
+			x = -1;
+		else if (dir > 4)
+			x = 1;
+		else
+			x = 0;
 
-				if (dir > 2 && dir < 6)
-					y = -1;
-				else if (dir == 7 || dir < 2)
-					y = 1;
-				else
-					y = 0;
+		if (dir > 2 && dir < 6)
+			y = -1;
+		else if (dir == 7 || dir < 2)
+			y = 1;
+		else
+			y = 0;
 
-				if (battle_check_target(src, bl, BCT_ENEMY) > 0 && unit_movepos(src, bl->x + x, bl->y + y, 2, true)) // Display movement + animation.
+		if (battle_check_target(src, bl, BCT_ENEMY) > 0 && unit_movepos(src, bl->x + x, bl->y + y, 2, true))// Display movement + animation.
 #else
-				uint8 dir = map_calc_dir(src, bl->x, bl->y), t_dir = unit_getdir(bl);
+		if (check_distance_bl(src, bl, 0))
+			break;
 
-				if (!map_check_dir(dir, t_dir) || bl->type == BL_SKILL)
+		uint8 dir = map_calc_dir(src, bl->x, bl->y), t_dir = unit_getdir(bl);
+
+		if (!map_check_dir(dir, t_dir) || bl->type == BL_SKILL)
 #endif
-				{
-					status_change_end(src, SC_HIDING);
-					dir = dir < 4 ? dir+4 : dir-4; // change direction [Celest]
-					unit_setdir(bl,dir);
+		{
+			status_change_end(src, SC_HIDING);
+			dir = dir < 4 ? dir + 4 : dir - 4; // change direction [Celest]
+			unit_setdir(bl, dir);
 #ifdef RENEWAL
-					clif_blown(src);
+			clif_blown(src);
 #endif
-					skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
-				}
-				else if (sd)
-					clif_skill_fail( *sd, skill_id );
-			}
+			skill_attack(BF_WEAPON, src, src, bl, skill_id, skill_lv, tick, flag);
 		}
-		break;
+		else if (sd)
+			clif_skill_fail(*sd, skill_id);
+	}
+	break;
 
 	case MO_FINGEROFFENSIVE:
 		skill_attack(BF_WEAPON,src,src,bl,skill_id,skill_lv,tick,flag);
@@ -8438,7 +8439,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 			uint8 ap_burn[5] = { 20, 30, 50, 60, 70 };
 
 			clif_skill_nodamage(src, *bl, skill_id, skill_lv);
-			status_fix_apdamage(src, bl, ap_burn[skill_lv - 1], 0, skill_id);
+			status_zap(bl, 0, 0, ap_burn[skill_lv - 1]);
 		} else if (sd)
 			clif_skill_fail( *sd, skill_id, USESKILL_FAIL );
 		break;
@@ -10442,7 +10443,7 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 			// This skill creates fake casting state where a monster moves while showing a cast bar
 			int32 tricktime = MOB_SKILL_INTERVAL * 3;
 			md->trickcasting = tick + tricktime;
-			clif_skillcasting(src, src->id, src->id, 0, 0, skill_id, skill_lv, ELE_FIRE, tricktime + MOB_SKILL_INTERVAL / 2);
+			clif_skillcasting(*src, src, 0, 0, skill_id, skill_lv, ELE_FIRE, tricktime + MOB_SKILL_INTERVAL / 2);
 			// Monster cannot be stopped while moving
 			md->state.can_escape = 1;
 			// Move up to 8 cells
@@ -10788,8 +10789,11 @@ int32 skill_castend_nodamage_id (struct block_list *src, struct block_list *bl, 
 		break;
 	case BD_ENCORE:
 		clif_skill_nodamage(src,*bl,skill_id,skill_lv);
-		if(sd)
+		if (sd != nullptr) {
 			unit_skilluse_id(src,src->id,sd->skill_id_dance,sd->skill_lv_dance);
+			// Need to remove remembered skill to prevent permanent halving of SP cost
+			sd->skill_id_old = 0;
+		}
 		break;
 
 	case TR_RETROSPECTION:
@@ -18120,13 +18124,16 @@ int32 skill_check_pc_partner(map_session_data *sd, uint16 skill_id, uint16 *skil
 				if( is_chorus )
 					break;//Chorus skills are not to be parsed as ensembles
 				if (skill_get_inf2(skill_id, INF2_ISENSEMBLE)) {
-					if (c > 0 && sd->sc.getSCE(SC_DANCING) && (tsd = map_id2sd(p_sd[0])) != nullptr) {
-						sd->sc.getSCE(SC_DANCING)->val4 = tsd->id;
-						sc_start4(sd,tsd,SC_DANCING,100,skill_id,sd->sc.getSCE(SC_DANCING)->val2,*skill_lv,sd->id,skill_get_time(skill_id,*skill_lv)+1000);
-						clif_skill_nodamage(tsd, *sd, skill_id, *skill_lv);
-						tsd->skill_id_dance = skill_id;
-						tsd->skill_lv_dance = *skill_lv;
-#ifdef RENEWAL
+					if (c > 0 && (tsd = map_id2sd(p_sd[0])) != nullptr) {
+#ifndef RENEWAL
+						if (sd->sc.hasSCE(SC_DANCING)) {
+							sd->sc.getSCE(SC_DANCING)->val4 = tsd->id;
+							sc_start4(sd, tsd, SC_DANCING, 100, skill_id, sd->sc.getSCE(SC_DANCING)->val2, *skill_lv, sd->id, skill_get_time(skill_id, *skill_lv) + 1000);
+							clif_skill_nodamage(tsd, *sd, skill_id, *skill_lv);
+							tsd->skill_id_dance = skill_id;
+							tsd->skill_lv_dance = *skill_lv;
+						}
+#else
 						sc_start(sd, sd, SC_ENSEMBLEFATIGUE, 100, 1, skill_get_time(CG_SPECIALSINGER, *skill_lv));
 						sc_start(sd, tsd, SC_ENSEMBLEFATIGUE, 100, 1, skill_get_time(CG_SPECIALSINGER, *skill_lv));
 #endif
@@ -19698,6 +19705,8 @@ void skill_consume_requirement(map_session_data *sd, uint16 skill_id, uint16 ski
 		switch( skill_id ) {
 			case CG_TAROTCARD: // TarotCard will consume sp in skill_cast_nodamage_id [Inkfish]
 			case MC_IDENTIFY:
+			case BD_ADAPTATION:
+			case BD_ENCORE:
 				require.sp = 0;
 				break;
 			case AL_HOLYLIGHT:
