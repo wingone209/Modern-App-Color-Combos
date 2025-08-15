@@ -8004,28 +8004,35 @@ static struct Damage battle_calc_weapon_attack(struct block_list *src, struct bl
 		// Res reduces physical damage by a percentage and is calculated before DEF and other reductions.
 		// All skills that use the simple defense formula (damage substracted by DEF+DEF2) ignore Res
 		if ((wd.damage + wd.damage2) && tstatus->res > 0 && !nk[NK_SIMPLEDEFENSE]) {
+			// (Res flat reduction is already applied)
 			int16 res = tstatus->res;
-			int16 ignore_res = 0;// Value used as a percentage.
 
-			if (sd)
+			// % Res ignored
+			int16 ignore_res = 0;
+
+			if (sd != nullptr) {
+				// (in case other bonuses are implemented) % Res ignored is the sum of all types of % Res
 				ignore_res += sd->indexed_bonus.ignore_res_by_race[tstatus->race] + sd->indexed_bonus.ignore_res_by_race[RC_ALL];
+			}
 
 			// Attacker status's that pierce Res.
-			if (sc) {
-				if (sc->getSCE(SC_A_TELUM))
+			if (sc != nullptr) {
+				if (sc->getSCE(SC_A_TELUM) != nullptr)
 					ignore_res += sc->getSCE(SC_A_TELUM)->val2;
-				if (sc->getSCE(SC_POTENT_VENOM))
+				if (sc->getSCE(SC_POTENT_VENOM) != nullptr)
 					ignore_res += sc->getSCE(SC_POTENT_VENOM)->val2;
 			}
 
+			// % Res ignored is capped to 50% on official server
 			ignore_res = min(ignore_res, battle_config.max_res_mres_ignored);
 
-			if (ignore_res > 0)
-				res -= res * ignore_res / 100;
+			res = static_cast<decltype(res)>(res - ignore_res * res / 100.0);
 
 			// Apply damage reduction.
-			wd.damage = wd.damage * (2000 + res) / (2000 + 5 * res);
-			wd.damage2 = wd.damage2 * (2000 + res) / (2000 + 5 * res);
+			wd.damage -= static_cast<decltype(wd.damage)>(static_cast<float>(res / (res + 400.0)) * 80.0 / 100.0 * static_cast<double>(wd.damage));
+			wd.damage2 -= static_cast<decltype(wd.damage2)>(static_cast<float>(res / (res + 400.0)) * 80.0 / 100.0 * static_cast<double>(wd.damage2));
+			//wd.damage = wd.damage * (2000 + res) / (2000 + 5 * res);
+			//wd.damage2 = wd.damage2 * (2000 + res) / (2000 + 5 * res);
 		}
 
 #else
@@ -9538,24 +9545,32 @@ struct Damage battle_calc_magic_attack(struct block_list *src,struct block_list 
 
 #ifdef RENEWAL
 		// MRes reduces magical damage by a percentage and is calculated before MDEF and other reductions.
-		if (ad.damage && tstatus->mres > 0) {
+		if (ad.damage != 0 && tstatus->mres > 0) {
+			// (MRes flat reduction is already applied)
 			int16 mres = tstatus->mres;
-			int16 ignore_mres = 0;// Value used as percentage.
 
-			if (sd)
+			// % MRes ignored
+			int16 ignore_mres = 0;
+
+			if (sd != nullptr) {
+				// (in case other bonuses are implemented) % MRes ignored is the sum of all types of % MRes
 				ignore_mres += sd->indexed_bonus.ignore_mres_by_race[tstatus->race] + sd->indexed_bonus.ignore_mres_by_race[RC_ALL];
+			}
 
 			// Attacker status's that pierce MRes.
-			if (sc && sc->getSCE(SC_A_VITA))
-				ignore_mres += sc->getSCE(SC_A_VITA)->val2;
+			if (sc != nullptr) {
+				if (sc->getSCE(SC_A_VITA) != nullptr)
+					ignore_mres += sc->getSCE(SC_A_VITA)->val2;
+			}
 
+			// % MRes ignored is capped to 50% on official server
 			ignore_mres = min(ignore_mres, battle_config.max_res_mres_ignored);
 
-			if (ignore_mres > 0)
-				mres -= mres * ignore_mres / 100;
+			mres = static_cast<decltype(mres)>(mres - ignore_mres * mres / 100.0);
 
+			ad.damage -= static_cast<decltype(ad.damage)>(static_cast<float>(mres / (mres + 400.0)) * 80.0 / 100.0 * static_cast<double>(ad.damage));
 			// Apply damage reduction.
-			ad.damage = ad.damage * (2000 + mres) / (2000 + 5 * mres);
+			//ad.damage = ad.damage * (2000 + mres) / (2000 + 5 * mres);
 		}
 #endif
 
