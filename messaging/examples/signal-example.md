@@ -27,3 +27,25 @@
   --signal-background: #FFFFFF;         /* White - Clean */
   --signal-accent: #00A86B;             /* Green - Secure */
 }
+```
+## 🔗 Related Links
+
+| Icon | Link | Description |
+|:----:|:----|:-----------:|
+| 🎨 | [Messaging Primary Palette](../primary-palette.md) | Main color scheme |
+| 🌙 | [Messaging Dark Mode](../dark-mode.md) | Dark theme variant |
+| 💎 | [Messaging Luxury Style](../luxury-style.md) | Premium palette |
+| 📱 | [Back to Examples](./) | All case studies |
+| 💬 | [WhatsApp](./whatsapp-example.md) | Secure messaging |
+| ✈️ | [Telegram](./telegram-example.md) | Cloud messaging |
+
+### 🌐 External Links
+- 🌐 [Signal Official](https://signal.org)
+- 📱 [App Store](https://apps.apple.com/app/signal)
+- 📱 [Google Play](https://play.google.com/store/apps/details?id=org.thoughtcrime.securesms)
+- 📘 [Signal Blog](https://signal.org/blog)
+- 🐦 [Twitter](https://twitter.com/signalapp)
+
+---
+
+**[⬆ Back to Top](#top)** • **[📁 All Examples](./)** • **[🏠 Messaging Home](../README.md)**
