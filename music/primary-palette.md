@@ -91,3 +91,18 @@
   font-size: 10px;
   font-weight: bold;
 }
+```
+## 🔗 Related Links
+
+| Icon | Link | Description |
+|:----:|:----|:-----------:|
+| 🌙 | [Music Dark Mode](./dark-mode.md) | Dark theme variant |
+| 💎 | [Music Luxury Style](./luxury-style.md) | Premium palette |
+| 📱 | [Music Examples](./examples/) | Case studies |
+| 🎧 | [Spotify](./examples/spotify-example.md) | Music streaming |
+| 🍎 | [Apple Music](./examples/apple-music-example.md) | Music service |
+| 🌊 | [Tidal](./examples/tidal-example.md) | Hi-fi streaming |
+
+---
+
+**[⬆ Back to Top](#top)** • **[🏠 Music Home](../README.md)**
